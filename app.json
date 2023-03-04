@@ -18,11 +18,11 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.athiene.jaqpp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.athiene.jaqpp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

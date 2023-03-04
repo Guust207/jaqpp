@@ -1,6 +1,8 @@
 import { StyleSheet} from 'react-native';
 import {login} from "./components/loginView";
 
+
+
 export default function App() {
   return (login());
 }

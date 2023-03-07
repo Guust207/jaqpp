@@ -1,25 +1,20 @@
 // This file is almost identical to the configuration given in the Firebase console when you create the app.
 // Analytics have been disabled by commenting out the relevant lines.
-
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 
-// SDK's
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-
+// Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDuYiK4hUi_1j3qX9lDIOUf8_ynMaPvHtE",
-    authDomain: "jaqpp-796c7.firebaseapp.com",
-    projectId: "jaqpp-796c7",
-    storageBucket: "jaqpp-796c7.appspot.com",
-    messagingSenderId: "901775789414",
-    appId: "1:901775789414:web:e22fc9cde22a13f739cca7"
+    apiKey: "AIzaSyB9l56-8ipkeUb5sSMwuzav0PFwwrT5rfQ",
+    authDomain: "jaqpp-d4c86.firebaseapp.com",
+    projectId: "jaqpp-d4c86",
+    storageBucket: "jaqpp-d4c86.appspot.com",
+    messagingSenderId: "766637901593",
+    appId: "1:766637901593:web:2abf17696860f5a81b6788"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-
 // New
 const auth = getAuth(app);
 const db = getFirestore(app);

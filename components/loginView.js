@@ -12,8 +12,6 @@ https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_ge
 
 WebBrowser.maybeCompleteAuthSession();
 
-
-
 export const login = () => {
 
     const [accessToken, setAccessToken] = React.useState(null);
@@ -25,33 +23,23 @@ export const login = () => {
     React.useEffect(() => {
         if(response?.type === "success") {
             setAccessToken(response.authentication.accessToken);
-            if(accessToken)
-                console.log("Has AccessToken")
             accessToken && fetchUserInfo().then();
         }
     }, [response, accessToken])
 
     async function fetchUserInfo () {
-
+        console.log(accessToken);
         //Using API to fetch information about logged-in user
-        let response = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            method: 'GET',
-            headers: { Authorization: 'Bearer ${accessToken}'}
+        let response = await fetch("https://www.googleapis.com/userinrfo/v2/me", {
+            headers: {Authorization: `Bearer ${accessToken}`}
         });
-
-        console.log("The response is of type: ", response.type);
-        setUser(response.json())
-
-
-        const userData = response.json();
-
-        console.log("Users name is: ", userData.name);
-
-        //Check if the user is connected by checking if user is not default value which is NULL
+        const useInfo = await response.json();
+        console.log("Type of:", typeof(response));
+        setUser(useInfo);
         if(user)
-            console.log("User connected successfully")
-
+            console.log("User", user.name, "connected!");
     }
+
 
     const ShowUserInfo = () => {
         if(user) {
@@ -78,15 +66,7 @@ export const login = () => {
     //What you will see when you are at Add in app
     return (
         <View>
-            {user === true &&
-                <View>
-                    <Text>
-                        Welcome
-                    </Text>
-                    <Text>
-                        {user.name}
-                    </Text>
-                </View>}
+            {user === true && <ShowUserInfo />}
             {user === null &&
                 <>
                     <Text>

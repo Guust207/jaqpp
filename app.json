@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "jaqpp",
     "name": "jaqpp",
     "slug": "jaqpp",
     "version": "1.0.0",

@@ -10,55 +10,57 @@ https://docs.expo.dev/guides/google-authentication/
  */
 
 
-
+//Function that watches for requests to use browser.
 WebBrowser.maybeCompleteAuthSession();
 
-export const login = () => {
+//Use states that are used to complete different task such as setting accessToken, user etc.
+const [accessToken, setAccessToken] = React.useState("r");
+const [user, setUser] = React.useState(null);
+const [request, response, promptAsync] = Google.useAuthRequest({
+    clientId: "766637901593-id760o157h0bieoq7eiukbbvhnbhae0h.apps.googleusercontent.com",
+});
 
-    const [accessToken, setAccessToken] = React.useState("r");
-    const [user, setUser] = React.useState(null);
-    const [request, response, promptAsync] = Google.useAuthRequest({
-        clientId: "766637901593-id760o157h0bieoq7eiukbbvhnbhae0h.apps.googleusercontent.com",
-    });
 
-    React.useEffect(() => {
-        if(response?.type === "success") {
-            setAccessToken(response.authentication.accessToken);
-            accessToken && fetchUserInfo().then();
-        }
-    }, [response, accessToken])
-
-    const fetchUserInfo = async () => {
-        try {
-            const response = await fetch(
-                "https://www.googleapis.com/userinfo/v2/me",
-                {
-                    headers: { Authorization: `Bearer ${accessToken}` },
-                }
-            );
-
-            const user = await response.json();
-            setUser(user);
-            if(user){
-                console.log(user.name);
+//Function that fetches information about logged-in user using access token.
+const fetchUserInfo = async () => {
+    try {
+        const response = await fetch(
+            "https://www.googleapis.com/userinfo/v2/me",
+            {
+                headers: { Authorization: `Bearer ${accessToken}` },
             }
-        } catch (error) {
-            console.log("Failed!");
+        );
+
+        const user = await response.json();
+        setUser(user);
+        if(user){
+            console.log(user.name);
         }
-    };
+    } catch (error) {
+        console.log("Failed!");
+    }
+};
+
+//A React function that triggers when there is a response from above the fetchUserInfo function
+React.useEffect(() => {
+    if(response?.type === "success") {
+        setAccessToken(response.authentication.accessToken);
+        accessToken && fetchUserInfo().then();
+    }
+}, [response, accessToken])
 
 
-    const handlerLogin = useCallback(() => {
-        promptAsync().then();
-    }, [promptAsync])
+//This is the function that handles profile view and all of its sub functions
+const profileView = () => {
 
+    //Function that handles the Sign-out button
     const handleLogout = () => {
         setUser(null);
     }
 
-    const loggedInView = () => {
-        return (
-            <View>
+    //The view that you see at profile view
+    return (
+        <View>
             <Text style={styles.text}> {user.name} </Text>
             <Button
                 title="Sign out"
@@ -66,11 +68,19 @@ export const login = () => {
                 onPress={handleLogout}
             />
         </View>)
-    }
+}
 
 
+//This is the function that handles login and how the loginView should look like.
+export const login = () => {
 
-    //What you will see when you are at Add in app
+    //Function that handles the Sign in with Google button
+    const handlerLogin = useCallback(() => {
+        promptAsync().then();
+    }, [promptAsync])
+
+
+    //What you will see when you first come open the app
     return (
         <View style={styles.container}>
             {user === null ? (
@@ -79,7 +89,7 @@ export const login = () => {
                     disabled={!request}
                     onPress={handlerLogin}
                 />
-            ) : loggedInView()}
+            ) : profileView()}
         </View>
     );
 }

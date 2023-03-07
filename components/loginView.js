@@ -3,6 +3,8 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import * as React from 'react';
 import {useCallback} from 'react';
+import {doc, getDoc, setDoc} from 'firebase/firestore';
+import {db} from "../firebaseConfig";
 
 /* API Used for fetching information about user logged-in
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get
@@ -23,6 +25,35 @@ export const login = () => {
         clientId: "766637901593-id760o157h0bieoq7eiukbbvhnbhae0h.apps.googleusercontent.com",
     });
 
+    //Function that is run before adding the student to database. It checks if a user with the same id already exists.
+
+    async function add() {
+        if (user) {
+            await setDoc(doc(db,"users", user.id), {
+                    fullName: user.name,
+                    email: user.email,
+                    picture: user.picture
+                }
+            );
+        } else
+        {
+            add().then();
+        }
+    }
+
+    async function check(collection) {
+        if (user) {
+            const docRef = doc(db, collection, user.id);
+            const docSnap = await getDoc(docRef);
+
+            if (!docSnap.exists()) {
+                add(user).then();
+            }
+        } else {
+            check("users").then();
+        }
+    }
+
 //Function that fetches information about logged-in user using access token.
     const fetchUserInfo = async () => {
         try {
@@ -37,6 +68,7 @@ export const login = () => {
             setUser(user);
             if(user){
                 console.log(user.name);
+                check("users",user).then();
             }
         } catch (error) {
             console.log("Failed!");

@@ -3,7 +3,7 @@ import {collection, doc, getDoc, getDocs, query, onSnapshot} from "firebase/fire
 import {db} from "../firebaseConfig";
 import {Table, Row, Cell, TableWrapper} from 'react-native-table-component';
 import React, {useEffect, useState} from "react";
-import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, processColor} from "react-native";
+import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Pressable} from "react-native";
 
 //Component Imports
 import {Modal} from "./Modal";
@@ -14,7 +14,7 @@ const EditView = () => {
 
     //Handling the backend of the table at Home in app
     const tableData = {
-        tableHead: ['Class Name', 'First name', 'Surname', 'DOB', 'Score', 'Grade', 'Delete', 'Edit'],
+        tableHead: ['Gathering', 'Date', 'Surname', 'DOB', 'Score', 'Grade', 'Delete', 'Edit'],
         tableData: [],
         colWidth: [120, 120, 120, 120, 120, 120, 120, 120]
     };
@@ -134,13 +134,15 @@ const EditView = () => {
         <View style={styles.container}>
             <ScrollView>
                 <View>
+
+
                     <Table borderStyle={{ borderWidth: 4}}>
                         <Row data={data.tableHead} widthArr={data.colWidth} style={styles.head} textStyle={styles.headText}/>
                         {
                             data.tableData.map((rowData, rowIndex) => (
                                 <TableWrapper textStyle={styles.headText} key={rowIndex} style={{ flexDirection: 'row' }}>
                                     {rowData.map((cellData, cellIndex) => (
-                                        <Cell style={{color: 'blue'}} width={120} key={cellIndex} data={ cellIndex === 6 ? ( renderEditBtn(rowData, rowIndex + 1)) : (cellData)}/>
+                                        <Cell style={{color: 'blue'}} width={80} key={cellIndex} data={ cellIndex === 2 ? ( renderEditBtn(rowData, rowIndex + 1)) : (cellData)}/>
                                     ))
                                     }
                                 </TableWrapper>

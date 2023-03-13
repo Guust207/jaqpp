@@ -158,19 +158,22 @@ const EditView = () => {
                                 <Text>New name for gathering:</Text>
                                 <TextInput
                                     onChangeText={set_Name}
-                                    placeholder={Name}
+                                    value={Name}
+                                    placeholder='Name'
                                 />
 
                                 <Text>Last Name:</Text>
                                 <TextInput
                                     onChangeText={set_Date}
-                                    placeholder={Date}
+                                    value={Date}
+                        r            placeholder='Date'
                                 />
 
                                 <Text>Date of Birth:</Text>
                                 <TextInput
                                     onChangeText={set_Time}
-                                    placeholder={Time}
+                                    value={Time}
+                                    placeholder='Time'
                                 />
 
                                 <Button

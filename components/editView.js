@@ -50,11 +50,6 @@ const EditView = () => {
                     else
                         arr.push("-");
 
-                    if (doc.data()['DOB'] != null)
-                        arr.push(doc.data()['DOB'].toString());
-                    else
-                        arr.push("-");
-
                     arr.push(['buttonD'].toString());
 
                     arr.push(['buttoneE'].toString());
@@ -64,9 +59,6 @@ const EditView = () => {
 
                 setData(dataObject);
             })
-
-
-
         }
 
         getAll();
@@ -195,5 +187,5 @@ const EditView = () => {
     )
 }
 
-
+export default EditView;
 

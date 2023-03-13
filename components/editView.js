@@ -26,7 +26,7 @@ const EditView = () => {
 
 
             const q = query(collection(db, "gathering"));
-            const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            onSnapshot(q, (querySnapshot) => {
                 const dataObject = JSON.parse(JSON.stringify(data));
 
                 querySnapshot.forEach((doc) => {
@@ -58,7 +58,7 @@ const EditView = () => {
                 });
 
                 setData(dataObject);
-            })
+            });
         }
 
         getAll();
@@ -99,7 +99,7 @@ const EditView = () => {
     const renderEditBtn = (rowData, cellData1) => {
         return (
             <TouchableOpacity onPress={() => EditBtnFunc(cellData1)}>
-                <Text style={{color: 'Red'}}>Edit</Text>
+                <Text style={{color: 'red'}}>Edit</Text>
             </TouchableOpacity>
         );
     }
@@ -190,4 +190,3 @@ const EditView = () => {
 }
 
 export default EditView;
-

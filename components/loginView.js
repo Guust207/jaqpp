@@ -53,7 +53,6 @@ export const login = () => {
                 add(user).then();
             }
         } else {
-            check("users").then();
         }
     }
 

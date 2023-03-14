@@ -141,15 +141,5 @@ const profileView = (user, setUser) => {
             />
 
 
-
-            <NavigationContainer>
-                <Tab.Navigator>
-                    <Tab.Screen name="Create" component={Create}/>
-                </Tab.Navigator>
-            </NavigationContainer>
-
-
         </View>)
 }
-
-

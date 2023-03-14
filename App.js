@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import {login} from "./components/loginView";
 import Create from "./components/CreateGathering";
-import EditView from "./components/editView";
+import Edit from "./components/EditGathering";
 
 const App = () => {
     //The navigation bar that you see at the bottom
@@ -17,7 +17,7 @@ const App = () => {
             <Tab.Navigator>
                 <Tab.Screen name="Home" component={login}/>
                 <Tab.Screen name="Add" component={Create}/>
-                <Tab.Screen name="Edit" component={EditView}/>
+                <Tab.Screen name="Edit" component={Edit}/>
             </Tab.Navigator>
         </NavigationContainer>
     );

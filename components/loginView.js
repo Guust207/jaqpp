@@ -139,16 +139,6 @@ const profileView = (user, setUser) => {
                 title="Sign out"
                 onPress={handleLogout}
             />
-
-
-
-            <NavigationContainer>
-                <Tab.Navigator>
-                    <Tab.Screen name="Create" component={Create}/>
-                </Tab.Navigator>
-            </NavigationContainer>
-
-
         </View>)
 }
 

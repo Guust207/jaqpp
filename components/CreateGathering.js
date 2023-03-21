@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Text, TextInput, View} from "react-native";
 import {doc, getDoc, setDoc} from "firebase/firestore";
 import {db} from "../firebaseConfig";
-
+import {login, userid} from "./loginView";
 
 
 const Create = () => {
@@ -20,14 +20,34 @@ const Create = () => {
         return 'gathering' + number1 + number2 + number3 + number4 + number5;
     }
 
+    const [gathName, set_gathName] = useState("Name");
+    const [gathTime, set_gathTime] = useState("time");
+    const [gathDate, set_gathDate] = useState("mm.dd.yyyy");
+
 
     async function add(id, gathName, gathTime, gathDate) {
         await setDoc(doc(db, "gathering", id), {
                 name: gathName,
                 time: gathTime,
                 date: gathDate,
+                userid: login().userid
             }
         );
+    }
+
+    async function addAttendees(id) {
+        await setDoc(doc(db, "gathering", id, "attendees", login().userid), {
+                role: login().name,
+                userid: login().userid
+            }
+        );
+    }
+
+    function addBoth(){
+        let id = GenerateID();
+        add().then();
+        addAttendees().then();
+
     }
 
 
@@ -43,9 +63,6 @@ const Create = () => {
     }
 
 
-    const [gathName, set_gathName] = useState("Name");
-    const [gathTime, set_gathTime] = useState("time");
-    const [gathDate, set_gathDate] = useState("mm.dd.yyyy");
 
     const addData = () => {
         check("gathering", GenerateID()).then();
@@ -75,7 +92,7 @@ const Create = () => {
             />
 
             <Button
-                onPress={addData}
+                onPress={addBoth}
                 title="Add"
             />
         </View>

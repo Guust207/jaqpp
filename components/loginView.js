@@ -8,6 +8,7 @@ import {db} from "../firebaseConfig";
 import {NavigationContainer} from "@react-navigation/native";
 import Create from "./CreateGathering";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 /* API Used for fetching information about user logged-in
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get
@@ -17,6 +18,7 @@ https://docs.expo.dev/guides/google-authentication/
 
 //Function that watches for requests to use browser.
 WebBrowser.maybeCompleteAuthSession();
+
 
 //This is the function that handles login and how the loginView should look like.
 export const login = () => {
@@ -28,6 +30,9 @@ export const login = () => {
         clientId: "766637901593-id760o157h0bieoq7eiukbbvhnbhae0h.apps.googleusercontent.com",
     });
 
+
+
+
     //Function that is run before adding the student to database. It checks if a user with the same id already exists.
 
     async function add() {
@@ -35,7 +40,9 @@ export const login = () => {
             await setDoc(doc(db,"users", user.id), {
                     fullName: user.name,
                     email: user.email,
-                    picture: user.picture
+                    picture: user.picture,
+
+
                 }
             );
         } else
@@ -70,6 +77,7 @@ export const login = () => {
             setUser(user);
             if(user){
                 console.log(user.name);
+                console.log(user.id);
                 check("users",user).then();
             }
         } catch (error) {
@@ -106,6 +114,8 @@ export const login = () => {
         </View>
     );
 }
+
+
 
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Alert, Button, TextInput, View} from "react-native";
-import {doc, setDoc} from "firebase/firestore";
+import {doc, getDoc, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {budgetCategoryView} from "./budget_categoryFieldView";
 
@@ -13,7 +13,7 @@ export const BudgetView = () => {
 
     async function add_budgetCategory() {
         await setDoc(doc(db,"gathering", gathering, "budget", budgetCategory), {
-            nextID: 1
+            totalCost: null
             }
         ).then();
     }
@@ -28,10 +28,12 @@ export const BudgetView = () => {
             {text: 'OK'},
         ]);
 
-    const addBudget = () => {
+    async function addBudget() {
+        const docRef = doc(db,"gathering", gathering, "budget", budgetCategory);
+        const docSnap = await getDoc(docRef);
         if (budgetCategory === null) {
             MissingCategory();
-        } else if (doc(db,"gathering", gathering, "budget", budgetCategory)) {
+        } else if (docSnap) {
             CategoryExist();
         } else
             add_budgetCategory().then();

@@ -6,21 +6,29 @@ import {doc, setDoc} from "firebase/firestore";
 
 export const budgetCategoryView = () => {
 
-    const [fieldName, set_fieldName] = useState("");
-    const [fieldCost, set_fieldCost] = useState("");
-    const [fieldAmount, set_fieldAmount] = useState("");
-    //const [budgetCategory, set_budgetCategory] = useState("")
+    const [fieldName, set_fieldName] = useState(null);
+    const [fieldCost, set_fieldCost] = useState(null);
+    const [fieldAmount, set_fieldAmount] = useState(null);
 
-    //Dummy values
+    //TODO: When creating an interface you need to find a way to get budgetCategory and gathering - Currently the function is using dummy values
     const budgetCategory = "Food"
     const gathering = "gathering55555"
 
 
-    async function increaseID(value) {
-        await setDoc(doc(db, 'gathering', 'gathering25381').collection('budget').doc(budgetCategory), {
-                nextID: value
+    async function increase_totalCost(value) {
+        await setDoc(doc(db,"gathering", gathering, "budget", budgetCategory), {
+                totalCost: +value
             }
         ).then();
+    }
+
+    const calculate_totalCost = () => {
+        return (fieldAmount*fieldCost);
+    }
+
+    const button = () => {
+        add_CategoryField().then();
+        increase_totalCost(calculate_totalCost()).then();
     }
 
 
@@ -51,7 +59,7 @@ export const budgetCategoryView = () => {
                 placeholder="Amount"
             />
             <Button
-                onPress={add_CategoryField}
+                onPress={button}
                 title="Add Field"
             />
         </View>

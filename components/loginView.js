@@ -140,6 +140,5 @@ const profileView = (user, setUser) => {
                 onPress={handleLogout}
             />
 
-
         </View>)
 }

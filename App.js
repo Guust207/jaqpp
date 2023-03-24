@@ -1,41 +1,54 @@
-import { StyleSheet, } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { onAuthStateChanged } from "firebase/auth";
+import {auth} from "./firebaseConfig";
 
 import {Login} from "./components/loginView";
 import Create from "./components/CreateGathering";
 import Edit from "./components/EditGathering";
-import Users from "./components/getView";
-
 import SignInScreen  from "./components/signInView";
 
 
 const App = () => {
+
+    const [user, setUser] = useState(null)
+
     //The navigation bar that you see at the bottom
     const Tab = createBottomTabNavigator();
 
-    return (
-        <NavigationContainer>
-            <Tab.Navigator>
-                <Tab.Screen name="SignIn" component={SignInScreen}/>
-                <Tab.Screen name="Home" component={Login}/>
-                <Tab.Screen name="Add" component={Create}/>
-                <Tab.Screen name="Edit" component={Edit}/>
-                <Tab.Screen name="User" component={Users}/>
-            </Tab.Navigator>
-        </NavigationContainer>
-    );
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user);
+            } else {
+                setUser(null);
+                navigator.reset({
+                    index: 0,
+                    routes: [{ name: 'signInView' }],
+                });
+
+            }
+        });
+
+    }, []);
+
+
+
+
+
+        return (
+            <NavigationContainer>
+                <Tab.Navigator>
+                    <Tab.Screen name="SignIn" component={SignInScreen}/>
+                    <Tab.Screen name="Home" component={Login}/>
+                    <Tab.Screen name="Add" component={Create}/>
+                    <Tab.Screen name="Edit" component={Edit}/>
+                </Tab.Navigator>
+            </NavigationContainer>
+        );
+
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
 
 export default App;

@@ -59,10 +59,9 @@ const SignInScreen = () => {
     const handleLogOut = () => {
         signOut(auth).then(() => {
             console.log('User signed out successfully');
-        })
-            .catch((error) => {
-                console.log('Error signing out:', error);
-            });
+        }).catch((error) => {
+            console.log('Error signing out:', error);
+        });
     };
 
 

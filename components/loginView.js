@@ -4,7 +4,9 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as React from 'react';
 import {useCallback} from 'react';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
-import {db} from "../firebaseConfig";
+import {db, auth } from "../firebaseConfig";
+import {GoogleAuthProvider, signInWithCredential} from "firebase/auth";
+
 
 
 //Function that watches for requests to use browser.
@@ -24,12 +26,18 @@ export const Login = () => {
 
     async function add() {
         if (user) {
+
             await setDoc(doc(db,"users", user.id), {
                     fullName: user.name,
                     email: user.email,
                     picture: user.picture
                 }
             );
+
+
+            const credential = GoogleAuthProvider.credential(user.id);
+
+            await signInWithCredential(auth, credential);
         } else
         {
             add().then();

@@ -13,11 +13,12 @@ const Edit = () => {
 
     // This is variables and functions for fetching and display all the gatherings
     const [gat, setGat] = useState([]);
+    const user = auth.currentUser;
+
 
     useEffect(() => {
         const getAllGat = async () => {
 
-            const user = auth.currentUser;
 
             if (user !== null) {
                 const uid = user.uid;
@@ -57,12 +58,14 @@ const Edit = () => {
     const [Time, set_Time] = useState(Time);
 
 
+
     //Function for editing a gathering
     async function edit(id, gatName, gatTime, gatDate) {
         await setDoc(doc(db, "gathering", id), {
                 name: gatName,
                 time: gatTime,
                 date: gatDate,
+                userID: user.uid,
             }
         );
     }

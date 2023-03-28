@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Text, TextInput, View} from "react-native";
-import {doc, getDoc, setDoc} from "firebase/firestore";
+import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
 import {db} from "../firebaseConfig";
-import {login, userid} from "./loginView";
+import {login, userid, name} from "./loginView";
 
 
 const Create = () => {
@@ -26,28 +26,22 @@ const Create = () => {
 
 
     async function add(id, gathName, gathTime, gathDate) {
-        await setDoc(doc(db, "gathering", id), {
-                name: gathName,
-                time: gathTime,
-                date: gathDate,
-                userid: login().userid
-            }
-        );
-    }
+        const gatheringRef = doc(db, "gathering", id);
 
-    async function addAttendees(id) {
-        await setDoc(doc(db, "gathering", id, "attendees", login().userid), {
-                role: login().name,
-                userid: login().userid
-            }
-        );
-    }
+        // Add gathering data to the main 'gathering' collection
+        await setDoc(gatheringRef, {
+            name: gathName,
+            time: gathTime,
+            date: gathDate
+        });
 
-    function addBoth(){
-        let id = GenerateID();
-        add().then();
-        addAttendees().then();
 
+        const attendeesRef = collection(gatheringRef, 'attendees');
+
+        await addDoc(attendeesRef, {
+
+
+        });
     }
 
 
@@ -63,9 +57,9 @@ const Create = () => {
     }
 
 
-
-    const addData = () => {
+   const addData = () => {
         check("gathering", GenerateID()).then();
+
     }
 
 
@@ -92,7 +86,7 @@ const Create = () => {
             />
 
             <Button
-                onPress={addBoth}
+                onPress={addData}
                 title="Add"
             />
         </View>

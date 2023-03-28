@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import {StyleSheet, Text, View, Button, Image} from "react-native";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import * as React from 'react';
@@ -8,22 +8,21 @@ import {db, auth } from "../firebaseConfig";
 import {GoogleAuthProvider, signInWithCredential} from "firebase/auth";
 
 
-
 //Function that watches for requests to use browser.
 WebBrowser.maybeCompleteAuthSession();
 
 //This is the function that handles login and how the loginView should look like.
 export const Login = () => {
 
-    //Use states that are used to complete different task such as setting accessToken, user etc.
+        //Use states that are used to complete different task such as setting accessToken, user etc.
     const [accessToken, setAccessToken] = React.useState("r");
     const [user, setUser] = React.useState(null);
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: "766637901593-id760o157h0bieoq7eiukbbvhnbhae0h.apps.googleusercontent.com",
     });
 
-    //Function that is run before adding the student to database. It checks if a user with the same id already exists.
 
+    //Function that is run before adding the student to database. It checks if a user with the same id already exists.
     async function add() {
         if (user) {
 
@@ -33,11 +32,6 @@ export const Login = () => {
                     picture: user.picture
                 }
             );
-
-
-            const credential = GoogleAuthProvider.credential(user.id);
-
-            await signInWithCredential(auth, credential);
         } else
         {
             add().then();
@@ -68,6 +62,7 @@ export const Login = () => {
 
             const user = await response.json();
             setUser(user);
+            console.log(user.id);
             if(user){
                 console.log(user.name);
                 check("users",user).then();
@@ -140,3 +135,4 @@ const profileView = (user, setUser) => {
             />
         </View>)
 }
+

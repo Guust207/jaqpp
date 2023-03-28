@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {Button, Text, TextInput, View} from "react-native";
 import {doc, getDoc, setDoc} from "firebase/firestore";
-import {db} from "../firebaseConfig";
+import {auth, db} from "../firebaseConfig";
 
 
 
 const Create = () => {
 
-
+    const user = auth.currentUser;
 
 
     function GenerateID() {
@@ -26,6 +26,7 @@ const Create = () => {
                 name: gathName,
                 time: gathTime,
                 date: gathDate,
+                userID: user.uid,
             }
         );
     }

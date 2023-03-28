@@ -2,11 +2,12 @@
 import {collection, doc, getDoc, query, onSnapshot, setDoc, where} from "firebase/firestore";
 import {auth, db} from "../firebaseConfig";
 import React, {useEffect, useState} from "react";
-import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from "react-native";
 
 
 //Component Imports
 import {Modal} from "./Modal";
+import {userss} from "./loginView";
 
 
 const Edit = () => {
@@ -30,7 +31,7 @@ const Edit = () => {
                     const  list = [];
 
                     querySnapshot.forEach((doc) => {
-                        const { name, date, time } = doc.data();
+                        const { name, date, time} = doc.data();
 
                         //list for storing the data
                         list.push({
@@ -110,6 +111,17 @@ const Edit = () => {
     return (
         <View style={styles.container}>
             <ScrollView>
+
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />
+
+                        <Text style={styles.name}>{user.email}</Text>
+                    </View>
+                    <View style={styles.bioContainer}>
+                        <Text style={styles.bio}>Here comes a small bio</Text>
+                    </View>
+                </View>
                 <View>
                     {gat.map((item) => (
                         <View key={item.id} style={styles.gat}>
@@ -169,13 +181,54 @@ const Edit = () => {
 
 //Style
 const styles = StyleSheet.create({
-        container: { flex: 1, padding: 5, justifyContent: 'flex-start', backgroundColor: 'white'},
-        head: { height: 44, backgroundColor: 'gray'},
-        headText: { fontSize: 20, fontWeight: 'bold', textAlign: 'center', color: 'black'},
-        text: { margin: 4, fontSize: 16, textAlign: 'center'},
-        gat: {backgroundColor: 'lightgrey', padding: 20},
-        edit: {fontSize: 20, color: 'orange', width: '100%', backgroundColor: 'grey', textAlign: 'center'},
-
+    container: {
+        flex: 1,
+        padding: 5,
+        justifyContent: 'flex-start',
+        backgroundColor: 'white'
+    },
+    head: {
+        height: 44,
+        backgroundColor: 'gray'
+    },
+    headText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: 'black'},
+    text: {
+        margin: 4,
+        fontSize: 16,
+        textAlign: 'center'
+    },
+    gat: {
+        backgroundColor: 'lightgrey',
+        padding: 20
+    },
+    edit: {
+        fontSize: 20,
+        color: 'orange',
+        width: '100%',
+        backgroundColor: 'grey',
+        textAlign: 'center'
+    },
+    profilePicture: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        marginRight: 10,
+    },
+    name: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    bioContainer: {
+        marginBottom: 20,
+    },
+    bio: {
+        fontSize: 16,
+        lineHeight: 24,
+    },
     }
 )
 

@@ -36,8 +36,6 @@ const App = () => {
 
 
 
-
-
         return (
             <NavigationContainer>
                 <Tab.Navigator>

@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Text, TextInput, View} from "react-native";
-import {doc, getDoc, setDoc} from "firebase/firestore";
 import {auth, db} from "../firebaseConfig";
-
-
+import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
+import {login, userid, name} from "./loginView";
 
 const Create = () => {
 
@@ -20,15 +19,27 @@ const Create = () => {
         return 'gathering' + number1 + number2 + number3 + number4 + number5;
     }
 
+    const [gathName, set_gathName] = useState("Name");
+    const [gathTime, set_gathTime] = useState("time");
+    const [gathDate, set_gathDate] = useState("mm.dd.yyyy");
+
 
     async function add(id, gathName, gathTime, gathDate) {
-        await setDoc(doc(db, "gathering", id), {
-                name: gathName,
-                time: gathTime,
-                date: gathDate,
-                userID: user.uid,
-            }
-        );
+        const gatheringRef = doc(db, "gathering", id);
+
+        // Add gathering data to the main 'gathering' collection
+        await setDoc(gatheringRef, {
+            name: gathName,
+            time: gathTime,
+            date: gathDate
+        });
+
+        const attendeesRef = collection(gatheringRef, 'attendees');
+
+        await addDoc(attendeesRef, {
+
+
+        });
     }
 
 
@@ -44,12 +55,9 @@ const Create = () => {
     }
 
 
-    const [gathName, set_gathName] = useState("Name");
-    const [gathTime, set_gathTime] = useState("time");
-    const [gathDate, set_gathDate] = useState("mm.dd.yyyy");
-
-    const addData = () => {
+   const addData = () => {
         check("gathering", GenerateID()).then();
+
     }
 
 

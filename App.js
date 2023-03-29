@@ -8,7 +8,9 @@ import {Login} from "./components/loginView";
 import Create from "./components/CreateGathering";
 import Edit from "./components/EditGathering";
 import SignInScreen  from "./components/signInView";
-
+import EditView from "./components/editView";
+import {BudgetView} from "./components/budgetComponents/budgetView";
+import {budgetCategoryView} from "./components/budgetComponents/budget_categoryFieldView";
 
 const App = () => {
 
@@ -16,7 +18,6 @@ const App = () => {
 
     //The navigation bar that you see at the bottom
     const Tab = createBottomTabNavigator();
-
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -33,8 +34,6 @@ const App = () => {
         });
 
     }, []);
-
-
 
         return (
             <NavigationContainer>

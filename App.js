@@ -9,8 +9,8 @@ import Create from "./components/CreateGathering";
 import Edit from "./components/EditGathering";
 import SignInScreen  from "./components/signInView";
 import EditView from "./components/editView";
-import {BudgetView} from "./components/budgetComponents/budgetView";
-import {budgetCategoryView} from "./components/budgetComponents/budget_categoryFieldView";
+import {AddBudgetView} from "./components/budgetComponents/budgetView";
+import {AddBudgetCategoryView} from "./components/budgetComponents/budget_categoryFieldView";
 
 const App = () => {
 
@@ -36,12 +36,22 @@ const App = () => {
     }, []);
 
         return (
-            <NavigationContainer>
+            /*
+             <NavigationContainer>
                 <Tab.Navigator>
                     <Tab.Screen name="SignIn" component={SignInScreen}/>
                     <Tab.Screen name="Home" component={Login}/>
                     <Tab.Screen name="Add" component={Create}/>
                     <Tab.Screen name="Edit" component={Edit}/>
+                </Tab.Navigator>
+            </NavigationContainer>
+            */
+            <NavigationContainer>
+                <Tab.Navigator>
+                    <Tab.Screen name="SignIn" component={SignInScreen}/>
+                    <Tab.Screen name="Home" component={Login}/>
+                    <Tab.Screen name="Add" component={BudgetView}/>
+                    <Tab.Screen name="Edit" component={AddBudgetCategoryView}/>
                 </Tab.Navigator>
             </NavigationContainer>
         );

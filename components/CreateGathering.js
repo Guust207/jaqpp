@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {Button, Text, TextInput, View} from "react-native";
+import {auth, db} from "../firebaseConfig";
 import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
-import {db} from "../firebaseConfig";
 import {login, userid, name} from "./loginView";
-
 
 const Create = () => {
 
-
+    const user = auth.currentUser;
 
 
     function GenerateID() {
@@ -34,7 +33,6 @@ const Create = () => {
             time: gathTime,
             date: gathDate
         });
-
 
         const attendeesRef = collection(gatheringRef, 'attendees');
 

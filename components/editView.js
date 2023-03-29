@@ -1,108 +1,43 @@
 //View all students and information function
-import {collection, doc, getDoc, getDocs, query, onSnapshot} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, query, onSnapshot, setDoc} from "firebase/firestore";
 import {db} from "../firebaseConfig";
-import {Table, Row, Cell, TableWrapper} from 'react-native-table-component';
 import React, {useEffect, useState} from "react";
-import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Pressable} from "react-native";
+import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+
 
 //Component Imports
 import {Modal} from "./Modal";
-import {edit} from "./EditGathering";
 
 
-const EditView = () => {
+const Edit = () => {
 
-    //Handling the backend of the table at Home in app
-    const tableData = {
-        tableHead: ['Gathering', 'Date', 'Surname', 'DOB', 'Score', 'Grade', 'Delete', 'Edit'],
-        tableData: [],
-        colWidth: [120, 120, 120, 120, 120, 120, 120, 120]
-    };
-
-    const [data, setData] = useState(tableData);
+    // This is for fetching and display all the gatherings, so it can be edited
+    const [gat, setGat] = useState([]);
 
     useEffect(() => {
-        const getAll = async () => {
+        const getAllGat = async () => {
 
 
             const q = query(collection(db, "gathering"));
             onSnapshot(q, (querySnapshot) => {
-                const dataObject = JSON.parse(JSON.stringify(data));
-
+                const  list = [];
                 querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    console.log(doc.id, " => ", doc.data());
+                    const { name, date, time } = doc.data();
 
-                    let  arr = [];
-
-                    if (doc.data()['name'] != null)
-                        arr.push(doc.data()['name'].toString());
-                    else
-                        arr.push("-");
-
-                    if (doc.data()['date'] != null)
-                        arr.push(doc.data()['date'].toString());
-                    else
-                        arr.push("-");
-
-                    if (doc.data()['time'] != null)
-                        arr.push(doc.data()['time'].toString());
-                    else
-                        arr.push("-");
-
-                    arr.push(['buttonD'].toString());
-
-                    arr.push(['buttoneE'].toString());
-
-                    dataObject.tableData.push(arr);
+                    list.push({
+                        id: doc.id,
+                        name,
+                        date,
+                        time
+                    });
                 });
-
-                setData(dataObject);
+                setGat(list);
             });
         }
-
-        getAll();
-
+        getAllGat();
 
     },[])
-    //Style
-    const styles = StyleSheet.create({
-            container: { flex: 1, padding: 5, justifyContent: 'flex-start', backgroundColor: 'white'},
-            head: { height: 44, backgroundColor: 'gray'},
-            headText: { fontSize: 20, fontWeight: 'bold', textAlign: 'center', color: 'black'},
-            text: { margin: 4, fontSize: 16, textAlign: 'center'},
-        }
-    )
 
-
-
-    //This is  the Edit function for the Edit button located at the Home in the app
-    //Its main responsibility is getting the documentID of the column selected, then fetching the edited variables.
-    const EditBtnFunc = async(rowIndex) => {
-        const queryGat = query(collection(db, "gathering"));
-        const querySnapshot1 = await getDocs(queryGat);
-
-        //VARIABLES FOR STUDENT
-        const GatId = querySnapshot1.docs[rowIndex-1].id;
-        const Name = querySnapshot1.docs[rowIndex-1].data().name;
-        const Date = querySnapshot1.docs[rowIndex-1].data().date;
-        const Time = querySnapshot1.docs[rowIndex-1].data().time;
-
-        set_id(GatId);
-        set_Name(Name);
-        set_Date(Date);
-        set_Time(Time);
-        handleModal();
-    }
-
-    //This is the Edit button located at Home in the app
-    const renderEditBtn = (rowData, cellData1) => {
-        return (
-            <TouchableOpacity onPress={() => EditBtnFunc(cellData1)}>
-                <Text style={{color: 'red'}}>Edit</Text>
-            </TouchableOpacity>
-        );
-    }
 
 
     //Variables and functions that handles the edit part
@@ -110,6 +45,31 @@ const EditView = () => {
     const [Name, set_Name] = useState(Name);
     const [Date, set_Date] = useState(Date);
     const [Time, set_Time] = useState(Time);
+
+    //Function for editing a gathering
+    async function edit(id, gatName, gatTime, gatDate) {
+        await setDoc(doc(db, "gathering", id), {
+                name: gatName,
+                time: gatTime,
+                date: gatDate,
+            }
+        );
+    }
+
+
+
+
+
+
+    //This is  the Edit function for the Edit button located at the Home in the app
+    //Its main responsibility is getting the documentID of the column selected, then fetching the edited variables.
+    const EditBtnFunc = (gat) => {
+            set_id(gat.id);
+            set_Name(gat.name);
+            set_Date(gat.date);
+            set_Time(gat.time);
+            handleModal();
+    }
 
     async function check(collection, id) {
         const docRef = doc(db, collection, id);
@@ -120,13 +80,19 @@ const EditView = () => {
         }
     }
 
+
+
+    //Using this will check the id and then edit the data.
     const editData = () => {
         check("gathering", id).then();
     }
 
     //Variables used to handle Modal (Popup screen for edit)
     const [isModalVisible, setIsModalVisible] = React.useState(false);
-    const handleModal = () => setIsModalVisible(() => !isModalVisible);
+    const handleModal = () => {
+        setIsModalVisible(() => !isModalVisible)
+
+    };
 
 
     //This is the view that you will see at Home in app
@@ -134,24 +100,20 @@ const EditView = () => {
         <View style={styles.container}>
             <ScrollView>
                 <View>
+                    {gat.map((item) => (
+                        <View key={item.id} style={styles.gat}>
+                            <Text style={styles.text}> {item.name}</Text>
+                            <Text style={styles.text}> Date: {item.date}, Time: {item.time}</Text>
+                            <TouchableOpacity onPress={() => EditBtnFunc(item)}>
+                                <Text style={styles.edit}>Edit</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ))}
 
 
-                    <Table borderStyle={{ borderWidth: 4}}>
-                        <Row data={data.tableHead} widthArr={data.colWidth} style={styles.head} textStyle={styles.headText}/>
-                        {
-                            data.tableData.map((rowData, rowIndex) => (
-                                <TableWrapper textStyle={styles.headText} key={rowIndex} style={{ flexDirection: 'row' }}>
-                                    {rowData.map((cellData, cellIndex) => (
-                                        <Cell style={{color: 'blue'}} width={80} key={cellIndex} data={ cellIndex === 2 ? ( renderEditBtn(rowData, rowIndex + 1)) : (cellData)}/>
-                                    ))
-                                    }
-                                </TableWrapper>
-                            ))
-                        }
-                    </Table>
 
                     {/* This is the popup that appears when you click edit at the table */}
-                    <Modal isVisible={isModalVisible}>
+                    <Modal isVisible={isModalVisible} >
                         <Modal.Container>
                             <Modal.Header title="Edit" />
                             <Modal.Body>
@@ -162,14 +124,14 @@ const EditView = () => {
                                     placeholder='Name'
                                 />
 
-                                <Text>Last Name:</Text>
+                                <Text>Date:</Text>
                                 <TextInput
                                     onChangeText={set_Date}
                                     value={Date}
-                        r            placeholder='Date'
+                                    placeholder='Date'
                                 />
 
-                                <Text>Date of Birth:</Text>
+                                <Text>Time:</Text>
                                 <TextInput
                                     onChangeText={set_Time}
                                     value={Time}
@@ -192,4 +154,19 @@ const EditView = () => {
     )
 }
 
-export default EditView;
+
+
+//Style
+const styles = StyleSheet.create({
+        container: { flex: 1, padding: 5, justifyContent: 'flex-start', backgroundColor: 'white'},
+        head: { height: 44, backgroundColor: 'gray'},
+        headText: { fontSize: 20, fontWeight: 'bold', textAlign: 'center', color: 'black'},
+        text: { margin: 4, fontSize: 16, textAlign: 'center'},
+        gat: {backgroundColor: 'lightgrey', padding: 20},
+        edit: {fontSize: 20, color: 'orange', width: '100%', backgroundColor: 'grey', textAlign: 'center'},
+
+    }
+)
+
+
+export default Edit;

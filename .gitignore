@@ -127,7 +127,7 @@ fabric.properties
 # React Native Stack Base
 
 .expo
--expo-shared
+.expo-shared
 __generated__
 
 ### ReactNative.Xcode Stack ###

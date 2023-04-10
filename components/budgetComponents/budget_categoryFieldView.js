@@ -1,7 +1,10 @@
-import {Alert, Button, TextInput, View} from "react-native";
+import {Alert, Button, Text, TextInput, View} from "react-native";
 import React, {useState} from "react";
 import {db} from "../../firebaseConfig";
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
+import {GlobalStore} from "react-native-global-state-hooks";
+import {currentUser} from "../global_variables";
+
 
 //TODO: When creating an interface you need to find a way to get budgetCategory and gathering - Currently the function is using dummy values
 const gatheringID = "gathering55555"
@@ -13,6 +16,7 @@ export const AddBudgetCategoryView = () => {
     const [fieldName, set_fieldName] = useState(null);
     const [fieldCost, set_fieldCost] = useState(null);
     const [fieldAmount, set_fieldAmount] = useState(null);
+    const [user, setUser] = currentUser();
 
 
 
@@ -67,10 +71,14 @@ export const AddBudgetCategoryView = () => {
         } else {
             return true;
         }
-
     }
 
     async function button() {
+        if (user() == null) {
+            console.log('No user')
+        } else {
+            console.log('User', user(), 'is logged inn')
+        }
         if (await hasError() === true) {
             add_CategoryField().then();
             FieldAdded();
@@ -87,7 +95,6 @@ export const AddBudgetCategoryView = () => {
 
 
     async function add_CategoryField() {
-        console.log("HEE")
         await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "List", GenerateID()), {
                 name: fieldName,
                 costPrUnit: fieldCost,
@@ -200,7 +207,6 @@ export const EditBudgetCategoryView = () => {
 
 
     async function edit_CategoryField() {
-        console.log("HEE")
         await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "List", fieldID), {
                 name: fieldName,
                 costPrUnit: fieldCost,

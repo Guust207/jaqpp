@@ -50,7 +50,7 @@ const App = () => {
                 <Tab.Navigator>
                     <Tab.Screen name="SignIn" component={SignInScreen}/>
                     <Tab.Screen name="Home" component={Login}/>
-                    <Tab.Screen name="Add" component={BudgetView}/>
+                    <Tab.Screen name="Add" component={AddBudgetView}/>
                     <Tab.Screen name="Edit" component={AddBudgetCategoryView}/>
                 </Tab.Navigator>
             </NavigationContainer>

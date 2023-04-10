@@ -11,6 +11,7 @@ import SignInScreen  from "./components/signInView";
 import EditView from "./components/editView";
 import {AddBudgetView} from "./components/budgetComponents/budgetView";
 import {AddBudgetCategoryView} from "./components/budgetComponents/budget_categoryFieldView";
+import {CategoryView} from "./components/budgetComponents/budgetInterfaceView";
 
 const App = () => {
 
@@ -50,7 +51,7 @@ const App = () => {
                 <Tab.Navigator>
                     <Tab.Screen name="SignIn" component={SignInScreen}/>
                     <Tab.Screen name="Home" component={Login}/>
-                    <Tab.Screen name="Add" component={AddBudgetView}/>
+                    <Tab.Screen name="Add" component={CategoryView}/>
                     <Tab.Screen name="Edit" component={AddBudgetCategoryView}/>
                 </Tab.Navigator>
             </NavigationContainer>

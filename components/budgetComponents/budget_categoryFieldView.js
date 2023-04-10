@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {db} from "../../firebaseConfig";
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
 import {GlobalStore} from "react-native-global-state-hooks";
-import {currentUser} from "../global_variables";
+import {currentCategory, currentField, currentGathering, currentUser} from "../global_variables";
 
 
 //TODO: When creating an interface you need to find a way to get budgetCategory and gathering - Currently the function is using dummy values
@@ -17,6 +17,10 @@ export const AddBudgetCategoryView = () => {
     const [fieldCost, set_fieldCost] = useState(null);
     const [fieldAmount, set_fieldAmount] = useState(null);
     const [user, setUser] = currentUser();
+    const [gathering, setGathering] = currentGathering();
+    const [category, setCategory] = currentCategory();
+    const [field, setField] = currentField();
+
 
 
 

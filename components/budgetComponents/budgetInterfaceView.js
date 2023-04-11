@@ -1,16 +1,16 @@
 import {Button, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {auth, db} from "../../firebaseConfig";
-import {collection, doc, getDoc, onSnapshot, query, setDoc, where} from "firebase/firestore";
+import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc, where} from "firebase/firestore";
 import {Modal} from "../Modal";
-import {currentGathering} from "../global_variables";
+import {currentCategory, currentField, currentGathering} from "../global_variables";
+import {AddBudgetCategoryView, EditBudgetCategoryView} from "./budget_categoryFieldView";
 
 
 export const CategoryView = () => {
 
     const FieldView = () => {
 
-        console.log("Hello world")
 
         // This is variables and functions for fetching and display all the gatherings
         const [field, set_field] = useState([]);
@@ -26,12 +26,14 @@ export const CategoryView = () => {
                     const  list = [];
 
                     querySnapshot.forEach((doc) => {
-                        const { name, totalCost} = doc.data();
+                        const { name, amount, costPrUnit, totalCost} = doc.data();
 
                         //list for storing the data
                         list.push({
                             id: doc.id,
                             name,
+                            amount,
+                            costPrUnit,
                             totalCost,
                         });
                     });
@@ -44,7 +46,8 @@ export const CategoryView = () => {
 
 
         //Variables and functions that handles the edit part
-        const [field_id, set_id] = useState(field_id);
+        const [field_id, set_id] = currentField();
+        const [categoryID, setCategory] = currentCategory();
         const [field_name, set_name] = useState(field_name);
         const [field_amount, set_amount] = useState(field_amount);
         const [field_cost, set_cost] = useState(field_cost);
@@ -62,6 +65,28 @@ export const CategoryView = () => {
             setIsModalVisible(() => !isModalVisible)
         };
 
+        const [isFieldEditViewVisible, setIsFieldEditViewVisible] = useState(false);
+
+        const handleEditModal = () => {
+
+            /*
+            const [fieldID, set_fieldID] = currentField();
+            const [gatheringID, set_gatheringID] = currentGathering();
+            set_gatheringID("gathering55555");
+            set_fieldID(field_id);
+             */
+
+            setIsModalVisible(() => !isModalVisible)
+            setIsFieldEditViewVisible(() => !isFieldEditViewVisible)
+        }
+
+        const handleDeleteModal = async () => {
+            const gatheringID = "gathering55555"
+            console.log(categoryID);
+            console.log(field_id);
+            await deleteDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, field_id));
+            setIsModalVisible(() => !isModalVisible)
+        }
 
         //This is the view that you will see at Home in app
         return (
@@ -70,7 +95,7 @@ export const CategoryView = () => {
                     <View>
                         {field.map((item) => (
                             <View key={item.id} style={styles.category}>
-                                <Text style={styles.text}> {item.id}</Text>
+                                <Text style={styles.text}> {item.name}</Text>
                                 <TouchableOpacity onPress={() => handleModal(item)}>
                                     <Text style={styles.edit}>View</Text>
                                 </TouchableOpacity>
@@ -80,15 +105,17 @@ export const CategoryView = () => {
                         {/* This is the popup that appears when you click edit at the table */}
                         <Modal isVisible={isModalVisible} >
                             <Modal.Container>
-                                <Modal.Header title={field_id} />
+                                <Modal.Header title={field_name} />
                                 <Modal.Body>
-                                    <Text> Amount cost: {field_amount} </Text>
+                                    <Text> Amount: {field_amount} </Text>
                                     <Text> Cost: {field_cost} </Text>
                                     <Text> Total cost: {totalCost} </Text>
                                     <Button
+                                        onPress={handleEditModal}
                                         title="Edit"
                                     />
                                     <Button
+                                        onPress={handleDeleteModal}
                                         title="Delete"
                                     />
                                 </Modal.Body>
@@ -98,6 +125,7 @@ export const CategoryView = () => {
                             </Modal.Container>
                         </Modal>
                     </View>
+                    {isFieldEditViewVisible && <EditBudgetCategoryView />}
                 </ScrollView>
             </View>
         )
@@ -108,7 +136,6 @@ export const CategoryView = () => {
 
     // This is variables and functions for fetching and display all the gatherings
     const [category, set_category] = useState([]);
-    const user = auth.currentUser;
 
 
     useEffect(() => {
@@ -118,20 +145,20 @@ export const CategoryView = () => {
 
             const q = query(collection(db, "gathering", "gathering55555", "budget"));
             onSnapshot(q, (querySnapshot) => {
-                    const  list = [];
+                const  list = [];
 
-                    querySnapshot.forEach((doc) => {
-                        const { name, totalCost} = doc.data();
+                querySnapshot.forEach((doc) => {
+                    const { name, totalCost} = doc.data();
 
-                        //list for storing the data
-                        list.push({
-                            id: doc.id,
-                            name,
-                            totalCost,
-                        });
+                    //list for storing the data
+                    list.push({
+                        id: doc.id,
+                        name,
+                        totalCost,
                     });
+                });
 
-                    set_category(list);
+                set_category(list);
             });
         }
         getCategories();
@@ -139,7 +166,7 @@ export const CategoryView = () => {
 
 
     //Variables and functions that handles the edit part
-    const [category_id, set_id] = useState(category_id);
+    const [category_id, set_id] = currentCategory();
     const [category_name, set_Name] = useState(category_name);
     const [totalCost, set_totalCost] = useState(totalCost);
 
@@ -147,6 +174,9 @@ export const CategoryView = () => {
     //Variables used to handle Modal (Popup screen for edit)
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const handleModal = (category) => {
+        if (isFieldViewVisible === true) {
+            setIsFieldViewVisible(() => !isFieldViewVisible);
+        }
         set_id(category.id);
         set_Name(category.name);
         set_totalCost(category.totalCost);
@@ -158,6 +188,14 @@ export const CategoryView = () => {
         setIsFieldViewVisible(() => !isFieldViewVisible);
         setIsModalVisible(() => !isModalVisible)
     }
+
+    const [isFieldAddViewVisible, setIsFieldAddViewVisible] = useState(false);
+
+    const handleAddModal = () => {
+        setIsModalVisible(() => !isModalVisible)
+        setIsFieldAddViewVisible(() => !isFieldAddViewVisible)
+    }
+
 
 
     //This is the view that you will see at Home in app
@@ -188,7 +226,8 @@ export const CategoryView = () => {
                                     title="Enter"
                                 />
                                 <Button
-                                    title="Delete"
+                                    onPress={handleAddModal}
+                                    title="Add"
                                 />
                             </Modal.Body>
                             <Modal.Footer>
@@ -198,6 +237,7 @@ export const CategoryView = () => {
                     </Modal>
                 </View>
                 {isFieldViewVisible && <FieldView />}
+                {isFieldAddViewVisible && <AddBudgetCategoryView />}
             </ScrollView>
         </View>
     )

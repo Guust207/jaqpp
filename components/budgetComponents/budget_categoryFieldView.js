@@ -2,26 +2,22 @@ import {Alert, Button, Text, TextInput, View} from "react-native";
 import React, {useState} from "react";
 import {db} from "../../firebaseConfig";
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
-import {GlobalStore} from "react-native-global-state-hooks";
 import {currentCategory, currentField, currentGathering, currentUser} from "../global_variables";
+import {Modal} from "../Modal";
 
 
 //TODO: When creating an interface you need to find a way to get budgetCategory and gathering - Currently the function is using dummy values
 const gatheringID = "gathering55555"
-const categoryID = 'food';
-const fieldID = 'apple'
+
 
 export const AddBudgetCategoryView = () => {
 
+    const [user, setUser] = currentUser();
     const [fieldName, set_fieldName] = useState(null);
     const [fieldCost, set_fieldCost] = useState(null);
     const [fieldAmount, set_fieldAmount] = useState(null);
-    const [user, setUser] = currentUser();
-    const [gathering, setGathering] = currentGathering();
-    const [category, setCategory] = currentCategory();
-    const [field, setField] = currentField();
-
-
+    const [categoryID, setCategory] = currentCategory();
+    const [fieldID, setField] = useState(null);
 
 
     function GenerateID() {
@@ -31,7 +27,7 @@ export const AddBudgetCategoryView = () => {
         const number4 = Math.floor(Math.random() * 9) + 1;
         const number5 = Math.floor(Math.random() * 9) + 1;
 
-        return number1 + number2 + number3 + number4 + number5;
+        return number1.toString() + number2.toString() + number3.toString() + number4.toString() + number5.toString();
     }
 
 
@@ -64,7 +60,7 @@ export const AddBudgetCategoryView = () => {
         ]);
 
     async function hasError() {
-        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "List", fieldID);
+        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf", fieldID);
         const docSnap = await getDoc(docRef).then();
         if (fieldCost == null || fieldAmount == null) {
             MissingField();
@@ -77,29 +73,29 @@ export const AddBudgetCategoryView = () => {
         }
     }
 
-    async function button() {
-        if (user() == null) {
-            console.log('No user')
-        } else {
-            console.log('User', user(), 'is logged inn')
-        }
+    const button = () => {
+        const tmpID = GenerateID();
+        if (tmpID > 0) {
+            setField(tmpID);
+            button1().then()
+        } else
+            button();
+    }
+
+
+    async function button1() {
         if (await hasError() === true) {
             add_CategoryField().then();
             FieldAdded();
             increase_totalCost(calculate_totalCost()).then();
-            reset();
         }
     }
 
-    const reset = () => {
-        set_fieldName(null);
-        set_fieldName(null);
-        set_fieldCost(null);
-    }
 
+    const [isFieldAddViewVisible, setIsFieldAddViewVisible] = useState(true);
 
     async function add_CategoryField() {
-        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "List", GenerateID()), {
+        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, fieldID), {
                 name: fieldName,
                 costPrUnit: fieldCost,
                 amount: fieldAmount,
@@ -110,25 +106,33 @@ export const AddBudgetCategoryView = () => {
 
     return (
         <View>
-            <TextInput
-                onChangeText={set_fieldName}
-                value={fieldName}
-                placeholder="Name"
-            />
-            <TextInput
-                onChangeText={set_fieldCost}
-                value={fieldCost}
-                placeholder="Cost Pr Unit"
-            />
-            <TextInput
-                onChangeText={set_fieldAmount}
-                value={fieldAmount}
-                placeholder="Amount"
-            />
-            <Button
-                onPress={button}
-                title="Add"
-            />
+            <Modal isVisible={isFieldAddViewVisible}>
+                <Modal.Container>
+                    <TextInput
+                        onChangeText={set_fieldName}
+                        value={fieldName}
+                        placeholder="Name"
+                    />
+                    <TextInput
+                        onChangeText={set_fieldCost}
+                        value={fieldCost}
+                        placeholder="Cost Pr Unit"
+                    />
+                    <TextInput
+                        onChangeText={set_fieldAmount}
+                        value={fieldAmount}
+                        placeholder="Amount"
+                    />
+                    <Button
+                        onPress={button}
+                        title="Add"
+                    />
+                    <Button
+                        onPress={() => setIsFieldAddViewVisible(() => !isFieldAddViewVisible)}
+                        title="Cancel"
+                    />
+                </Modal.Container>
+            </Modal>
         </View>
     )
 }
@@ -138,6 +142,8 @@ export const EditBudgetCategoryView = () => {
     const [fieldName, set_fieldName] = useState(null);
     const [fieldCost, set_fieldCost] = useState(null);
     const [fieldAmount, set_fieldAmount] = useState(null);
+    const [categoryID, setCategory] = currentCategory();
+    const [fieldID, setField] = currentField();
 
 
 
@@ -179,7 +185,7 @@ export const EditBudgetCategoryView = () => {
         ]);
 
     async function hasError() {
-        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "List", fieldID);
+        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf", fieldID);
         const docSnap = await getDoc(docRef).then();
         if (fieldCost == null || fieldAmount == null) {
             MissingField();
@@ -211,7 +217,7 @@ export const EditBudgetCategoryView = () => {
 
 
     async function edit_CategoryField() {
-        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "List", fieldID), {
+        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, fieldID), {
                 name: fieldName,
                 costPrUnit: fieldCost,
                 amount: fieldAmount,
@@ -220,34 +226,37 @@ export const EditBudgetCategoryView = () => {
         ).then();
     }
 
+    const [isFieldEditViewVisible, setIsFieldEditViewVisible] = useState(true);
+
     return (
         <View>
-            <TextInput
-                onChangeText={set_fieldName}
-                value={fieldName}
-                placeholder="Name"
-            />
-            <TextInput
-                onChangeText={set_fieldCost}
-                value={fieldCost}
-                placeholder="Cost Pr Unit"
-            />
-            <TextInput
-                onChangeText={set_fieldAmount}
-                value={fieldAmount}
-                placeholder="Amount"
-            />
-            <Button
-                onPress={button}
-                title="Edit"
-            />
+            <Modal isVisible={isFieldEditViewVisible}>
+                <Modal.Container>
+                    <TextInput
+                        onChangeText={set_fieldName}
+                        value={fieldName}
+                        placeholder="Name"
+                    />
+                    <TextInput
+                        onChangeText={set_fieldCost}
+                        value={fieldCost}
+                        placeholder="Cost Pr Unit"
+                    />
+                    <TextInput
+                        onChangeText={set_fieldAmount}
+                        value={fieldAmount}
+                        placeholder="Amount"
+                    />
+                    <Button
+                        onPress={button}
+                        title="Edit"
+                    />
+                    <Button
+                        onPress={() => setIsFieldEditViewVisible(() => !isFieldEditViewVisible)}
+                        title="Cancel"
+                    />
+                </Modal.Container>
+            </Modal>
         </View>
     )
-}
-
-async function DeleteBudgetCategoryView() {
-    const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "List", fieldID);
-
-    // Delete that document
-    await deleteDoc(docRef);
 }

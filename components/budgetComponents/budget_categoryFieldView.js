@@ -35,7 +35,8 @@ export const AddBudgetCategoryView = () => {
         const docRef = doc(db,"gathering", gatheringID, "budget", categoryID)
         const docSnap = await getDoc(docRef).then();
         await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
-                totalCost: docSnap.data().totalCost + (fieldAmount * fieldCost)
+            name: docSnap.data().name,
+            totalCost: docSnap.data().totalCost + (fieldAmount * fieldCost)
             }
         ).then();
     }
@@ -205,15 +206,9 @@ export const EditBudgetCategoryView = () => {
             FieldAdded();
             await decrease_totalCost().then();
             await increase_totalCost().then();
-            reset();
         }
     }
 
-    const reset = () => {
-        set_fieldName(null);
-        set_fieldName(null);
-        set_fieldCost(null);
-    }
 
 
     async function edit_CategoryField() {

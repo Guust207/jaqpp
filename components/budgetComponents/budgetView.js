@@ -1,13 +1,16 @@
 import React, {useState} from 'react';
-import {Alert, Button, TextInput, View} from "react-native";
+import {Alert, Button, Text, TextInput, View} from "react-native";
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {budgetCategoryView} from "./budget_categoryFieldView";
+import {Modal} from "../Modal";
+import {currentCategory} from "../global_variables";
 
-const categoryID = 'categoryID'
 const gatheringID = "gathering55555"
 
 export const AddBudgetView = () => {
+
+    const [categoryID, set_categoryID] = useState(null);
 
     function GenerateID() {
         const number1 = Math.floor(Math.random() * 9) + 1;
@@ -15,19 +18,22 @@ export const AddBudgetView = () => {
         const number3 = Math.floor(Math.random() * 9) + 1;
         const number4 = Math.floor(Math.random() * 9) + 1;
         const number5 = Math.floor(Math.random() * 9) + 1;
-        return number1 + number2 + number3 + number4 + number5;
+        return "category" + number1 + number2 + number3 + number4 + number5;
     }
 
     const [budgetCategory, set_budgetCategory] = useState(null);
 
 
     async function add_budgetCategory() {
-        await setDoc(doc(db, "gathering", gatheringID, "budget", GenerateID()), {
+        console.log("budgetCategory: ", budgetCategory);
+        console.log("categoryID: ", categoryID);
+        await setDoc(doc(db, "gathering", gatheringID, "budget", categoryID), {
             name: budgetCategory,
-            totalCost: null
+            totalCost: 0
             }
         ).then();
         CategoryAdded();
+        setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)
     }
 
     const MissingCategory = () =>
@@ -45,11 +51,9 @@ export const AddBudgetView = () => {
             {text: 'OK'},
         ]);
 
-    const reset = () => {
-        set_budgetCategory(null)
-    }
 
     async function hasError() {
+        const gatheringID = "gathering55555"
         const docRef = doc(db, "gathering", gatheringID, "budget", categoryID);
         const docSnap = await getDoc(docRef);
         if (budgetCategory.toLowerCase() === null) {
@@ -65,33 +69,48 @@ export const AddBudgetView = () => {
 
 
     async function addBudget() {
+        set_categoryID(GenerateID());
+        console.log(categoryID);
         if (await hasError() === true) {
             add_budgetCategory().then();
-            reset();
         }
     }
 
+    const [isCategoryAddViewVisible, setIsCategoryAddViewVisible] = useState(true);
+
     return (
         <View>
-            <TextInput
-                onChangeText={set_budgetCategory}
-                value={budgetCategory}
-                placeholder="food, decoration, etc"
-            />
-            <Button
-                onPress={addBudget}
-                title="Add"
-            />
+            <Modal isVisible={isCategoryAddViewVisible}>
+                <Modal.Container>
+                    <TextInput
+                        onChangeText={set_budgetCategory}
+                        value={budgetCategory}
+                        placeholder="food, decoration, etc"
+                    />
+                    <Button
+                        onPress={addBudget}
+                        title="Add"
+                    />
+                    <Button
+                        onPress={() => setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)}
+                        title="Cancel"
+                    />
+                </Modal.Container>
+            </Modal>
         </View>
     )
 }
 
 export const EditBudgetView = () => {
     const [budgetCategory_tmp, set_budgetCategory_tmp] = useState(null);
+    const [categoryID, set_id] = currentCategory();
 
 
     async function edit_budgetCategory() {
+        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID);
+        const docSnap = await getDoc(docRef).then();
         await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
+                totalCost: docSnap.data().totalCost,
                 name: budgetCategory_tmp
             }
         ).then();
@@ -109,13 +128,10 @@ export const EditBudgetView = () => {
         ]);
 
     const CategoryAdded = () =>
-        Alert.alert(budgetCategory_tmp, ' has been added', [
+        Alert.alert(budgetCategory_tmp, ' has been edited', [
             {text: 'OK'},
         ]);
 
-    const reset = () => {
-        set_budgetCategory_tmp(null)
-    }
 
     async function hasError() {
         const docRef = doc(db,"gathering", gatheringID, "budget", categoryID);
@@ -135,28 +151,36 @@ export const EditBudgetView = () => {
     async function editBudget() {
         if (await hasError() === true) {
             edit_budgetCategory().then();
-            reset();
         }
     }
 
+    const [isCategoryEditViewVisible, setIsCategoryEditViewVisible] = useState(true);
+
     return (
         <View>
-            <TextInput
-                onChangeText={set_budgetCategory_tmp}
-                value={budgetCategory_tmp}
-                placeholder="food, decoration, etc"
-            />
-            <Button
-                onPress={editBudget}
-                title="edit"
-            />
+            <Modal isVisible={isCategoryEditViewVisible}>
+                <Modal.Container>
+                    <TextInput
+                        onChangeText={set_budgetCategory_tmp}
+                        value={budgetCategory_tmp}
+                        placeholder="food, decoration, etc"
+                    />
+                    <Button
+                        onPress={editBudget}
+                        title="Edit"
+                    />
+                    <Button
+                        onPress={() => setIsCategoryEditViewVisible(() => !isCategoryEditViewVisible)}
+                        title="Cancel"
+                    />
+                </Modal.Container>
+            </Modal>
         </View>
     )
 }
 
 async function DeleteBudgetCategoryView() {
     const docRef = doc(db,"gathering", gatheringID, "budget", categoryID);
-
     // Delete that document
     await deleteDoc(docRef);
 }

@@ -5,7 +5,9 @@ import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc, where} fr
 import {Modal} from "../Modal";
 import {currentCategory, currentField, currentGathering} from "../global_variables";
 import {AddBudgetCategoryView, EditBudgetCategoryView} from "./budget_categoryFieldView";
+import {AddBudgetView, EditBudgetView} from "./budgetView";
 
+const gatheringID = "gathering55555"
 
 export const CategoryView = () => {
 
@@ -82,8 +84,20 @@ export const CategoryView = () => {
 
         const handleDeleteModal = async () => {
             const gatheringID = "gathering55555"
-            console.log(categoryID);
-            console.log(field_id);
+
+            const docRef1 = doc(db,"gathering", gatheringID, "budget", categoryID)
+            const docSnap1 = await getDoc(docRef1).then();
+
+            const docRef2 = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, field_id)
+            const docSnap2 = await getDoc(docRef2).then();
+
+            console.log("DocSnap1: ", docSnap1.data(), "DocSnap2", docSnap2.data());
+
+            await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
+                name: docSnap2.data().name,
+                totalCost: docSnap1.data().totalCost - docSnap2.data().totalCost
+            });
+
             await deleteDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, field_id));
             setIsModalVisible(() => !isModalVisible)
         }
@@ -95,9 +109,8 @@ export const CategoryView = () => {
                     <View>
                         {field.map((item) => (
                             <View key={item.id} style={styles.category}>
-                                <Text style={styles.text}> {item.name}</Text>
                                 <TouchableOpacity onPress={() => handleModal(item)}>
-                                    <Text style={styles.edit}>View</Text>
+                                    <Text style={styles.text}> {item.name}</Text>
                                 </TouchableOpacity>
                             </View>
                         ))}
@@ -196,30 +209,56 @@ export const CategoryView = () => {
         setIsFieldAddViewVisible(() => !isFieldAddViewVisible)
     }
 
+    const handleDeleteModal = async () => {
+        const gatheringID = "gathering55555"
+        // Delete that document
+        await deleteDoc(doc(db,"gathering", gatheringID, "budget", category_id));
+    }
+
+    const [isCategoryEditViewVisible, setIsCategoryEditViewVisible] = useState(false);
+
+    const handleEditModal = async () => {
+        setIsModalVisible(() => !isModalVisible)
+        setIsCategoryEditViewVisible(() => !isCategoryEditViewVisible)
+    }
+
+    const [isCategoryAddViewVisible, setIsCategoryAddViewVisible] = useState(false);
+
+    const handleCategoryAddModal = () => {
+        setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)
+    }
 
 
     //This is the view that you will see at Home in app
     return (
         <View style={styles.container}>
+            <Button
+                title="Add"
+                onPress={handleCategoryAddModal}
+            />
             <ScrollView>
                 <View>
                     {category.map((item) => (
                         <View key={item.id} style={styles.category}>
-                            <Text style={styles.text}> {item.id}</Text>
                             <TouchableOpacity onPress={() => handleModal(item)}>
-                                <Text style={styles.edit}>View</Text>
+                                <Text style={styles.text}> {item.name}</Text>
                             </TouchableOpacity>
                         </View>
                     ))}
 
-                    {/* This is the popup that appears when you click edit at the table */}
+                    {/* This is the popup that appears when you click an item at the table */}
                     <Modal isVisible={isModalVisible} >
                         <Modal.Container>
-                            <Modal.Header title={category_id} />
+                            <Modal.Header title={category_name} />
                             <Modal.Body>
                                 <Text> Total cost: {totalCost} </Text>
                                 <Button
+                                    onPress={handleEditModal}
                                     title="Edit"
+                                />
+                                <Button
+                                    onPress={handleDeleteModal}
+                                    title="Delete"
                                 />
                                 <Button
                                     onPress={enterButton}
@@ -238,6 +277,8 @@ export const CategoryView = () => {
                 </View>
                 {isFieldViewVisible && <FieldView />}
                 {isFieldAddViewVisible && <AddBudgetCategoryView />}
+                {isCategoryEditViewVisible && <EditBudgetView />}
+                {isCategoryAddViewVisible && <AddBudgetView />}
             </ScrollView>
         </View>
     )

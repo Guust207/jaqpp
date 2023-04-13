@@ -182,6 +182,8 @@ const SignInScreen = () => {
         return (
 
                 <View style={styles.container}>
+                    <Image style={styles.logo} source={require('../images/logo_2.png')} />
+
                     <View style={styles.inputContainer}>
                         <TextInput
                             style={styles.input}

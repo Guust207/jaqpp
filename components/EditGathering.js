@@ -180,7 +180,7 @@ const Edit = () => {
                         <Text style={styles.bioName}>{user.email}</Text>
                     </View>
                     <View style={styles.bottom}>
-                        <Text style={styles.bio}>Hello! I'm ChatGPT, an AI language model created by OpenAI. I use deep learning to generate human-like responses to various prompts and questions. Let me know how I can help you!</Text>
+
                     </View>
                 </View>
 
@@ -192,7 +192,6 @@ const Edit = () => {
                                     <Text style={[styles.text, styles.gatName]}> {item.name}</Text>
                                     <Text style={styles.text}> Date: {item.date}</Text>
                                     <Text style={styles.text}> Time: {item.time}</Text>
-
                                 </View>
                                 <TouchableOpacity onPress={() => EditBtnFunc(item)}>
                                     <Text style={styles.editButton}>Edit</Text>
@@ -307,21 +306,17 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: 'black',
     },
-    bio: {
-        marginLeft: 8,
-        fontSize: 16,
-        lineHeight: 24,
-        marginBottom: 20,
-    },
 
 
     gatContainer: {
         backgroundColor: '#B9BAA3',
-        padding: 20
+        padding: 10,
+        margin:10,
+        borderRadius: '10%',
     },
     gat: {
         flexDirection: 'row',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
     },
     infoContainer: {
         flex: 1,

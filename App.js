@@ -8,10 +8,8 @@ import {Login} from "./components/loginView";
 import Create from "./components/CreateGathering";
 import Edit from "./components/EditGathering";
 import SignInScreen  from "./components/signInView";
-import EditView from "./components/editView";
 import {BudgetView} from "./components/budgetComponents/budgetView";
 import {budgetCategoryView} from "./components/budgetComponents/budget_categoryFieldView";
-import Basic from "./components/test";
 
 
 const App = () => {
@@ -44,8 +42,6 @@ const App = () => {
                     <Tab.Screen name="Home" component={Login}/>
                     <Tab.Screen name="Add" component={Create}/>
                     <Tab.Screen name="Edit" component={Edit}/>
-                    <Tab.Screen name="test" component={Basic}/>
-
                 </Tab.Navigator>
             </NavigationContainer>
         );

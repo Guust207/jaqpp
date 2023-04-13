@@ -111,26 +111,35 @@ const Edit = () => {
     return (
         <View style={styles.container}>
             <ScrollView>
-
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />
-
-                        <Text style={styles.name}>{user.email}</Text>
+                <View style={styles.bioContainer}>
+                    <View style={styles.top}>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.logo} source={require('../images/logo.png')} />
+                            {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
+                        </View>
+                        <Text style={styles.bioName}>{user.email}</Text>
                     </View>
-                    <View style={styles.bioContainer}>
-                        <Text style={styles.bio}>Here comes a small bio</Text>
+                    <View style={styles.bottom}>
+                        <Text style={styles.bio}>Hello! I'm ChatGPT, an AI language model created by OpenAI. I use deep learning to generate human-like responses to various prompts and questions. Let me know how I can help you!</Text>
                     </View>
                 </View>
+
                 <View>
                     {gat.map((item) => (
-                        <View key={item.id} style={styles.gat}>
-                            <Text style={styles.text}> {item.name}</Text>
-                            <Text style={styles.text}> Date: {item.date}, Time: {item.time}</Text>
-                            <TouchableOpacity onPress={() => EditBtnFunc(item)}>
-                                <Text style={styles.edit}>Edit</Text>
-                            </TouchableOpacity>
+                        <View key={item.id} style={styles.gatContainer}>
+                            <View style={styles.gat}>
+                                <View style={styles.infoContainer}>
+                                    <Text style={[styles.text, styles.gatName]}> {item.name}</Text>
+                                    <Text style={styles.text}> Date: {item.date}</Text>
+                                    <Text style={styles.text}> Time: {item.time}</Text>
+
+                                </View>
+                                <TouchableOpacity onPress={() => EditBtnFunc(item)}>
+                                    <Text style={styles.editButton}>Edit</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
+
                     ))}
 
 
@@ -178,6 +187,9 @@ const Edit = () => {
 }
 
 
+export default Edit;
+
+
 
 //Style
 const styles = StyleSheet.create({
@@ -185,52 +197,86 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 5,
         justifyContent: 'flex-start',
-        backgroundColor: 'white'
+        backgroundColor: '#D6D5C9',
     },
-    head: {
-        height: 44,
-        backgroundColor: 'gray'
+    bioContainer: {
+        justifyContent: 'space-between',
+        marginBottom: 20,
     },
-    headText: {
-        fontSize: 20,
+
+    top: {
+        flexDirection: 'row',
+        marginBottom: -20
+    },
+    imageContainer: {
+        marginLeft: 8,
+        height: 100,
+        width: 100,
+        borderRadius: 50,
+        marginRight: 40,
+    },
+    logo: {
+        aspectRatio: 1,
+        marginTop: '-30%',
+        marginBottom: -70,
+        resizeMode: 'contain',
+        marginLeft: 8,
+        width: '100%',
+        height: undefined,
+        borderRadius: 50,
+    },
+    bioName: {
+        fontSize: 18,
         fontWeight: 'bold',
-        textAlign: 'center',
-        color: 'black'},
+        marginTop: 20,
+    },
+    bottom: {
+        borderBottomWidth: 2,
+        borderBottomColor: 'black',
+    },
+    bio: {
+        marginLeft: 8,
+        fontSize: 16,
+        lineHeight: 24,
+        marginBottom: 20,
+    },
+
+
+    gatContainer: {
+        backgroundColor: '#B9BAA3',
+        padding: 20
+    },
+    gat: {
+        flexDirection: 'row',
+        alignItems: 'flex-start'
+    },
+    infoContainer: {
+        flex: 1,
+    },
     text: {
         margin: 4,
         fontSize: 16,
-        textAlign: 'center'
     },
-    gat: {
-        backgroundColor: 'lightgrey',
-        padding: 20
-    },
-    edit: {
+    gatName: {
         fontSize: 20,
-        color: 'orange',
-        width: '100%',
-        backgroundColor: 'grey',
-        textAlign: 'center'
-    },
-    profilePicture: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        marginRight: 10,
-    },
-    name: {
-        fontSize: 18,
         fontWeight: 'bold',
+        borderBottomWidth: 2,
+        borderBottomColor: 'black',
     },
-    bioContainer: {
-        marginBottom: 20,
-    },
-    bio: {
-        fontSize: 16,
-        lineHeight: 24,
-    },
-    }
-)
 
+    editButton: {
+        flex: 1,
+        fontSize: 20,
+        color: '#B9BAA3',
+        backgroundColor: '#0A100D',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlignVertical: 'center',
+        paddingVertical: 30,
+        paddingHorizontal: 10,
 
-export default Edit;
+    },
+
+});
+

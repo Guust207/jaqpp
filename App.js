@@ -8,7 +8,6 @@ import {Login} from "./components/loginView";
 import Create from "./components/CreateGathering";
 import Edit from "./components/EditGathering";
 import SignInScreen  from "./components/signInView";
-import EditView from "./components/editView";
 import {BudgetView} from "./components/budgetComponents/budgetView";
 import {budgetCategoryView} from "./components/budgetComponents/budget_categoryFieldView";
 

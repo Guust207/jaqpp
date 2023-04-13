@@ -1,8 +1,9 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import { StyleSheet, View, TextInput, Button, Text } from 'react-native';
+import {StyleSheet, View, TextInput, Button, Text, TouchableOpacity, Image} from 'react-native';
 import { auth , db} from "../firebaseConfig";
 import { signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification } from "firebase/auth"
 import {doc, getDoc, setDoc} from 'firebase/firestore';
+
 
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
@@ -165,36 +166,71 @@ const SignInScreen = () => {
     if (user) {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Welcome, {user.email}!</Text>
-                <Button title="Sign Out" color={'purple'} onPress={handleLogOut} />
+                <View>
+                    <Image style={styles.logo} source={require('../images/logo_2.png')} />
+                    <Text style={styles.welcomeMessage}>Welcome, {user.email}!</Text>
+                    <Text style={styles.instructions}>You are now signed in. Enjoy using our app! if you want to log out click the button.</Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} disabled={!request} onPress={handleLogOut}>
+                        <Text style={styles.buttonText}>Sign out</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     } else {
         return (
-            <View style={styles.container}>
-                <Text style={styles.title}>Sign In</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Email"
-                    value={email}
-                    onChangeText={setEmail}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Password"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                />
-                {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
-                <Button title="Sign Up" onPress={() => handleSignUp (setEmail, setPassword)} />
-                <Button title="Sign In" onPress={() => handleSignIn(email, password)} />
-                <Text style={styles.text}>Or login with</Text>
-                <Button title="Sign in with Google" disabled={!request} onPress={handlerLogin}/>
-            </View>
-        );
-    }
+
+                <View style={styles.container}>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Email"
+                            value={email}
+                            onChangeText={setEmail}
+                            placeholderTextColor="#999"
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Password"
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry
+                            placeholderTextColor="#999"
+                        />
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.button} onPress={() => handleSignIn(email, password)}>
+                            <Text style={styles.buttonText}>Log In</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.button, styles.signInButton]} onPress={() => handleSignUp (setEmail, setPassword)}>
+                            <Text style={[styles.buttonText, styles.signInButtonText]}>Sign In</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.space}>
+                        <Text>Or</Text>
+                    </View>
+                    <View style={styles.googleButtonContainer}>
+                        <TouchableOpacity style={[styles.button, styles.googleButton]} disabled={!request} onPress={handlerLogin}>
+                            <Text style={[styles.buttonText, styles.googleButtonText]}>Sign in with Google</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.errorContainer}>
+                        {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
+                    </View>
+                </View>
+            );
+        };
+
+
+
+
 };
+
+
+
 
 
 
@@ -202,33 +238,98 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: '#D6D5C9',
+        paddingHorizontal: 20,
+        paddingVertical: 40,
     },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 20,
     },
     input: {
-        width: '80%',
+        flex: 1,
         height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        padding: 10,
-        marginVertical: 10,
+        marginLeft: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#666',
+        color: '#333',
+        fontSize: 16,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    button: {
+        backgroundColor: '#0A100D',
+        borderRadius: 5,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginBottom: 20,
+        flex: 1,
+        marginHorizontal: 5,
+    },
+    signInButton: {
+    },
+    buttonText: {
+        color: '#D6D5C9',
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    signInButtonText: {
+
+    },
+    errorContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+        color: '#333',
     },
     error: {
         color: 'red',
         marginBottom: 10,
-    },
-    text: {
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-});
+        marginTop20: 20,
+        alignItems: 'center',
 
+    },
+    googleButtonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+        color: '#333',
+    },
+    googleButton: {
+        alignItems: 'center',
+    },
+    googleButtonText: {
+        color: '#D6D5C9',
+    },
+    space: {
+        alignItems: 'center',
+        marginBottom: 10,
+        marginTop20: 10,
+    },
+
+    logo: {
+        width: '100%',
+        height: undefined,
+        aspectRatio: 1,
+        marginTop: '-40%',
+        marginBottom: -70,
+        resizeMode: 'center',
+
+    },
+    welcomeMessage: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    instructions: {
+        fontSize: 18,
+        marginBottom: 30,
+    },
+
+});
 
 
 

@@ -31,7 +31,8 @@ const Create = () => {
         await setDoc(gatheringRef, {
             name: gathName,
             time: gathTime,
-            date: gathDate
+            date: gathDate,
+            userID: user.uid
         });
 
         const attendeesRef = collection(gatheringRef, 'attendees');

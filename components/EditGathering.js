@@ -4,6 +4,7 @@ import {auth, db} from "../firebaseConfig";
 import React, {useEffect, useState} from "react";
 import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from "react-native";
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { confirmAlert } from 'react-confirm-alert';
 
 
 
@@ -119,16 +120,49 @@ const Edit = () => {
         if (docSnap.exists()) {
             del("gathering", id).then();
             console.log('DELETED the document');
-
         }
     }
     async function del(collection, id) {
         await deleteDoc(doc(db, collection, id));
     }
 
-    const deleteData = () => {
+    const deleteData = (gat) => {
+        set_id(gat.id);
         checkDel("gathering", id).then();
     }
+
+
+
+
+
+    const renderItem = () => (
+        <View>
+            {gat.map((item) => (
+            <View key={item.id} style={styles.gatContainer}>
+                <View style={styles.gat}>
+                    <View style={styles.infoContainer}>
+                        <Text style={[styles.text, styles.gatName]}> {item.name}</Text>
+                        <Text style={styles.text}> Date: {item.date}</Text>
+                        <Text style={styles.text}> Time: {item.time}</Text>
+                    </View>
+                </View>
+            </View>
+            ))}
+        </View>
+    );
+
+
+    const renderHiddenItem = () => (
+        <View style={styles.rowBack}>
+            <TouchableOpacity onPress={() => EditBtnFunc()}>
+                <Text style={[styles.editBtn, styles.editButton]}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => deleteData()}>
+                <Text style={[styles.deleteBtn, styles.editButton]}>Delete</Text>
+            </TouchableOpacity>
+        </View>
+    );
+
 
 
 
@@ -167,11 +201,19 @@ const Edit = () => {
                                     <Text style={styles.editButton}>Delete</Text>
                                 </TouchableOpacity>
                             </View>
-
-
                         </View>
-
                     ))}
+
+                    <SwipeListView
+                        data={gat}
+                        renderItem={renderItem}
+                        renderHiddenItem={renderHiddenItem}
+                        leftOpenValue={0}
+                        rightOpenValue={-130}
+                        previewRowKey={'0'}
+                        previewOpenValue={-20}
+                        previewOpenDelay={2000}
+                    />
 
 
 
@@ -306,7 +348,32 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         paddingVertical: 30,
         paddingHorizontal: 10,
+    },
 
+    actionButton: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75,
+    },
+
+    editBtn: {
+        backgroundColor: 'blue',
+        right: '-430%',
+    },
+    deleteBtn: {
+        backgroundColor: 'red',
+        right: 0,
+    },
+    rowBack: {
+        alignItems: 'center',
+        backgroundColor: '#D6D5C9',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 5,
     },
 
 });

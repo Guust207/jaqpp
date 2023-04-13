@@ -169,7 +169,7 @@ const SignInScreen = () => {
                 <View>
                     <Image style={styles.logo} source={require('../images/logo_2.png')} />
                     <Text style={styles.welcomeMessage}>Welcome, {user.email}!</Text>
-                    <Text style={styles.instructions}>You are now signed in. Enjoy using our app! if you want to log out click the button.</Text>
+                    <Text style={styles.instructions}>You are now signed in. Enjoy using our app! if you want to log out click the button below.</Text>
                 </View>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} disabled={!request} onPress={handleLogOut}>
@@ -225,16 +225,10 @@ const SignInScreen = () => {
                 </View>
             );
         };
-
-
-
-
 };
 
 
-
-
-
+export default SignInScreen;
 
 
 const styles = StyleSheet.create({
@@ -322,7 +316,7 @@ const styles = StyleSheet.create({
 
     },
     welcomeMessage: {
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 20,
     },
@@ -332,7 +326,3 @@ const styles = StyleSheet.create({
     },
 
 });
-
-
-
-export default SignInScreen;

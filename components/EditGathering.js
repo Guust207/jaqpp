@@ -113,7 +113,7 @@ const Edit = () => {
 
 
     //Delete part
-    async function checkDel(collection, id) {
+       async function checkDel(collection, id) {
         const docRef = doc(db, collection, id);
         const docSnap = await getDoc(docRef);
 
@@ -126,7 +126,7 @@ const Edit = () => {
         await deleteDoc(doc(db, collection, id));
     }
 
-    const deleteData = (gat) => {
+    const deleteData = () => {
         set_id(gat.id);
         checkDel("gathering", id).then();
     }

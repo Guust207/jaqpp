@@ -1,8 +1,10 @@
 //View all students and information function
-import {collection, doc, getDoc, query, onSnapshot, setDoc, where} from "firebase/firestore";
+import {collection, doc, getDoc, query, onSnapshot, setDoc, where, deleteDoc, getDocs} from "firebase/firestore";
 import {auth, db} from "../firebaseConfig";
 import React, {useEffect, useState} from "react";
 import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from "react-native";
+import { SwipeListView } from 'react-native-swipe-list-view';
+
 
 
 //Component Imports
@@ -12,6 +14,7 @@ import {userss} from "./loginView";
 
 const Edit = () => {
 
+    //Get part
     // This is variables and functions for fetching and display all the gatherings
     const [gat, setGat] = useState([]);
     const user = auth.currentUser;
@@ -51,7 +54,7 @@ const Edit = () => {
     },[])
 
 
-
+    //Edit part
     //Variables and functions that handles the edit part
     const [id, set_id] = useState(id);
     const [Name, set_Name] = useState(Name);
@@ -107,6 +110,29 @@ const Edit = () => {
     };
 
 
+
+    //Delete part
+    async function checkDel(collection, id) {
+        const docRef = doc(db, collection, id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            del("gathering", id).then();
+            console.log('DELETED the document');
+
+        }
+    }
+    async function del(collection, id) {
+        await deleteDoc(doc(db, collection, id));
+    }
+
+    const deleteData = () => {
+        checkDel("gathering", id).then();
+    }
+
+
+
+
     //This is the view that you will see at Home in app
     return (
         <View style={styles.container}>
@@ -137,7 +163,12 @@ const Edit = () => {
                                 <TouchableOpacity onPress={() => EditBtnFunc(item)}>
                                     <Text style={styles.editButton}>Edit</Text>
                                 </TouchableOpacity>
+                                <TouchableOpacity onPress={() => deleteData(item)}>
+                                    <Text style={styles.editButton}>Delete</Text>
+                                </TouchableOpacity>
                             </View>
+
+
                         </View>
 
                     ))}

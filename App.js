@@ -4,13 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { onAuthStateChanged } from "firebase/auth";
 import {auth} from "./firebaseConfig";
 
-import {Login} from "./components/loginView";
-import Create from "./components/CreateGathering";
-import Edit from "./components/EditGathering";
-import SignInScreen  from "./components/signInView";
-import EditView from "./components/editView";
-import {AddBudgetView} from "./components/budgetComponents/budgetView";
-import {AddBudgetCategoryView} from "./components/budgetComponents/budget_categoryFieldView";
+import {Login} from "./components/loginComponents/loginView";
+import SignInScreen  from "./components/loginComponents/signInView";
 import {CategoryView} from "./components/budgetComponents/budgetInterfaceView";
 
 const App = () => {
@@ -52,7 +47,6 @@ const App = () => {
                     <Tab.Screen name="SignIn" component={SignInScreen}/>
                     <Tab.Screen name="Home" component={Login}/>
                     <Tab.Screen name="Add" component={CategoryView}/>
-                    <Tab.Screen name="Edit" component={AddBudgetCategoryView}/>
                 </Tab.Navigator>
             </NavigationContainer>
         );

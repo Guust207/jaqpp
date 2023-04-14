@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import { StyleSheet, View, TextInput, Button, Text } from 'react-native';
-import { auth , db} from "../firebaseConfig";
+import { auth , db} from "../../firebaseConfig";
 import { signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification } from "firebase/auth"
 import {doc, getDoc, setDoc} from 'firebase/firestore';
 

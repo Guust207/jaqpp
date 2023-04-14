@@ -4,8 +4,8 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as React from 'react';
 import {useCallback} from 'react';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
-import {db} from "../firebaseConfig";
-import {currentUser} from "./global_variables";
+import {db} from "../../firebaseConfig";
+import {currentUser} from "../global_variables";
 
 /* API Used for fetching information about user logged-in
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get

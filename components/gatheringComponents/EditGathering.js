@@ -1,13 +1,13 @@
 //View all students and information function
 import {collection, doc, getDoc, query, onSnapshot, setDoc, where} from "firebase/firestore";
-import {auth, db} from "../firebaseConfig";
+import {auth, db} from "../../firebaseConfig";
 import React, {useEffect, useState} from "react";
 import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from "react-native";
 
 
 //Component Imports
-import {Modal} from "./Modal";
-import {userss} from "./loginView";
+import {Modal} from "../Modal";
+import {userss} from "../loginComponents/loginView";
 
 
 const Edit = () => {

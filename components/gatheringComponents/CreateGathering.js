@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Text, TextInput, View} from "react-native";
-import {auth, db} from "../firebaseConfig";
+import {auth, db} from "../../firebaseConfig";
 import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
-import {login, userid, name} from "./loginView";
+import {login, userid, name} from "../loginComponents/loginView";
 
 const Create = () => {
 

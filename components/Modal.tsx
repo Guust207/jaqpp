@@ -60,11 +60,12 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         textAlign: "center",
         fontSize: 24,
+        marginBottom: 10,
     },
     body: {
         justifyContent: "center",
         paddingHorizontal: 15,
-        minHeight: 100,
+        minHeight: 230,
     },
     footer: {
         justifyContent: "center",

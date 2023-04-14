@@ -1,19 +1,14 @@
 //View all students and information function
-import {collection, doc, getDoc, query, onSnapshot, setDoc, where, deleteDoc, getDocs} from "firebase/firestore";
+import {collection, doc, getDoc, query, onSnapshot, setDoc, where, deleteDoc} from "firebase/firestore";
 import {auth, db} from "../firebaseConfig";
 import React, {useEffect, useState} from "react";
-import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from "react-native";
-import { SwipeListView } from 'react-native-swipe-list-view';
-import { confirmAlert } from 'react-confirm-alert';
-
+import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from "react-native";
 
 
 //Component Imports
 import {Modal} from "./Modal";
-import {userss} from "./loginView";
 
-
-const Edit = () => {
+const Edit = ({navigation}) => {
 
     //Get part
     // This is variables and functions for fetching and display all the gatherings
@@ -65,11 +60,11 @@ const Edit = () => {
 
 
     //Function for editing a gathering
-    async function edit(id, gatName, gatTime, gatDate) {
+    async function edit(id, gatName, gatDate, gatTime) {
         await setDoc(doc(db, "gathering", id), {
                 name: gatName,
-                time: gatTime,
                 date: gatDate,
+                time: gatTime,
                 userID: user.uid,
             }
         );
@@ -134,39 +129,6 @@ const Edit = () => {
 
 
 
-
-    const renderItem = () => (
-        <View>
-            {gat.map((item) => (
-            <View key={item.id} style={styles.gatContainer}>
-                <View style={styles.gat}>
-                    <View style={styles.infoContainer}>
-                        <Text style={[styles.text, styles.gatName]}> {item.name}</Text>
-                        <Text style={styles.text}> Date: {item.date}</Text>
-                        <Text style={styles.text}> Time: {item.time}</Text>
-                    </View>
-                </View>
-            </View>
-            ))}
-        </View>
-    );
-
-
-    const renderHiddenItem = () => (
-        <View style={styles.rowBack}>
-            <TouchableOpacity onPress={() => EditBtnFunc()}>
-                <Text style={[styles.editBtn, styles.editButton]}>Edit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => deleteData()}>
-                <Text style={[styles.deleteBtn, styles.editButton]}>Delete</Text>
-            </TouchableOpacity>
-        </View>
-    );
-
-
-
-
-
     //This is the view that you will see at Home in app
     return (
         <View style={styles.container}>
@@ -187,68 +149,85 @@ const Edit = () => {
                 <View>
                     {gat.map((item) => (
                         <View key={item.id} style={styles.gatContainer}>
-                            <View style={styles.gat}>
-                                <View style={styles.infoContainer}>
-                                    <Text style={[styles.text, styles.gatName]}> {item.name}</Text>
-                                    <Text style={styles.text}> Date: {item.date}</Text>
-                                    <Text style={styles.text}> Time: {item.time}</Text>
+                            {/* i toppen skriv route og i toippen på denne skriv navigation
+                            const drink = route.params.drink*/}
+                            <TouchableOpacity onPress={() => navigation.navigate('gat')}>
+                                <View style={styles.gat}>
+                                    <View style={styles.gatImageContainer}>
+                                        <Image style={styles.gatImage} source={require('../images/tiger_bakgrun.jpg')} />
+                                        {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
+                                    </View>
+                                    <View style={styles.nameContainer}>
+                                        <Text style={[styles.text, styles.gatName]}> {item.name}</Text>
+                                        <View style={styles.infoContainer}>
+                                            <Text style={styles.text}> 📅{item.date}</Text>
+                                            <Text style={styles.text}>:{item.time}</Text>
+                                        </View>
+                                    </View>
+
                                 </View>
-                                <TouchableOpacity onPress={() => EditBtnFunc(item)}>
-                                    <Text style={styles.editButton}>Edit</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => deleteData(item)}>
-                                    <Text style={styles.editButton}>Delete</Text>
-                                </TouchableOpacity>
+                            </TouchableOpacity>
+
+                            <View style={styles.gat}>
+
+                                <View style={styles.buttonContainer}>
+                                    <TouchableOpacity onPress={() => EditBtnFunc(item)}>
+                                        <Text style={styles.button}> Edit  </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => deleteData(item)}>
+                                        <Text style={styles.button}>Delete</Text>
+                                    </TouchableOpacity>
+                                </View>
+
                             </View>
                         </View>
                     ))}
 
-                    <SwipeListView
-                        data={gat}
-                        renderItem={renderItem}
-                        renderHiddenItem={renderHiddenItem}
-                        leftOpenValue={0}
-                        rightOpenValue={-130}
-                        previewRowKey={'0'}
-                        previewOpenValue={-20}
-                        previewOpenDelay={2000}
-                    />
-
-
 
                     {/* This is the popup that appears when you click edit at the table */}
-                    <Modal isVisible={isModalVisible} >
-                        <Modal.Container>
-                            <Modal.Header title="Edit" />
+                    <Modal isVisible={isModalVisible}>
+                        <Modal.Container style={styles.modalContainer}>
+                            <Modal.Header title="Edit"/>
                             <Modal.Body>
-                                <Text>New name for gathering:</Text>
-                                <TextInput
-                                    onChangeText={set_Name}
-                                    value={Name}
-                                    placeholder='Name'
-                                />
-
-                                <Text>Date:</Text>
-                                <TextInput
-                                    onChangeText={set_Date}
-                                    value={Date}
-                                    placeholder='Date'
-                                />
-
-                                <Text>Time:</Text>
-                                <TextInput
-                                    onChangeText={set_Time}
-                                    value={Time}
-                                    placeholder='Time'
-                                />
-
-                                <Button
-                                    onPress={editData}
-                                    title="Edit"
-                                />
+                                <View style={styles.container}>
+                                    <Text style={styles.textModal}>New name for gathering:</Text>
+                                    <View style={styles.inputContainer}>
+                                        <TextInput
+                                            style={styles.input}
+                                            onChangeText={set_Name}
+                                            value={Name}
+                                            placeholder='Name'
+                                        />
+                                    </View>
+                                    <Text style={styles.textModal}>Date:</Text>
+                                    <View style={styles.inputContainer}>
+                                        <TextInput
+                                            style={styles.input}
+                                            onChangeText={set_Date}
+                                            value={Date}
+                                            placeholder='Date'
+                                        />
+                                    </View>
+                                    <Text style={styles.textModal}>Time:</Text>
+                                    <View style={styles.inputContainer}>
+                                        <TextInput
+                                            style={styles.input}
+                                            onChangeText={set_Time}
+                                            value={Time}
+                                            placeholder='Time'
+                                        />
+                                    </View>
+                                </View>
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button title="Cancel" onPress={handleModal} />
+                                <View style={styles.buttonContainer}>
+                                    <TouchableOpacity onPress={() => editData()}>
+                                        <Text style={styles.editButton}> Edit  </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => handleModal()}>
+                                        <Text style={styles.cancelButton}>Cancel</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </Modal.Footer>
                         </Modal.Container>
                     </Modal>
@@ -282,16 +261,13 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         marginLeft: 8,
-        height: 100,
-        width: 100,
+        height: 80,
+        width: 80,
         borderRadius: 50,
         marginRight: 40,
     },
     logo: {
         aspectRatio: 1,
-        marginTop: '-30%',
-        marginBottom: -70,
-        resizeMode: 'contain',
         marginLeft: 8,
         width: '100%',
         height: undefined,
@@ -305,6 +281,8 @@ const styles = StyleSheet.create({
     bottom: {
         borderBottomWidth: 2,
         borderBottomColor: 'black',
+        paddingBottom: 40,
+
     },
 
 
@@ -318,11 +296,30 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
     },
+    gatImageContainer: {
+        width: 80,
+        borderRadius: 50,
+        marginRight: 10,
+        marginBottom: 10,
+    },
+    gatImage: {
+        aspectRatio: 1,
+        width: 80,
+        height: undefined,
+        borderRadius: 50,
+    },
+    nameContainer: {
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
     infoContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        marginTop: 20,
         flex: 1,
     },
     text: {
-        margin: 4,
         fontSize: 16,
     },
     gatName: {
@@ -331,44 +328,66 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: 'black',
     },
-
-    editButton: {
-        flex: 1,
-        fontSize: 20,
-        color: '#B9BAA3',
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    button: {
         backgroundColor: '#0A100D',
-        width: '100%',
+        color: '#B9BAA3',
+        borderRadius: 5,
+        paddingVertical: 3,
+        paddingHorizontal: 57,
+        flex: 1,
+        marginHorizontal: 5,
         alignItems: 'center',
         justifyContent: 'center',
         textAlignVertical: 'center',
-        paddingVertical: 30,
-        paddingHorizontal: 10,
     },
 
-    actionButton: {
-        alignItems: 'center',
-        bottom: 0,
-        justifyContent: 'center',
-        position: 'absolute',
-        top: 0,
-        width: 75,
-    },
 
-    editBtn: {
-        backgroundColor: 'blue',
-        right: '-430%',
-    },
-    deleteBtn: {
-        backgroundColor: 'red',
-        right: 0,
-    },
-    rowBack: {
-        alignItems: 'center',
-        backgroundColor: '#D6D5C9',
+    modalContainer: {
         flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        margin: 20,
+    },
+
+    textModal: {
+        fontSize:16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+    inputContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingLeft: 5,
+        alignItems: 'center',
+        marginLeft: 2,
+    },
+    input: {
+        flex: 1,
+        borderBottomWidth: 1,
+        borderBottomColor: '#666',
+        color: '#333',
+        fontSize: 16,
+        marginBottom: 30,
+
+    },
+    editButton: {
+        color: '#005cfc',
+        fontSize: 20,
+        marginRight: 20,
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 5,
+    },
+    cancelButton: {
+        color: '#FF0400',
+        fontSize: 20,
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 5,
     },
 
 });

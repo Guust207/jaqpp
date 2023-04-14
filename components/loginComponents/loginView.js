@@ -6,6 +6,7 @@ import {useCallback} from 'react';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
 import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
+import {ProfileView} from "../profileComponents/profileInterfaceView";
 
 /* API Used for fetching information about user logged-in
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get
@@ -102,7 +103,7 @@ export const Login = () => {
                     disabled={!request}
                     onPress={handlerLogin}
                 />
-            ) : profileView(user, setUser)}
+            ) : ProfileView(user, setUser)}
         </View>
     );
 }
@@ -122,26 +123,5 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
 });
-
-
-//This is the function that handles profile view and all of its sub functions
-const profileView = (user, setUser) => {
-
-    //Function that handles the Sign-out button
-    const handleLogout = () => {
-        setUser(null);
-    }
-
-    //The view that you see at profile view
-    return (
-        <View>
-            <Text style={styles.text}> {user.name} </Text>
-            <Button
-                title="Sign out"
-                onPress={handleLogout}
-            />
-        </View>)
-}
-
 
 

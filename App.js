@@ -1,52 +1,42 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { onAuthStateChanged } from "firebase/auth";
-import {auth} from "./firebaseConfig";
-
-import {Login} from "./components/loginComponents/loginView";
-import SignInScreen  from "./components/loginComponents/signInView";
 import {CategoryView} from "./components/budgetComponents/budgetInterfaceView";
+import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Modal} from "./components/Modal";
+import createGathering from "./components/gatheringComponents/CreateGathering";
+import {Login} from "./components/loginComponents/loginView";
+import {ProfileView} from "./components/profileComponents/profileInterfaceView";
+import { useNavigation } from '@react-navigation/native';
 
 const App = () => {
 
-    const [user, setUser] = useState(null)
-
     //The navigation bar that you see at the bottom
     const Tab = createBottomTabNavigator();
+    const Stack = createStackNavigator();
+    const navigation = useNavigation();
 
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-                navigator.reset({
-                    index: 0,
-                    routes: [{ name: 'signInView' }],
-                });
-
-            }
-        });
-
-    }, []);
+    const handler = () => {
+        navigation.navigate('Login');
+    }
 
         return (
-            /*
-             <NavigationContainer>
-                <Tab.Navigator>
-                    <Tab.Screen name="SignIn" component={SignInScreen}/>
-                    <Tab.Screen name="Home" component={Login}/>
-                    <Tab.Screen name="Add" component={Create}/>
-                    <Tab.Screen name="Edit" component={Edit}/>
-                </Tab.Navigator>
-            </NavigationContainer>
-            */
             <NavigationContainer>
+                <View>
+                    <Modal isVisible={true} >
+                        <Modal.Container>
+                            <Modal.Header title={"Sign In Please"} />
+                            <Modal.Footer>
+                                <Button title="Google Sign In" onPress={handler} />
+                            </Modal.Footer>
+                        </Modal.Container>
+                    </Modal>
+                </View>
                 <Tab.Navigator>
-                    <Tab.Screen name="SignIn" component={SignInScreen}/>
-                    <Tab.Screen name="Home" component={Login}/>
-                    <Tab.Screen name="Add" component={CategoryView}/>
+                    <Tab.Screen name="Home"/>
+                    <Tab.Screen name="Gathering" />
+                    <Tab.Screen name="Profile" />
                 </Tab.Navigator>
             </NavigationContainer>
         );

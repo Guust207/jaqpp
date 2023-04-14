@@ -167,7 +167,7 @@ const SignInScreen = () => {
         return (
             <View style={styles.container}>
                 <View>
-                    <Image style={styles.logo} source={require('../images/logo_2.png')} />
+                    <Image style={styles.logo} source={require('../images/logo.png')} />
                     <Text style={styles.welcomeMessage}>Welcome, {user.email}!</Text>
                     <Text style={styles.instructions}>You are now signed in. Enjoy using our app! if you want to log out click the button below.</Text>
                 </View>
@@ -182,7 +182,7 @@ const SignInScreen = () => {
         return (
 
                 <View style={styles.container}>
-                    <Image style={styles.logo} source={require('../images/logo_2.png')} />
+                    <Image style={styles.logo} source={require('../images/logo.png')} />
 
                     <View style={styles.inputContainer}>
                         <TextInput

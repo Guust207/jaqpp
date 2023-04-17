@@ -4,10 +4,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { onAuthStateChanged } from "firebase/auth";
 import {auth} from "./firebaseConfig";
 
-import {Login} from "./components/loginView";
-import Create from "./components/CreateGathering";
-import Edit from "./components/EditGathering";
-import SignInScreen  from "./components/signInView";
+import {Login} from "./components/loginComponents/loginView";
+import Create from "./components/gatheringComponents/CreateGathering";
+import Edit from "./components/gatheringComponents/EditGathering";
+import SignInScreen  from "./components/loginComponents/signInView";
 import {BudgetView} from "./components/budgetComponents/budgetView";
 import {budgetCategoryView} from "./components/budgetComponents/budget_categoryFieldView";
 
@@ -35,16 +35,16 @@ const App = () => {
 
     }, []);
 
-        return (
-            <NavigationContainer>
-                <Tab.Navigator>
-                    <Tab.Screen name="SignIn" component={SignInScreen}/>
-                    <Tab.Screen name="Home" component={Login}/>
-                    <Tab.Screen name="Add" component={Create}/>
-                    <Tab.Screen name="Edit" component={Edit}/>
-                </Tab.Navigator>
-            </NavigationContainer>
-        );
+    return (
+        <NavigationContainer>
+            <Tab.Navigator>
+                <Tab.Screen name="SignIn" component={SignInScreen}/>
+                <Tab.Screen name="Home" component={Login}/>
+                <Tab.Screen name="Add" component={Create}/>
+                <Tab.Screen name="Edit" component={Edit}/>
+            </Tab.Navigator>
+        </NavigationContainer>
+    );
 
 }
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {StyleSheet, View, TextInput, Button, Text, TouchableOpacity, Image} from 'react-native';
-import { auth , db} from "../firebaseConfig";
+import { auth , db} from "../../firebaseConfig";
 import { signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification } from "firebase/auth"
 import {doc, getDoc, setDoc} from 'firebase/firestore';
 
@@ -167,7 +167,7 @@ const SignInScreen = () => {
         return (
             <View style={styles.container}>
                 <View>
-                    <Image style={styles.logo} source={require('../images/logo_2.png')} />
+                    <Image style={styles.logo} source={require('../../images/logo_2.png')} />
                     <Text style={styles.welcomeMessage}>Welcome, {user.email}!</Text>
                     <Text style={styles.instructions}>You are now signed in. Enjoy using our app! if you want to log out click the button.</Text>
                 </View>

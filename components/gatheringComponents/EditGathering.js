@@ -1,12 +1,12 @@
 //View all students and information function
 import {collection, doc, getDoc, query, onSnapshot, setDoc, where, deleteDoc} from "firebase/firestore";
-import {auth, db} from "../firebaseConfig";
+import { auth , db} from "../../firebaseConfig";
 import React, {useEffect, useState} from "react";
 import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from "react-native";
 
 
 //Component Imports
-import {Modal} from "./Modal";
+import {Modal} from "../Modal";
 
 const Edit = ({navigation}) => {
 
@@ -136,7 +136,7 @@ const Edit = ({navigation}) => {
                 <View style={styles.bioContainer}>
                     <View style={styles.top}>
                         <View style={styles.imageContainer}>
-                            <Image style={styles.logo} source={require('../images/logo.png')} />
+                            <Image style={styles.logo} source={require('../../images/logo.png')} />
                             {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
                         </View>
                         <Text style={styles.bioName}>{user.email}</Text>
@@ -154,7 +154,7 @@ const Edit = ({navigation}) => {
                             <TouchableOpacity onPress={() => navigation.navigate('gat')}>
                                 <View style={styles.gat}>
                                     <View style={styles.gatImageContainer}>
-                                        <Image style={styles.gatImage} source={require('../images/tiger_bakgrun.jpg')} />
+                                        <Image style={styles.gatImage} source={require('../../images/tiger_bakgrun.jpg')} />
                                         {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
                                     </View>
                                     <View style={styles.nameContainer}>

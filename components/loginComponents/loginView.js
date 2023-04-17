@@ -4,12 +4,9 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as React from 'react';
 import {useCallback} from 'react';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
-import {db, auth } from "../firebaseConfig";
-import {GoogleAuthProvider, signInWithCredential} from "firebase/auth";
-import {NavigationContainer} from "@react-navigation/native";
-import Create from "./CreateGathering";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {db} from "../../firebaseConfig";
+import {currentUser} from "../global_variables";
+import {ProfileView} from "../profileComponents/profileInterfaceView";
 
 /* API Used for fetching information about user logged-in
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get
@@ -23,9 +20,10 @@ WebBrowser.maybeCompleteAuthSession();
 //This is the function that handles login and how the loginView should look like.
 export const Login = () => {
 
+
         //Use states that are used to complete different task such as setting accessToken, user etc.
     const [accessToken, setAccessToken] = React.useState("r");
-    const [user, setUser] = React.useState(null);
+    const [user, setUser] = currentUser();
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: "766637901593-id760o157h0bieoq7eiukbbvhnbhae0h.apps.googleusercontent.com",
     });
@@ -38,8 +36,6 @@ export const Login = () => {
                     fullName: user.name,
                     email: user.email,
                     picture: user.picture,
-
-
                 }
             );
         } else
@@ -72,7 +68,6 @@ export const Login = () => {
 
             const user = await response.json();
             setUser(user);
-            console.log(user.id);
             if(user){
                 console.log(user.name);
                 console.log(user.id);
@@ -108,7 +103,7 @@ export const Login = () => {
                     disabled={!request}
                     onPress={handlerLogin}
                 />
-            ) : profileView(user, setUser)}
+            ) : ProfileView(user, setUser)}
         </View>
     );
 }
@@ -129,23 +124,4 @@ const styles = StyleSheet.create({
     },
 });
 
-
-//This is the function that handles profile view and all of its sub functions
-const profileView = (user, setUser) => {
-
-    //Function that handles the Sign-out button
-    const handleLogout = () => {
-        setUser(null);
-    }
-
-    //The view that you see at profile view
-    return (
-        <View>
-            <Text style={styles.text}> {user.name} </Text>
-            <Button
-                title="Sign out"
-                onPress={handleLogout}
-            />
-        </View>)
-}
 

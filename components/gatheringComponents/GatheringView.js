@@ -8,21 +8,25 @@ import { useNavigation } from '@react-navigation/native';
 OBS!!!!!!
 Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
  */
-export const GatheringInterface = () => {
-    const navigation = useNavigation();
-    const handlerGatheringClicked = () => {
-        navigation.navigate('CurrentGathering');
-    }
-
+export const GatheringView = () => {
+    const [CurrentGathering, setCurrentGathering] = currentGathering();
     return (
         <View>
-            <TouchableOpacity onPress={handlerGatheringClicked}>
-                <Text style={styles.text}> Gathering 2</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handlerGatheringClicked}>
-                <Text style={styles.text}> Gathering 2</Text>
-            </TouchableOpacity>
-            <Button title={"Add"}/>
+            <Text>
+                Hello
+            </Text>
+            <Button
+                title={"Administer Budget"}
+            />
+            <Button
+                title={"Administer Attendees"}
+            />
+            <Button
+                title={"Delete Gathering"}
+            />
+            <Button
+                title={"Edit Gathering"}
+            />
         </View>
 
     )

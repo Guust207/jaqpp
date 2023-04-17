@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Alert, Button, Text, TextInput, View} from "react-native";
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
-import {budgetCategoryView} from "./budget_categoryFieldView";
 import {Modal} from "../Modal";
 import {currentCategory} from "../global_variables";
 

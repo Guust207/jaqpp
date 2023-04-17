@@ -2,29 +2,28 @@ import React, {useCallback, useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {CategoryView} from "./components/budgetComponents/budgetInterfaceView";
 import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Modal} from "./components/Modal";
-import createGathering from "./components/gatheringComponents/CreateGathering";
-import {Login} from "./components/loginComponents/loginView";
+import signInView from "./components/loginComponents/signInView";
+import {Gathering} from "./components/gatheringComponents/Gathering";
 import {ProfileView} from "./components/profileComponents/profileInterfaceView";
-import { useNavigation } from '@react-navigation/native';
+import {currentGathering} from "./components/global_variables";
 
 const App = () => {
 
     //The navigation bar that you see at the bottom
     const Tab = createBottomTabNavigator();
     const Stack = createStackNavigator();
-    const navigation = useNavigation();
+    const [CurrentGathering, setCurrentGathering] = currentGathering();
+
 
     const handler = () => {
-        navigation.navigate('Login');
+        setCurrentGathering("gathering12324")
     }
-
         return (
             <NavigationContainer>
                 <View>
-                    <Modal isVisible={true} >
+                    <Modal isVisible={false} >
                         <Modal.Container>
                             <Modal.Header title={"Sign In Please"} />
                             <Modal.Footer>
@@ -34,9 +33,9 @@ const App = () => {
                     </Modal>
                 </View>
                 <Tab.Navigator>
-                    <Tab.Screen name="Home"/>
-                    <Tab.Screen name="Gathering" />
-                    <Tab.Screen name="Profile" />
+                    <Tab.Screen name="Home" component={signInView}/>
+                    <Tab.Screen name="Gatherings" component={Gathering}/>
+                    <Tab.Screen name="Profile" component={ProfileView}/>
                 </Tab.Navigator>
             </NavigationContainer>
         );

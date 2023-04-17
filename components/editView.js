@@ -109,9 +109,6 @@ const Edit = () => {
                             </TouchableOpacity>
                         </View>
                     ))}
-
-
-
                     {/* This is the popup that appears when you click edit at the table */}
                     <Modal isVisible={isModalVisible} >
                         <Modal.Container>

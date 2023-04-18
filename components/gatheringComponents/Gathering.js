@@ -5,6 +5,7 @@ import {GatheringInterface} from "./gatheringInterfaceView";
 import {createStackNavigator} from "@react-navigation/stack";
 import {currentGathering} from "../global_variables";
 import {GatheringView} from "./GatheringView";
+import Create from "./CreateGathering";
 
 /*
 OBS!!!!!!
@@ -16,6 +17,7 @@ export const Gathering = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen name="YourGatherings" component={GatheringInterface}/>
+            <Stack.Screen name="Create" component={Create}/>
             <Stack.Screen name="CurrentGathering" component={GatheringView}/>
         </Stack.Navigator>
     )

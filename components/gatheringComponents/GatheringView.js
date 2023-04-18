@@ -4,16 +4,21 @@ import {currentGathering} from "../global_variables";
 import {Gathering} from "./Gathering";
 import { useNavigation } from '@react-navigation/native';
 
+import Edit from "./EditGathering";
+
+
 /*
 OBS!!!!!!
 Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
  */
-export const GatheringView = () => {
+export const GatheringView = ({route}) => {
+    const { item } = route.params;
+
     const [CurrentGathering, setCurrentGathering] = currentGathering();
     return (
         <View>
             <Text>
-                Hello
+                Hello {item.name}
             </Text>
             <Button
                 title={"Administer Budget"}

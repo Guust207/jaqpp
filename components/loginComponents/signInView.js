@@ -171,11 +171,6 @@ const SignInScreen = () => {
                     <Text style={styles.welcomeMessage}>Welcome, {user.email}!</Text>
                     <Text style={styles.instructions}>You are now signed in. Enjoy using our app! if you want to log out click the button below.</Text>
                 </View>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} disabled={!request} onPress={handleLogOut}>
-                        <Text style={styles.buttonText}>Sign out</Text>
-                    </TouchableOpacity>
-                </View>
             </View>
         );
     } else {

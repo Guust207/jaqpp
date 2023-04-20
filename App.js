@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Modal} from "./components/Modal";
-import signInView from "./components/loginComponents/signInView";
+import {LogIn} from "./components/loginComponents/logIn";
 import {Gathering} from "./components/gatheringComponents/Gathering";
 import {ProfileView} from "./components/profileComponents/profileInterfaceView";
 import {currentGathering} from "./components/global_variables";
@@ -33,7 +33,7 @@ const App = () => {
                     </Modal>
                 </View>
                 <Tab.Navigator>
-                    <Tab.Screen name="Home" component={signInView}/>
+                    <Tab.Screen name="Home" component={LogIn}/>
                     <Tab.Screen name="Gatherings" component={Gathering}/>
                     <Tab.Screen name="Profile" component={ProfileView}/>
                 </Tab.Navigator>

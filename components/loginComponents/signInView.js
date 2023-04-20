@@ -7,10 +7,12 @@ import {doc, getDoc, setDoc} from 'firebase/firestore';
 
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
-
+import {useNavigation} from "@react-navigation/native";
 
 
 const SignInScreen = () => {
+    const navigation = useNavigation();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
@@ -30,17 +32,6 @@ const SignInScreen = () => {
     });
 
 
-
-
-
-
-    const handleSignUp  = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                console.log('User signed up successfully:');
-            })
-            .catch(error => setErrorMessage(error.message));
-    };
 
     const handleSignIn = () => {
         signInWithEmailAndPassword(auth, email, password)
@@ -170,6 +161,9 @@ const SignInScreen = () => {
                     <Image style={styles.logo} source={require('../../images/logo.png')} />
                     <Text style={styles.welcomeMessage}>Welcome, {user.email}!</Text>
                     <Text style={styles.instructions}>You are now signed in. Enjoy using our app! if you want to log out click the button below.</Text>
+                    <TouchableOpacity onPress={handleLogOut}>
+                        <Text>LogOut</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
@@ -178,7 +172,7 @@ const SignInScreen = () => {
 
                 <View style={styles.container}>
                     <Image style={styles.logo} source={require('../../images/logo.png')} />
-
+                    <Text style={styles.topText}>Login</Text>
                     <View style={styles.inputContainer}>
                         <TextInput
                             style={styles.input}
@@ -202,9 +196,6 @@ const SignInScreen = () => {
                         <TouchableOpacity style={styles.button} onPress={() => handleSignIn(email, password)}>
                             <Text style={styles.buttonText}>Log In</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.button, styles.signInButton]} onPress={() => handleSignUp (setEmail, setPassword)}>
-                            <Text style={[styles.buttonText, styles.signInButtonText]}>Sign In</Text>
-                        </TouchableOpacity>
                     </View>
                     <View style={styles.space}>
                         <Text>Or</Text>
@@ -214,6 +205,15 @@ const SignInScreen = () => {
                             <Text style={[styles.buttonText, styles.googleButtonText]}>Sign in with Google</Text>
                         </TouchableOpacity>
                     </View>
+
+                    <View style={styles.newToApp}>
+                        <Text>New to the app? </Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('register')}>
+                            <Text style={styles.register}> Register</Text>
+                        </TouchableOpacity>
+
+                    </View>
+
                     <View style={styles.errorContainer}>
                         {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
                     </View>
@@ -232,6 +232,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#D6D5C9',
         paddingHorizontal: 20,
         paddingVertical: 40,
+    },
+    topText: {
+        fontSize: 25,
+        marginBottom: 10,
+        marginLeft: 10,
     },
     inputContainer: {
         flexDirection: 'row',
@@ -306,7 +311,7 @@ const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 1,
         marginTop: '-40%',
-        marginBottom: -70,
+        marginBottom: -100,
         resizeMode: 'center',
 
     },
@@ -318,6 +323,16 @@ const styles = StyleSheet.create({
     instructions: {
         fontSize: 18,
         marginBottom: 30,
+    },
+    newToApp: {
+       flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom: 30,
+    },
+
+    register: {
+        color:'#AD40AF',
+        fontWeight: '700',
     },
 
 });

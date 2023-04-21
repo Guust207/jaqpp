@@ -5,10 +5,8 @@ import { auth , db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
 
 //Component Imports
-import {Modal} from "../Modal";
-import {currentGathering} from "../global_variables";
-import {Gathering} from "./Gathering";
 import Create from "./CreateGathering";
+import {currentUser} from "../global_variables";
 
 
 
@@ -25,7 +23,7 @@ export const GatheringInterface = () => {
     // This is variables and functions for fetching and display all the gatherings
     const [gat, setGat] = useState([]);
     const user = auth.currentUser;
-
+    const [GoogleUser, setUser] = currentUser();
 
     useEffect(() => {
         const getAllGat = async () => {
@@ -70,8 +68,6 @@ export const GatheringInterface = () => {
                         <View key={item.id} style={styles.gatContainer}>
                             {/* i toppen skriv route og i toippen på denne skriv navigation
                             const drink = route.params.drink*/}
-
-
                             <TouchableOpacity onPress={() => navigation.navigate('CurrentGathering', { item })}>
                                 <View style={styles.gat}>
                                     <View style={styles.gatImageContainer}>

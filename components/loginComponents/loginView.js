@@ -1,12 +1,13 @@
-import {StyleSheet, Text, View, Button, Image} from "react-native";
+import {Button, StyleSheet, View} from "react-native";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import * as React from 'react';
 import {useCallback} from 'react';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
-import {db} from "../../firebaseConfig";
+import {auth, db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
 import {ProfileView} from "../profileComponents/profileInterfaceView";
+import {signInWithCredential, GoogleAuthProvider} from "@firebase/auth";
 
 /* API Used for fetching information about user logged-in
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get
@@ -88,6 +89,8 @@ export const Login = () => {
     }, [response, accessToken])
 
 
+
+
     //Function that handles the Sign in with Google button
     const handlerLogin = useCallback(() => {
         promptAsync().then();
@@ -107,6 +110,8 @@ export const Login = () => {
         </View>
     );
 }
+
+
 
 
 

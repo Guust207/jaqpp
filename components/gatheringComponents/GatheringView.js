@@ -1,19 +1,12 @@
 import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useState} from "react";
 import {currentGathering} from "../global_variables";
-import {Gathering} from "./Gathering";
 import { useNavigation } from '@react-navigation/native';
 
-import Edit from "./EditGathering";
 import {Modal} from "../Modal";
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
 import {auth, db} from "../../firebaseConfig";
 
-
-/*
-OBS!!!!!!
-Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
- */
 export const GatheringView = ({route}) => {
     const navigation = useNavigation();
 

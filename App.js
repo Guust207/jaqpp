@@ -20,25 +20,25 @@ const App = () => {
     const handler = () => {
         setCurrentGathering("gathering12324")
     }
-        return (
-            <NavigationContainer>
-                <View>
-                    <Modal isVisible={false} >
-                        <Modal.Container>
-                            <Modal.Header title={"Sign In Please"} />
-                            <Modal.Footer>
-                                <Button title="Google Sign In" onPress={handler} />
-                            </Modal.Footer>
-                        </Modal.Container>
-                    </Modal>
-                </View>
-                <Tab.Navigator>
-                    <Tab.Screen name="Home" component={signInView}/>
-                    <Tab.Screen name="Gatherings" component={Gathering}/>
-                    <Tab.Screen name="Profile" component={ProfileView}/>
-                </Tab.Navigator>
-            </NavigationContainer>
-        );
+    return (
+        <NavigationContainer>
+            <View>
+                <Modal isVisible={false} >
+                    <Modal.Container>
+                        <Modal.Header title={"Sign In Please"} />
+                        <Modal.Footer>
+                            <Button title="Google Sign In" onPress={handler} />
+                        </Modal.Footer>
+                    </Modal.Container>
+                </Modal>
+            </View>
+            <Tab.Navigator>
+                <Tab.Screen name="Home" component={signInView}/>
+                <Tab.Screen name="Gatherings" component={Gathering}/>
+                <Tab.Screen name="Profile" component={ProfileView}/>
+            </Tab.Navigator>
+        </NavigationContainer>
+    );
 
 }
 

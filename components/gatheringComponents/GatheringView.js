@@ -1,5 +1,5 @@
 import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {currentGathering, currentUser} from "../global_variables";
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,11 +8,17 @@ import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
 import {auth, db} from "../../firebaseConfig";
 
 export const GatheringView = ({route}) => {
+
+    const [CurrentGathering, setCurrentGathering] = currentGathering();
+
+
     const navigation = useNavigation();
-
-
     const { item } = route.params;
     const [user, setUser] = currentUser();
+
+    useEffect(() => {
+        setCurrentGathering(item)
+    }, [item]); // Pass user and isInitialized as dependency array
 
     //Edit part
     //Variables and functions that handles the edit part
@@ -88,13 +94,18 @@ export const GatheringView = ({route}) => {
     }
 
     const deleteData = (gat) => {
-        checkDel("gathering", id).then();
+        checkDel("gathering", gat.id).then();
+    }
+
+
+    const handleBudgetButton = (gathering) => {
+        console.log(gathering.id)
+        console.log(CurrentGathering.id);
+        navigation.navigate('Budget')
     }
 
 
 
-
-    const [CurrentGathering, setCurrentGathering] = currentGathering();
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -104,9 +115,11 @@ export const GatheringView = ({route}) => {
                     </Text>
                     <Button
                         title={"Administer Budget"}
+                        onPress={() => handleBudgetButton(item)}
                     />
                     <Button
                         title={"Administer Attendees"}
+
                     />
                     <View style={styles.gat}>
                         <View style={styles.buttonContainer}>

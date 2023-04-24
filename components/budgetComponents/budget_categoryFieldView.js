@@ -4,10 +4,10 @@ import {db} from "../../firebaseConfig";
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
 import {currentCategory, currentField, currentGathering, currentUser} from "../global_variables";
 import {Modal} from "../Modal";
+import {Gathering} from "../gatheringComponents/Gathering";
 
 
-//TODO: When creating an interface you need to find a way to get budgetCategory and gathering - Currently the function is using dummy values
-const gatheringID = "gathering55555"
+//TODO: When creating an interface you need to find a way to get budgetCategory and gathering - Currently the function is using dummy value
 
 
 export const AddBudgetCategoryView = () => {
@@ -17,6 +17,7 @@ export const AddBudgetCategoryView = () => {
     const [fieldCost, set_fieldCost] = useState(null);
     const [fieldAmount, set_fieldAmount] = useState(null);
     const [categoryID, setCategory] = currentCategory();
+    const [gathering, set_gathering] = currentGathering();
     const [fieldID, setField] = useState(null);
 
 
@@ -32,9 +33,9 @@ export const AddBudgetCategoryView = () => {
 
 
     async function increase_totalCost() {
-        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID)
+        const docRef = doc(db,"gathering", gathering.id, "budget", categoryID)
         const docSnap = await getDoc(docRef).then();
-        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
+        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID), {
             name: docSnap.data().name,
             totalCost: docSnap.data().totalCost + (fieldAmount * fieldCost)
             }
@@ -61,7 +62,7 @@ export const AddBudgetCategoryView = () => {
         ]);
 
     async function hasError() {
-        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf", fieldID);
+        const docRef = doc(db,"gathering", gathering.id, "budget", categoryID, "ListOf", fieldID);
         const docSnap = await getDoc(docRef).then();
         if (fieldCost == null || fieldAmount == null) {
             MissingField();
@@ -76,6 +77,9 @@ export const AddBudgetCategoryView = () => {
 
     const button = () => {
         const tmpID = GenerateID();
+        console.log(gathering.id);
+        console.log(categoryID);
+        console.log(fieldID);
         if (tmpID > 0) {
             setField(tmpID);
             button1().then()
@@ -96,7 +100,7 @@ export const AddBudgetCategoryView = () => {
     const [isFieldAddViewVisible, setIsFieldAddViewVisible] = useState(true);
 
     async function add_CategoryField() {
-        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, fieldID), {
+        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID, "ListOf" + categoryID, fieldID), {
                 name: fieldName,
                 costPrUnit: fieldCost,
                 amount: fieldAmount,
@@ -145,26 +149,27 @@ export const EditBudgetCategoryView = () => {
     const [fieldAmount, set_fieldAmount] = useState(null);
     const [categoryID, setCategory] = currentCategory();
     const [fieldID, setField] = currentField();
+    const [gathering, setGathering] = currentGathering();
 
 
 
     async function increase_totalCost() {
-        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID)
+        const docRef = doc(db,"gathering", gathering.id, "budget", categoryID)
         const docSnap = await getDoc(docRef).then();
-        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
+        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID), {
                 totalCost: docSnap.data().totalCost + (fieldAmount * fieldCost)
             }
         ).then();
     }
 
     async function decrease_totalCost() {
-        const docRef1 = doc(db,"gathering", gatheringID, "budget", categoryID)
+        const docRef1 = doc(db,"gathering", gathering.id, "budget", categoryID)
         const docSnap1 = await getDoc(docRef1).then();
 
-        const docRef2 = doc(db,"gathering", gatheringID, "budget", categoryID, "List", fieldID)
+        const docRef2 = doc(db,"gathering", gathering.id, "budget", categoryID, "List", fieldID)
         const docSnap2 = await getDoc(docRef2).then();
 
-        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
+        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID), {
                 totalCost: (docSnap1.data().totalCost) - (docSnap2.data().totalCost)
             }
         ).then();
@@ -186,7 +191,7 @@ export const EditBudgetCategoryView = () => {
         ]);
 
     async function hasError() {
-        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf", fieldID);
+        const docRef = doc(db,"gathering", gathering.id, "budget", categoryID, "ListOf", fieldID);
         const docSnap = await getDoc(docRef).then();
         if (fieldCost == null || fieldAmount == null) {
             MissingField();
@@ -212,7 +217,7 @@ export const EditBudgetCategoryView = () => {
 
 
     async function edit_CategoryField() {
-        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, fieldID), {
+        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID, "ListOf" + categoryID, fieldID), {
                 name: fieldName,
                 costPrUnit: fieldCost,
                 amount: fieldAmount,

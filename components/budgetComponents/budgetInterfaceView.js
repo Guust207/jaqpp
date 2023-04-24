@@ -7,9 +7,10 @@ import {currentCategory, currentField, currentGathering} from "../global_variabl
 import {AddBudgetCategoryView, EditBudgetCategoryView} from "./budget_categoryFieldView";
 import {AddBudgetView, EditBudgetView} from "./budgetView";
 
-const gatheringID = "gathering55555"
 
 export const CategoryView = () => {
+    const [categoryID, setCategory] = currentCategory();
+    const [gathering, set_gathering] = currentGathering();
 
     const FieldView = () => {
 
@@ -23,7 +24,7 @@ export const CategoryView = () => {
 
 
 
-                const q = query(collection(db, "gathering", "gathering55555", "budget", category_id ,"ListOf" + category_id));
+                const q = query(collection(db, "gathering", gathering.id, "budget", categoryID ,"ListOf" + categoryID));
                 onSnapshot(q, (querySnapshot) => {
                     const  list = [];
 
@@ -48,8 +49,7 @@ export const CategoryView = () => {
 
 
         //Variables and functions that handles the edit part
-        const [field_id, set_id] = currentField();
-        const [categoryID, setCategory] = currentCategory();
+        const [field_id, set_FieldId] = currentField();
         const [field_name, set_name] = useState(field_name);
         const [field_amount, set_amount] = useState(field_amount);
         const [field_cost, set_cost] = useState(field_cost);
@@ -59,7 +59,7 @@ export const CategoryView = () => {
         //Variables used to handle Modal (Popup screen for edit)
         const [isModalVisible, setIsModalVisible] = React.useState(false);
         const handleModal = (field) => {
-            set_id(field.id);
+            set_FieldId(field.id);
             set_name(field.name);
             set_amount(field.amount);
             set_cost(field.costPrUnit);
@@ -83,22 +83,20 @@ export const CategoryView = () => {
         }
 
         const handleDeleteModal = async () => {
-            const gatheringID = "gathering55555"
 
-            const docRef1 = doc(db,"gathering", gatheringID, "budget", categoryID)
+            const docRef1 = doc(db,"gathering", gathering.id, "budget", categoryID)
             const docSnap1 = await getDoc(docRef1).then();
 
-            const docRef2 = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, field_id)
+            const docRef2 = doc(db,"gathering", gathering.id, "budget", categoryID, "ListOf" + categoryID, field_id)
             const docSnap2 = await getDoc(docRef2).then();
 
-            console.log("DocSnap1: ", docSnap1.data(), "DocSnap2", docSnap2.data());
 
-            await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
+            await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID), {
                 name: docSnap2.data().name,
                 totalCost: docSnap1.data().totalCost - docSnap2.data().totalCost
             });
 
-            await deleteDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, field_id));
+            await deleteDoc(doc(db,"gathering", gathering.id, "budget", categoryID, "ListOf" + categoryID, field_id));
             setIsModalVisible(() => !isModalVisible)
         }
 
@@ -154,9 +152,7 @@ export const CategoryView = () => {
     useEffect(() => {
         const getCategories = async () => {
 
-
-
-            const q = query(collection(db, "gathering", "gathering55555", "budget"));
+            const q = query(collection(db, "gathering", gathering.id, "budget"));
             onSnapshot(q, (querySnapshot) => {
                 const  list = [];
 
@@ -175,11 +171,11 @@ export const CategoryView = () => {
             });
         }
         getCategories();
+
     },[])
 
 
     //Variables and functions that handles the edit part
-    const [category_id, set_id] = currentCategory();
     const [category_name, set_Name] = useState(category_name);
     const [totalCost, set_totalCost] = useState(totalCost);
 
@@ -190,7 +186,7 @@ export const CategoryView = () => {
         if (isFieldViewVisible === true) {
             setIsFieldViewVisible(() => !isFieldViewVisible);
         }
-        set_id(category.id);
+        setCategory(category.id);
         set_Name(category.name);
         set_totalCost(category.totalCost);
         setIsModalVisible(() => !isModalVisible)
@@ -210,9 +206,8 @@ export const CategoryView = () => {
     }
 
     const handleDeleteModal = async () => {
-        const gatheringID = "gathering55555"
         // Delete that document
-        await deleteDoc(doc(db,"gathering", gatheringID, "budget", category_id));
+        await deleteDoc(doc(db,"gathering", gathering.id, "budget", categoryID));
     }
 
     const [isCategoryEditViewVisible, setIsCategoryEditViewVisible] = useState(false);
@@ -276,7 +271,7 @@ export const CategoryView = () => {
                     </Modal>
                 </View>
                 {isFieldViewVisible && <FieldView />}
-                {isFieldAddViewVisible && <AddBudgetCategoryView />}
+                {isFieldAddViewVisible && <AddBudgetCategoryView/>}
                 {isCategoryEditViewVisible && <EditBudgetView />}
                 {isCategoryAddViewVisible && <AddBudgetView />}
             </ScrollView>

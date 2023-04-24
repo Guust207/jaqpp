@@ -53,11 +53,9 @@ export const GatheringInterface = () => {
 
     const getGatheringsForUser = async () => {
         if (user !== null) {
-            const uid = user.uid;
-            console.log("  Provider-specific UID: " + uid);
 
 
-            const q = query(collection(db, "gathering"), where("userID", "==", uid));
+            const q = query(collection(db, "gathering"), where("userID", "==", user.id));
             onSnapshot(q, (querySnapshot) => {
                 const  list = [];
 

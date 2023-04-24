@@ -70,8 +70,6 @@ const App = () => {
         }
     }
 
-
-
     const [UserNotLoggedIn, SetUserLoggedIn] = useState(true);
     const [isInitialized, setIsInitialized] = useState(false);
 

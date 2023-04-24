@@ -78,7 +78,7 @@ export const GatheringView = ({route}) => {
 
         if (docSnap.exists()) {
             del("gathering", id).then();
-            navigation.navigate('YourGatherings')
+            navigation.navigate('Your gatherings')
             console.log('DELETED the document');
         }
     }
@@ -106,12 +106,6 @@ export const GatheringView = ({route}) => {
                     />
                     <Button
                         title={"Administer Attendees"}
-                    />
-                    <Button
-                        title={"Delete Gathering"}
-                    />
-                    <Button
-                        title={"Edit Gathering"}
                     />
                     <View style={styles.gat}>
                         <View style={styles.buttonContainer}>

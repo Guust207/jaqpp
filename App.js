@@ -100,7 +100,6 @@ const App = () => {
                 SetUserLoggedIn(() => !UserNotLoggedIn)
                 console.log(user.name);
                 console.log(user.id);
-
                 check("users",user).then();
             }
         } catch (error) {

@@ -22,41 +22,61 @@ export const GatheringInterface = () => {
     //Get part
     // This is variables and functions for fetching and display all the gatherings
     const [gat, setGat] = useState([]);
-    const user = auth.currentUser;
-    const [GoogleUser, setUser] = currentUser();
+    const [user, setUser] = currentUser();
+
+
 
     useEffect(() => {
         const getAllGat = async () => {
+            const q = query(collection(db, "gathering"), where("userID", "==", user.id));
+            onSnapshot(q, (querySnapshot) => {
+                const  list = [];
 
+                querySnapshot.forEach((doc) => {
+                    const { name, date, time} = doc.data();
 
-            if (user !== null) {
-                const uid = user.uid;
-                console.log("  Provider-specific UID: " + uid);
-
-
-                const q = query(collection(db, "gathering"), where("userID", "==", uid));
-                onSnapshot(q, (querySnapshot) => {
-                    const  list = [];
-
-                    querySnapshot.forEach((doc) => {
-                        const { name, date, time} = doc.data();
-
-                        //list for storing the data
-                        list.push({
-                            id: doc.id,
-                            name,
-                            date,
-                            time,
-                        });
+                    //list for storing the data
+                    list.push({
+                        id: doc.id,
+                        name,
+                        date,
+                        time,
                     });
-
-                    setGat(list);
                 });
-            }
+
+                setGat(list);
+            });
         }
         getAllGat();
 
-    },[])
+    },[user])
+
+    const getGatheringsForUser = async () => {
+        if (user !== null) {
+            const uid = user.uid;
+            console.log("  Provider-specific UID: " + uid);
+
+
+            const q = query(collection(db, "gathering"), where("userID", "==", uid));
+            onSnapshot(q, (querySnapshot) => {
+                const  list = [];
+
+                querySnapshot.forEach((doc) => {
+                    const { name, date, time} = doc.data();
+
+                    //list for storing the data
+                    list.push({
+                        id: doc.id,
+                        name,
+                        date,
+                        time,
+                    });
+                });
+
+                setGat(list);
+            });
+        }
+    }
 
 
 
@@ -71,7 +91,7 @@ export const GatheringInterface = () => {
                             <TouchableOpacity onPress={() => navigation.navigate('CurrentGathering', { item })}>
                                 <View style={styles.gat}>
                                     <View style={styles.gatImageContainer}>
-                                        <Image style={styles.gatImage} source={require('../../images/tiger_bakgrun.jpg')} />
+                                        <Image style={styles.gatImage}/>
                                         {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
                                     </View>
                                     <View style={styles.nameContainer}>
@@ -90,9 +110,6 @@ export const GatheringInterface = () => {
                             </View>
                         </View>
                     ))}
-
-                    <Button onPress={() => navigation.navigate('Create')}
-                    title={"Add"}/>
                 </View>
             </ScrollView>
         </View>
@@ -129,15 +146,8 @@ const styles = StyleSheet.create({
         marginLeft: 8,
         height: 80,
         width: 80,
-        borderRadius: 50,
+        borderRadius: 25,
         marginRight: 40,
-    },
-    logo: {
-        aspectRatio: 1,
-        marginLeft: 8,
-        width: '100%',
-        height: undefined,
-        borderRadius: 50,
     },
     bioName: {
         fontSize: 18,
@@ -156,7 +166,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#B9BAA3',
         padding: 10,
         margin:10,
-        borderRadius: '10%',
+        borderRadius: 25,
     },
     gat: {
         flexDirection: 'row',
@@ -164,7 +174,7 @@ const styles = StyleSheet.create({
     },
     gatImageContainer: {
         width: 80,
-        borderRadius: 50,
+        borderRadius: 25,
         marginRight: 10,
         marginBottom: 10,
     },
@@ -172,7 +182,7 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         width: 80,
         height: undefined,
-        borderRadius: 50,
+        borderRadius: 25,
     },
     nameContainer: {
         flexDirection: 'column',
@@ -265,8 +275,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         color: 'black'},
-
-
 
     category: {
         backgroundColor: 'lightgrey',

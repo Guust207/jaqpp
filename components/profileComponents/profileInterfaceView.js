@@ -1,15 +1,45 @@
-
-
 //This is the function that handles profile view and all of its sub functions
-import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Alert, Button, Image, StyleSheet, Text, View} from "react-native";
 import * as React from "react";
+import {deleteDoc, doc, getDoc} from "firebase/firestore";
+import {db} from "../../firebaseConfig";
+
 
 export const ProfileView = (user, setUser) => {
+
+    const accountDeleted = () =>
+        Alert.alert('Account deleted from JaqPPP','', [
+            {text: 'OK'},
+        ]);
+
+    const downloadData = async () => {
+        // Fetch data from Firestore or any other data source
+        const fetchDataFromFirestore = async () => {
+            const docRef = doc(db, "users", user.id);
+            return await getDoc(docRef);
+        }
+    }
+
+    async function deleteAccount() {
+        const docRef = doc(db,"users", user.id.toString());
+        // Delete that document
+        await deleteDoc(docRef);
+        handleLogout();
+    }
 
     //Function that handles the Sign-out button
     const handleLogout = () => {
         setUser(null);
+
     }
+
+    //Function that handles deleteAccount button
+    const handleDeleteAccount = async () => {
+        console.log(user.id)
+        await deleteAccount().then();
+        accountDeleted();
+    }
+
 
     const handleAccountDeletion = () => {
     }
@@ -17,17 +47,14 @@ export const ProfileView = (user, setUser) => {
     //The view that you see at profile view
     return (
         <View>
-            <Text> {user.name} </Text>
-            <Text> User information 1</Text>
-            <Text> User information 2</Text>
-            <Button
-                title="Sign out"
-                onPress={handleLogout}
-            />
-            <TouchableOpacity onPress={handleAccountDeletion}>
-                <Text style={styles.text}> Delete my Jaq account</Text>
-            </TouchableOpacity>
-        </View>)
+            <Image style={styles.image} source={{ uri: user.picture }} />
+            <Text style={styles.message}>{user.name}</Text>
+            <Text style={styles.message}>{user.email}</Text>
+            <Button style={styles.button} title="Download data about user" onPress={downloadData} />
+            <Button style={styles.button} title="Delete account from JAQPP" onPress={handleDeleteAccount} />
+            <Button style={styles.button} title="Sign out" onPress={handleLogout} />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -69,11 +96,33 @@ const styles = StyleSheet.create({
             borderRadius: 25,
             marginRight: 10,
         },
+        buttonContainer: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+        },
+        button: {
+            backgroundColor: '#0A100D',
+            borderRadius: 5,
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            marginBottom: 20,
+            flex: 1,
+            marginHorizontal: 5,
+        },
         name: {
             fontSize: 18,
             fontWeight: 'bold',
         },
+        image: {
+            width: 200,
+            height: 200,
+        },
         bioContainer: {
+            marginBottom: 20,
+        },
+        message: {
+            fontSize: 24,
+            fontWeight: 'bold',
             marginBottom: 20,
         },
         bio: {

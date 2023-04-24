@@ -7,6 +7,7 @@ import {doc, getDoc, setDoc} from 'firebase/firestore';
 
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+import {firebase} from "@react-native-firebase/firestore";
 
 
 
@@ -28,7 +29,6 @@ const SignInScreen = () => {
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: "766637901593-id760o157h0bieoq7eiukbbvhnbhae0h.apps.googleusercontent.com",
     });
-
 
 
 
@@ -117,6 +117,11 @@ const SignInScreen = () => {
         }
     };
 
+    const handelGoogleLogin = async () => {
+        const credential = firebase.auth.GoogleAuthProvider.credential(null, accessToken);
+        await firebase.auth().signInWithCredential(credential);
+    }
+
 
     //A React function that triggers when there is a response from above the fetchUserInfo function
     React.useEffect(() => {
@@ -131,28 +136,6 @@ const SignInScreen = () => {
     const handlerLogin = useCallback(() => {
         promptAsync().then();
     }, [promptAsync])
-
-
-
-    //This is the function that handles profile view and all of its sub functions
-    const profileView = (user, setUser) => {
-
-        //Function that handles the Sign-out button
-        const handleLogout = () => {
-            setUser(null);
-        }
-
-        //The view that you see at profile view
-        return (
-            <View>
-                <Text style={styles.text}> {user.name} </Text>
-                <Button
-                    title="Sign out"
-                    color={'red'}
-                    onPress={handleLogout}
-                />
-            </View>)
-    }
 
 
     useEffect(() => {
@@ -180,7 +163,6 @@ const SignInScreen = () => {
         );
     } else {
         return (
-
                 <View style={styles.container}>
                     <View style={styles.inputContainer}>
                         <TextInput

@@ -1,6 +1,6 @@
 import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useState} from "react";
-import {currentGathering} from "../global_variables";
+import {currentGathering, currentUser} from "../global_variables";
 import { useNavigation } from '@react-navigation/native';
 
 import {Modal} from "../Modal";
@@ -12,7 +12,7 @@ export const GatheringView = ({route}) => {
 
 
     const { item } = route.params;
-    const user = auth.currentUser;
+    const [user, setUser] = currentUser();
 
     //Edit part
     //Variables and functions that handles the edit part
@@ -29,7 +29,7 @@ export const GatheringView = ({route}) => {
                 name: gatName,
                 date: gatDate,
                 time: gatTime,
-                userID: user.uid,
+                userID: user.id,
             }
         );
     }
@@ -60,6 +60,7 @@ export const GatheringView = ({route}) => {
     //Using this will check the id and then edit the data.
     const editData = () => {
         check("gathering", id).then();
+        navigation.navigate('Your gatherings')
     }
 
     //Variables used to handle Modal (Popup screen for edit)

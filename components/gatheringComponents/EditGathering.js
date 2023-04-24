@@ -7,43 +7,37 @@ import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} 
 
 //Component Imports
 import {Modal} from "../Modal";
+import {currentUser} from "../global_variables";
 
 const Edit = ({navigation}) => {
 
     //Get part
     // This is variables and functions for fetching and display all the gatherings
     const [gat, setGat] = useState([]);
-    const user = auth.currentUser;
+    const [user, setUser] = currentUser();
 
 
     useEffect(() => {
         const getAllGat = async () => {
 
+            const q = query(collection(db, "gathering"), where("userID", "==", user.id));
+            onSnapshot(q, (querySnapshot) => {
+                const  list = [];
 
-            if (user !== null) {
-                const uid = user.uid;
-                console.log("  Provider-specific UID: " + uid);
+                querySnapshot.forEach((doc) => {
+                    const { name, date, time} = doc.data();
 
-
-                const q = query(collection(db, "gathering"), where("userID", "==", uid));
-                onSnapshot(q, (querySnapshot) => {
-                    const  list = [];
-
-                    querySnapshot.forEach((doc) => {
-                        const { name, date, time} = doc.data();
-
-                        //list for storing the data
-                        list.push({
-                            id: doc.id,
-                            name,
-                            date,
-                            time,
-                        });
+                    //list for storing the data
+                    list.push({
+                        id: doc.id,
+                        name,
+                        date,
+                        time,
                     });
-
-                    setGat(list);
                 });
-            }
+
+                setGat(list);
+            });
         }
         getAllGat();
 
@@ -65,7 +59,7 @@ const Edit = ({navigation}) => {
                 name: gatName,
                 date: gatDate,
                 time: gatTime,
-                userID: user.uid,
+                userID: user.id,
             }
         );
     }

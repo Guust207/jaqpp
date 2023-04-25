@@ -11,18 +11,17 @@ import {db} from "./firebaseConfig";
 import {doc, getDoc, setDoc} from "firebase/firestore";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import SignInScreen from "./components/loginComponents/signInView";
 
-import {Login} from "./components/loginComponents/loginView";
 import Create from "./components/gatheringComponents/CreateGathering";
 
 
-import {AntDesign, Ionicons, MaterialIcons} from '@expo/vector-icons';
+import {AntDesign, Ionicons} from '@expo/vector-icons';
 
 
 
 import { onAuthStateChanged } from "firebase/auth";
 import {auth} from "./firebaseConfig";
+import {Login} from "./components/loginComponents/loginView";
 
 
 
@@ -52,17 +51,19 @@ const App = () => {
 
     //Function that is run before adding the student to database. It checks if a user with the same id already exists.
     async function add() {
-        if (user) {
-
+        if (user === null)
+            return;
+        if (user === undefined) {
+            return;
+        }
+        console.log("HALLA")
+        if (check("users").then()) {
             await setDoc(doc(db,"users", user.id), {
-                    fullName: user.name,
-                    email: user.email,
-                    picture: user.picture,
-                }
-            );
-        } else
-        {
-            add().then();
+                fullName: user.name,
+                email: user.email,
+                picture: user.picture,
+            })
+            console.log("User", user.name, "has been added to database")
         }
     }
 
@@ -72,9 +73,10 @@ const App = () => {
             const docSnap = await getDoc(docRef);
 
             if (!docSnap.exists()) {
-                add(user).then();
+                return false;
             }
         } else {
+            return true;
         }
     }
 
@@ -82,6 +84,7 @@ const App = () => {
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
+        add().then();
         // Check if user is not null and app has been initialized
         if (isInitialized) {
             SetUserLoggedIn(() => !UserNotLoggedIn);
@@ -106,9 +109,6 @@ const App = () => {
             setUser(user);
             if(user){
                 SetUserLoggedIn(() => !UserNotLoggedIn)
-                console.log(user.name);
-                console.log(user.id);
-                check("users",user).then();
             }
         } catch (error) {
             console.log("Failed!");
@@ -190,8 +190,8 @@ const App = () => {
                         }}
                     />
                     <Tab.Screen
-                        name="profile"
-                        component={ProfileView}
+                        name="Profile"
+                        component={Login}
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <Ionicons name="person-outline" size={24} color="black" />

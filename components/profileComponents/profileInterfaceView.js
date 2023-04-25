@@ -3,9 +3,14 @@ import {Alert, TouchableOpacity, Button, Image, StyleSheet, Text, View} from "re
 import * as React from "react";
 import {deleteDoc, doc, getDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
+import {currentUser} from "../global_variables";
 
 
 export const ProfileView = (user, setUser) => {
+
+
+    console.log(user.picture);
+
 
     const accountDeleted = () =>
         Alert.alert('Account deleted from JaqPPP','', [
@@ -30,7 +35,6 @@ export const ProfileView = (user, setUser) => {
     //Function that handles the Sign-out button
     const handleLogout = () => {
         setUser(null);
-
     }
 
     const userAlert = () =>
@@ -57,40 +61,29 @@ export const ProfileView = (user, setUser) => {
 
     //The view that you see at profile view
     return (
-        <View style={styles.container}>
-            <View style={styles.bioContainer}>
-                <View style={styles.top}>
-                    <View style={styles.imageContainer}>
-                        <Image style={styles.image} source={{ uri: user.picture }} />
-                        {/*<Image style={styles.logo} source={require('../../images/logo.png')}/>*/}
-                        {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
+        <View>
+            <View>
+                <Image style={styles.profilePicture} source={{ uri: user.picture }} />
+                <View style={styles.bioContainer}>
+                    <Text style={styles.message}>{user.name}</Text>
+                    <Text style={styles.message}>{user.email}</Text>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.button} onPress={handleLogout}>
+                            <Text style={styles.buttonText}>Sign Out</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.button} onPress={downloadData}>
+                            <Text style={styles.buttonText}>Download data about user</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity onPress={userAlert}>
+                            <Text style={styles.buttonText}> Delete my JaqPP account</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
-                <Text style={styles.message}>{user.name}</Text>
-
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={handleLogout}>
-                        <Text style={styles.buttonText}>Sign Out</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={downloadData}>
-                        <Text style={styles.buttonText}>Download data about user</Text>
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <TouchableOpacity onPress={userAlert}>
-                        <Text style={styles.buttonText}> Delete my JaqPP account</Text>
-                    </TouchableOpacity>
-                </View>
             </View>
-
-            <Image style={styles.image} source={{ uri: user.picture }} />
-            <Text style={styles.message}>{user.name}</Text>
-            <Text style={styles.message}>{user.email}</Text>
-            <Button style={styles.button} title="Download data about user" onPress={downloadData} />
-            <Button style={styles.button} title="Delete account from JAQPP" onPress={handleDeleteAccount} />
-            <Button style={styles.button} title="Sign out" onPress={handleLogout} />
         </View>
     );
 }
@@ -168,7 +161,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: 20,
     },
-
+    image: {
+        width: 200,
+        height: 200,
+    },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',

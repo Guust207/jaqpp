@@ -11,10 +11,18 @@ import {db} from "./firebaseConfig";
 import {doc, getDoc, setDoc} from "firebase/firestore";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import SignInScreen from "./components/loginComponents/signInView";
+
 import {Login} from "./components/loginComponents/loginView";
 import Create from "./components/gatheringComponents/CreateGathering";
 
 
+import {AntDesign, Ionicons, MaterialIcons} from '@expo/vector-icons';
+
+
+
+import { onAuthStateChanged } from "firebase/auth";
+import {auth} from "./firebaseConfig";
 
 
 
@@ -133,24 +141,83 @@ const App = () => {
     const Stack = createStackNavigator();
 
 
-    return (
-        <NavigationContainer>
-            <View>
-                <Modal isVisible={UserNotLoggedIn} >
-                    <View style={styles.googleButtonContainer}>
-                        <TouchableOpacity style={[styles.button, styles.googleButton]} onPress={handlerLogin}>
-                            <Text style={[styles.buttonText, styles.googleButtonText]}>Sign in with Google</Text>
-                        </TouchableOpacity>
-                    </View>
-                </Modal>
-            </View>
-            <Tab.Navigator>
-                <Tab.Screen name="Gatherings" component={Gathering}/>
-                <Tab.Screen name="+" component={Create}/>
-                <Tab.Screen name="Profile" component={Login}/>
-            </Tab.Navigator>
-        </NavigationContainer>
-    );
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user);
+            } else {
+                setUser(null);
+                navigator.reset({
+                    index: 0,
+                    routes: [{ name: 'signInView' }],
+                });
+
+            }
+        });
+
+    }, []);
+
+
+    if (user == null) {
+        return (
+            <NavigationContainer>
+                <Tab.Navigator>
+                    <Tab.Screen
+                        name="SignIn"
+                        component={SignInScreen}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialIcons name="login" size={24}login color="black" />
+                            ),
+                        }}
+                    />
+                </Tab.Navigator>
+                <View>
+                    <Modal isVisible={UserNotLoggedIn} >
+                        <View style={styles.googleButtonContainer}>
+                            <TouchableOpacity style={[styles.button, styles.googleButton]} onPress={handlerLogin}>
+                                <Text style={[styles.buttonText, styles.googleButtonText]}>Sign in with Google</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+                </View>
+            </NavigationContainer>
+        );
+    } else {
+        return (
+            <NavigationContainer>
+                <Tab.Navigator>
+                    <Tab.Screen
+                        name="Home"
+                        component={SignInScreen}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <AntDesign name="home" size={24} color="black" />
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Create"
+                        component={Gathering}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <Ionicons name="duplicate-outline" size={24} color="black" />
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name="profile"
+                        component={ProfileView}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <Ionicons name="person-outline" size={24} color="black" />
+                            ),
+                        }}
+                    />
+                </Tab.Navigator>
+            </NavigationContainer>
+        );
+    }
 
 }
 
@@ -253,4 +320,6 @@ const styles = StyleSheet.create({
     },
 
 });
+
+
 

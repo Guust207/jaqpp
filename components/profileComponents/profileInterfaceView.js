@@ -1,5 +1,5 @@
 //This is the function that handles profile view and all of its sub functions
-import {Alert, Button, Image, StyleSheet, Text, View} from "react-native";
+import {Alert, TouchableOpacity, Button, Image, StyleSheet, Text, View} from "react-native";
 import * as React from "react";
 import {deleteDoc, doc, getDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
@@ -33,6 +33,19 @@ export const ProfileView = (user, setUser) => {
 
     }
 
+    const userAlert = () =>
+        Alert.alert('Are you sure you want to delete this user?', 'This will delete all of your gatherings etc!!',[
+            {
+                text: 'Delete',
+                onPress: () => handleDeleteAccount(),
+            },
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+        ]);
+
     //Function that handles deleteAccount button
     const handleDeleteAccount = async () => {
         console.log(user.id)
@@ -41,12 +54,37 @@ export const ProfileView = (user, setUser) => {
     }
 
 
-    const handleAccountDeletion = () => {
-    }
 
     //The view that you see at profile view
     return (
-        <View>
+        <View style={styles.container}>
+            <View style={styles.bioContainer}>
+                <View style={styles.top}>
+                    <View style={styles.imageContainer}>
+                        <Image style={styles.image} source={{ uri: user.picture }} />
+                        {/*<Image style={styles.logo} source={require('../../images/logo.png')}/>*/}
+                        {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
+                    </View>
+                </View>
+                <Text style={styles.message}>{user.name}</Text>
+
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={handleLogout}>
+                        <Text style={styles.buttonText}>Sign Out</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={downloadData}>
+                        <Text style={styles.buttonText}>Download data about user</Text>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <TouchableOpacity onPress={userAlert}>
+                        <Text style={styles.buttonText}> Delete my JaqPP account</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+
             <Image style={styles.image} source={{ uri: user.picture }} />
             <Text style={styles.message}>{user.name}</Text>
             <Text style={styles.message}>{user.email}</Text>
@@ -58,80 +96,94 @@ export const ProfileView = (user, setUser) => {
 }
 
 const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            padding: 5,
-            justifyContent: 'flex-start',
-            backgroundColor: 'white'
-        },
-        head: {
-            height: 44,
-            backgroundColor: 'gray'
-        },
-        headText: {
-            fontSize: 20,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            color: 'black'},
-        text: {
-            margin: 4,
-            fontSize: 16,
-            textAlign: 'center',
-            backgroundColor: 'blue'
-        },
-        category: {
-            backgroundColor: 'lightgrey',
-            padding: 20
-        },
-        edit: {
-            fontSize: 20,
-            color: 'orange',
-            width: '100%',
-            backgroundColor: 'grey',
-            textAlign: 'center'
-        },
-        profilePicture: {
-            width: 50,
-            height: 50,
-            borderRadius: 25,
-            marginRight: 10,
-        },
-        buttonContainer: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-        },
-        button: {
-            backgroundColor: '#0A100D',
-            borderRadius: 5,
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            marginBottom: 20,
-            flex: 1,
-            marginHorizontal: 5,
-        },
-        name: {
-            fontSize: 18,
-            fontWeight: 'bold',
-        },
-        image: {
-            width: 200,
-            height: 200,
-        },
-        bioContainer: {
-            marginBottom: 20,
-        },
-        message: {
-            fontSize: 24,
-            fontWeight: 'bold',
-            marginBottom: 20,
-        },
-        bio: {
-            fontSize: 16,
-            lineHeight: 24,
-        },
-    }
-)
+    container: {
+        flex: 1,
+        padding: 5,
+        justifyContent: 'flex-start',
+        backgroundColor: '#D6D5C9'
+    },
+    head: {
+        height: 44,
+        backgroundColor: 'gray'
+    },
+    headText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: 'black'},
+    text: {
+        margin: 4,
+        fontSize: 16,
+        textAlign: 'center',
+        backgroundColor: 'blue'
+    },
+    category: {
+        backgroundColor: 'lightgrey',
+        padding: 20
+    },
+    edit: {
+        fontSize: 20,
+        color: 'orange',
+        width: '100%',
+        backgroundColor: 'grey',
+        textAlign: 'center'
+    },
+    profilePicture: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        marginRight: 10,
+    },
+    name: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    bioContainer: {
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
 
+    top: {
+        flexDirection: 'row',
+        marginBottom: -20
+    },
+    imageContainer: {
+        marginLeft: 8,
+        height: 60,
+        width: 60,
+        borderRadius: 50,
+        marginRight: 40,
+        marginBottom: 50,
 
+    },
+    logo: {
+        aspectRatio: 1,
+        marginLeft: 8,
+        width: '100%',
+        height: undefined,
+        borderRadius: 50,
+    },
+    bioName: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginTop: 20,
+    },
 
-
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    button: {
+        backgroundColor: '#0A100D',
+        borderRadius: 5,
+        marginBottom: 20,
+        flex: 1,
+        marginHorizontal: 5,
+        padding: 20,
+    },
+    buttonText: {
+        color: '#D6D5C9',
+        textAlign: 'center',
+        fontSize: 16,
+    },
+})

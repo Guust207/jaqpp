@@ -158,20 +158,9 @@ const App = () => {
     }, []);
 
 
-    if (user == null) {
+
         return (
             <NavigationContainer>
-                <Tab.Navigator>
-                    <Tab.Screen
-                        name="SignIn"
-                        component={SignInScreen}
-                        options={{
-                            tabBarIcon: ({ color, size }) => (
-                                <MaterialIcons name="login" size={24}login color="black" />
-                            ),
-                        }}
-                    />
-                </Tab.Navigator>
                 <View>
                     <Modal isVisible={UserNotLoggedIn} >
                         <View style={styles.googleButtonContainer}>
@@ -181,15 +170,10 @@ const App = () => {
                         </View>
                     </Modal>
                 </View>
-            </NavigationContainer>
-        );
-    } else {
-        return (
-            <NavigationContainer>
                 <Tab.Navigator>
                     <Tab.Screen
                         name="Home"
-                        component={SignInScreen}
+                        component={Gathering}
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <AntDesign name="home" size={24} color="black" />
@@ -198,7 +182,7 @@ const App = () => {
                     />
                     <Tab.Screen
                         name="Create"
-                        component={Gathering}
+                        component={Create}
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <Ionicons name="duplicate-outline" size={24} color="black" />
@@ -219,7 +203,7 @@ const App = () => {
         );
     }
 
-}
+
 
 
 

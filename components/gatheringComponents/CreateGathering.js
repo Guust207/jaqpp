@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Text, TextInput, View} from "react-native";
+import {StyleSheet, TouchableOpacity, Button, Text, TextInput, View} from "react-native";
 import {auth, db} from "../../firebaseConfig";
 import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
 import {login, userid, name} from "../loginComponents/loginView";
@@ -65,30 +65,38 @@ const Create = () => {
 
 
     return (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={styles.container}>
+            <Text style={styles.title}>Add information to the new Gathering</Text>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Name for Gathering"
+                    onChangeText={set_gathName}
+                    placeholderTextColor="#999"
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder={"mm.dd.yyyy"}
+                    onChangeText={set_gathDate}
+                    placeholderTextColor="#999"
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Time of gathering"
+                    onChangeText={set_gathTime}
+                    placeholderTextColor="#999"
+                />
+            </View>
 
-            <Text>Gathering name:</Text>
-            <TextInput
-                onChangeText={set_gathName}
-                placeholder="gathering name"
-            />
-
-            <Text>Time</Text>
-            <TextInput
-                onChangeText={set_gathTime}
-                placeholder="Time"
-            />
-
-            <Text>Date</Text>
-            <TextInput
-                onChangeText={set_gathDate}
-                placeholder="Date"
-            />
-
-            <Button
-                onPress={addData}
-                title="Add"
-            />
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={() => addData()}>
+                    <Text style={styles.buttonText}>Create</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 
@@ -101,50 +109,44 @@ export default Create;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 5,
-        justifyContent: 'flex-start',
-        backgroundColor: 'white'
+        backgroundColor: '#D6D5C9',
+        paddingHorizontal: 20,
+        paddingVertical: 40,
     },
-    head: {
-        height: 44,
-        backgroundColor: 'gray'
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        marginBottom:20,
     },
-    headText: {
-        fontSize: 20,
-        fontWeight: 'bold',
+    input: {
+        flex: 1,
+        height: 40,
+        marginLeft: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#666',
+        color: '#333',
+        fontSize: 16,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    button: {
+        backgroundColor: '#0A100D',
+        borderRadius: 5,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        flex: 1,
+        marginHorizontal: 5,
+    },
+    buttonText: {
+        color: '#D6D5C9',
         textAlign: 'center',
-        color: 'black'},
-    text: {
-        margin: 4,
         fontSize: 16,
-        textAlign: 'center'
     },
-    gat: {
-        backgroundColor: 'lightgrey',
-        padding: 20
-    },
-    edit: {
+    title: {
         fontSize: 20,
-        color: 'orange',
-        width: '100%',
-        backgroundColor: 'grey',
-        textAlign: 'center'
-    },
-    profilePicture: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        marginRight: 10,
-    },
-    name: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    bioContainer: {
-        marginBottom: 20,
-    },
-    bio: {
-        fontSize: 16,
-        lineHeight: 24,
+        fontWeight: "bold",
+        marginBottom: 30,
     },
 });

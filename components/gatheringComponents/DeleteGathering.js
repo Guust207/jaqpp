@@ -1,5 +1,5 @@
 import {deleteDoc, doc} from "firebase/firestore";
-import {db} from "../firebaseConfig";
+import {db} from "../../firebaseConfig";
 import {Button, StyleSheet, TextInput, View} from "react-native";
 import {useEffect, useState} from "react";
 

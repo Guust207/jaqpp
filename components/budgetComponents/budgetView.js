@@ -3,13 +3,13 @@ import {Alert, Button, Text, TextInput, View} from "react-native";
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {Modal} from "../Modal";
-import {currentCategory} from "../global_variables";
+import {currentCategory, currentGathering} from "../global_variables";
 
-const gatheringID = "gathering55555"
 
 export const AddBudgetView = () => {
 
-    const [categoryID, set_categoryID] = useState(null);
+    const [categoryID, set_categoryID] = currentCategory();
+    const [gathering, setGathering] = currentGathering();
 
     function GenerateID() {
         const number1 = Math.floor(Math.random() * 9) + 1;
@@ -24,9 +24,10 @@ export const AddBudgetView = () => {
 
 
     async function add_budgetCategory() {
+        console.log(gathering.id);
         console.log("budgetCategory: ", budgetCategory);
         console.log("categoryID: ", categoryID);
-        await setDoc(doc(db, "gathering", gatheringID, "budget", categoryID), {
+        await setDoc(doc(db, "gathering", gathering.id, "budget", categoryID), {
             name: budgetCategory,
             totalCost: 0
             }
@@ -52,8 +53,7 @@ export const AddBudgetView = () => {
 
 
     async function hasError() {
-        const gatheringID = "gathering55555"
-        const docRef = doc(db, "gathering", gatheringID, "budget", categoryID);
+        const docRef = doc(db, "gathering", gathering.id, "budget", categoryID);
         const docSnap = await getDoc(docRef);
         if (budgetCategory.toLowerCase() === null) {
             MissingCategory();
@@ -69,7 +69,6 @@ export const AddBudgetView = () => {
 
     async function addBudget() {
         set_categoryID(GenerateID());
-        console.log(categoryID);
         if (await hasError() === true) {
             add_budgetCategory().then();
         }
@@ -101,14 +100,15 @@ export const AddBudgetView = () => {
 }
 
 export const EditBudgetView = () => {
+    const [gathering, setGathering] = currentGathering();
     const [budgetCategory_tmp, set_budgetCategory_tmp] = useState(null);
     const [categoryID, set_id] = currentCategory();
 
 
     async function edit_budgetCategory() {
-        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID);
+        const docRef = doc(db,"gathering", gathering.id, "budget", categoryID);
         const docSnap = await getDoc(docRef).then();
-        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
+        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID), {
                 totalCost: docSnap.data().totalCost,
                 name: budgetCategory_tmp
             }
@@ -133,7 +133,7 @@ export const EditBudgetView = () => {
 
 
     async function hasError() {
-        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID);
+        const docRef = doc(db,"gathering", gathering.id, "budget", categoryID);
         const docSnap = await getDoc(docRef);
         if (budgetCategory_tmp.toLowerCase() === null) {
             MissingCategory();
@@ -179,7 +179,7 @@ export const EditBudgetView = () => {
 }
 
 async function DeleteBudgetCategoryView() {
-    const docRef = doc(db,"gathering", gatheringID, "budget", categoryID);
+    const docRef = doc(db,"gathering", gathering.id, "budget", categoryID);
     // Delete that document
     await deleteDoc(docRef);
 }

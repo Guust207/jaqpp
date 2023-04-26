@@ -20,6 +20,7 @@ export const Gathering = () => {
             <Stack.Screen name="Your gatherings" component={GatheringInterface}/>
             <Stack.Screen name="Create" component={Create}/>
             <Stack.Screen name="CurrentGathering" component={GatheringView}/>
+            <Stack.Screen name="Budget" component={CategoryView}/>
         </Stack.Navigator>
     )
 }

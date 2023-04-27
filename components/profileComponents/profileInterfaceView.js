@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
         padding: 5,
         justifyContent: 'flex-start',
         backgroundColor: '#D6D5C9',
+        paddingTop: 100,
     },
     bioContainer: {
         justifyContent: 'space-between',

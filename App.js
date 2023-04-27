@@ -1,29 +1,18 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {Modal} from "./components/Modal";
-import {Gathering} from "./components/gatheringComponents/Gathering";
-import {ProfileView} from "./components/profileComponents/profileInterfaceView";
-import {currentUser} from "./components/global_variables";
-import {db} from "./firebaseConfig";
-import {doc, getDoc, setDoc} from "firebase/firestore";
-import * as WebBrowser from "expo-web-browser";
-import * as Google from "expo-auth-session/providers/google";
-
-import Create from "./components/gatheringComponents/CreateGathering";
-
-
+import React, {useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {StyleSheet} from "react-native";
+import {onAuthStateChanged} from "firebase/auth";
+import {auth} from "./firebaseConfig";
 import {AntDesign, Ionicons, MaterialIcons} from '@expo/vector-icons';
 
 
-
-import { onAuthStateChanged } from "firebase/auth";
-import {auth} from "./firebaseConfig";
+import {currentUser} from "./components/global_variables";
 import {Login} from "./components/loginComponents/loginView";
-
-
+import {Gathering} from "./components/gatheringComponents/Gathering";
+import {ProfileView} from "./components/profileComponents/profileInterfaceView";
+import Create from "./components/gatheringComponents/CreateGathering";
 
 
 
@@ -34,8 +23,6 @@ const App = () => {
 
     //The navigation bar that you see at the bottom
     const Tab = createBottomTabNavigator();
-    const Stack = createStackNavigator();
-
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -62,6 +49,7 @@ const App = () => {
                         name="SignIn"
                         component={Login}
                         options={{
+                            headerShown: false,
                             tabBarIcon: ({ color, size }) => (
                                 <MaterialIcons name="login" size={24}login color="black" />
                             ),
@@ -78,6 +66,7 @@ const App = () => {
                         name="Home"
                         component={Gathering}
                         options={{
+                            headerShown: false,
                             tabBarIcon: ({ color, size }) => (
                                 <AntDesign name="home" size={24} color="black" />
                             ),
@@ -87,6 +76,7 @@ const App = () => {
                         name="Create"
                         component={Create}
                         options={{
+                            headerShown: false,
                             tabBarIcon: ({ color, size }) => (
                                 <Ionicons name="duplicate-outline" size={24} color="black" />
                             ),
@@ -96,6 +86,7 @@ const App = () => {
                         name="Profile"
                         component={ProfileView}
                         options={{
+                            headerShown: false,
                             tabBarIcon: ({ color, size }) => (
                                 <Ionicons name="person-outline" size={24} color="black" />
                             ),

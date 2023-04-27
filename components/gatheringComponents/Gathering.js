@@ -15,11 +15,16 @@ Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
 export const Gathering = () => {
     const [CurrentGathering, setCurrentGathering] = currentGathering();
     const Stack = createStackNavigator();
+
     return (
         <Stack.Navigator>
             <Stack.Screen name="Your gatherings" component={GatheringInterface}/>
             <Stack.Screen name="Create" component={Create}/>
-            <Stack.Screen name="CurrentGathering" component={GatheringView}/>
+            <Stack.Screen name="CurrentGathering" component={GatheringView}
+                          options={{
+                              title: CurrentGathering.name,
+                          }}
+            />
             <Stack.Screen name="Budget" component={CategoryView}/>
         </Stack.Navigator>
     )

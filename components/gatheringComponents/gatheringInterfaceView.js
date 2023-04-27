@@ -33,7 +33,7 @@ export const GatheringInterface = () => {
                 const  list = [];
 
                 querySnapshot.forEach((doc) => {
-                    const { name, date, time} = doc.data();
+                    const { name, date, time, description} = doc.data();
 
                     //list for storing the data
                     list.push({
@@ -41,6 +41,7 @@ export const GatheringInterface = () => {
                         name,
                         date,
                         time,
+                        description,
                     });
                 });
 
@@ -68,6 +69,7 @@ export const GatheringInterface = () => {
                         name,
                         date,
                         time,
+
                     });
                 });
 

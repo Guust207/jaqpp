@@ -26,15 +26,17 @@ export const GatheringView = ({route}) => {
     const [Name, set_Name] = useState(Name);
     const [Date, set_Date] = useState(Date);
     const [Time, set_Time] = useState(Time);
+    const [Description, set_Description] = useState(Description);
 
 
 
     //Function for editing a gathering
-    async function edit(id, gatName, gatDate, gatTime) {
+    async function edit(id, gatName, gatDate, gatTime, gatDescription) {
         await setDoc(doc(db, "gathering", id), {
                 name: gatName,
                 date: gatDate,
                 time: gatTime,
+                description: gatDescription,
                 userID: user.id,
             }
         );
@@ -49,6 +51,7 @@ export const GatheringView = ({route}) => {
         set_Name(gat.name);
         set_Date(gat.date);
         set_Time(gat.time);
+        set_Description(gat.description)
         handleModal();
     }
 
@@ -57,7 +60,7 @@ export const GatheringView = ({route}) => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            edit(id, Name, Date, Time).then();
+            edit(id, Name, Date, Time, Description).then();
             handleModal();
         }
     }
@@ -110,27 +113,29 @@ export const GatheringView = ({route}) => {
         <View style={styles.container}>
             <ScrollView>
                 <View>
-                    <Text>
-                        Hello {item.name}
-                    </Text>
-                    <Button
-                        title={"Administer Budget"}
-                        onPress={() => handleBudgetButton(item)}
-                    />
-                    <Button
-                        title={"Administer Attendees"}
+                    <Text style={styles.headText}>{item.name}</Text>
+                    <Text style={styles.descriptionText}>{item.description}</Text>
 
-                    />
-                    <View style={styles.gat}>
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={() => EditBtnFunc(item)}>
-                                <Text style={styles.button}> Edit  </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => deleteData(item)}>
-                                <Text style={styles.button}>Delete</Text>
-                            </TouchableOpacity>
-                        </View>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.button} onPress={() => handleBudgetButton(item)}>
+                            <Text style={styles.buttonText}>Administer Budget</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} >
+                            <Text style={styles.buttonText}>Administer Attendees</Text>
+                        </TouchableOpacity>
                     </View>
+
+                    <View style={styles.bottomButtonContainer}>
+                        <TouchableOpacity style={[styles.button, styles.bottomButton]} onPress={() => EditBtnFunc(item)}>
+                            <Text style={styles.buttonText}>Edit Gathering</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.bottomButtonContainer}>
+                    <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={() => deleteData(item)}>
+                            <Text style={styles.buttonText}>Delete </Text>
+                        </TouchableOpacity>
+                    </View>
+
 
                     {/* This is the popup that appears when you click edit at the table */}
                     <Modal isVisible={isModalVisible}>
@@ -165,6 +170,16 @@ export const GatheringView = ({route}) => {
                                             placeholder='Time'
                                         />
                                     </View>
+                                    <Text style={styles.textModal}>Description:</Text>
+                                    <View style={styles.inputContainer}>
+                                        <TextInput
+                                            multiline
+                                            style={styles.input}
+                                            onChangeText={set_Description}
+                                            value={Description}
+                                            placeholder='description'
+                                        />
+                                    </View>
                                 </View>
                             </Modal.Body>
                             <Modal.Footer>
@@ -180,8 +195,8 @@ export const GatheringView = ({route}) => {
                         </Modal.Container>
                     </Modal>
                 </View>
-        </ScrollView>
-    </View>
+            </ScrollView>
+        </View>
 
     )
 }
@@ -193,43 +208,23 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         backgroundColor: '#D6D5C9',
     },
-        head: {
-            height: 44,
-            backgroundColor: 'gray'
-        },
-        headText: {
-            fontSize: 20,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            color: 'black'},
-        category: {
-            backgroundColor: 'lightgrey',
-            padding: 20
-        },
-        edit: {
-            fontSize: 20,
-            color: 'orange',
-            width: '100%',
-            backgroundColor: 'grey',
-            textAlign: 'center'
-        },
-
-
-    gatContainer: {
-        backgroundColor: '#B9BAA3',
-        padding: 10,
-        margin:10,
-        borderRadius: '10%',
+    headText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: 'black',
+        paddingBottom: 5,
+        marginBottom: 15,
+        borderBottomWidth:0.5,
     },
-    gat: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-    },
-
-    text: {
+    descriptionText: {
         fontSize: 16,
+        marginBottom: 30,
     },
+
+
     buttonContainer: {
+        alignItems: 'flex-start',
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
@@ -237,13 +232,29 @@ const styles = StyleSheet.create({
         backgroundColor: '#0A100D',
         color: '#B9BAA3',
         borderRadius: 5,
-        paddingVertical: 3,
-        paddingHorizontal: 57,
+        paddingVertical: 10,
         flex: 1,
-        marginHorizontal: 5,
+        marginHorizontal: 2,
+        marginBottom: 10,
         alignItems: 'center',
         justifyContent: 'center',
         textAlignVertical: 'center',
+    },
+    buttonText: {
+        color: '#D6D5C9',
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    bottomButtonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+        color: '#333',
+    },
+
+
+    deleteButton: {
+        backgroundColor: '#DE1616'
     },
 
 
@@ -273,7 +284,6 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
         marginBottom: 30,
-
     },
     editButton: {
         color: '#005cfc',

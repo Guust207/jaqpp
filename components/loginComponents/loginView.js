@@ -119,10 +119,10 @@ export const Login = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
+        padding: 5,
+        backgroundColor: '#D6D5C9',
     },
+
     text: {
         fontSize: 20,
         fontWeight: "bold",

@@ -1,12 +1,10 @@
-import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import React, {useCallback, useEffect, useState} from 'react';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
-import {auth, db} from "../../firebaseConfig";
+import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
-import {ProfileView} from "../profileComponents/profileInterfaceView";
-import {signInWithCredential, GoogleAuthProvider} from "@firebase/auth";
 
 /* API Used for fetching information about user logged-in
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get
@@ -19,16 +17,6 @@ WebBrowser.maybeCompleteAuthSession();
 
 //This is the function that handles login and how the loginView should look like.
 export const Login = () => {
-
-
-    /* API Used for fetching information about user logged-in
-    https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get
-    https://docs.expo.dev/guides/google-authentication/
-     */
-
-    //Function that watches for requests to use browser.
-    WebBrowser.maybeCompleteAuthSession();
-
 
     //This is the function that handles login and how the loginView should look like.
 

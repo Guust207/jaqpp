@@ -6,10 +6,10 @@ import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
 
 
-export const ProfileView = (user, setUser) => {
+export const ProfileView = () => {
 
 
-    console.log(user.picture);
+    const [user, setUser] = currentUser();
 
 
     const accountDeleted = () =>

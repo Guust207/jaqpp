@@ -4,7 +4,6 @@ import {auth, db} from "../../firebaseConfig";
 import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc, where} from "firebase/firestore";
 import {Modal} from "../Modal";
 import {currentCategory, currentField, currentGathering} from "../global_variables";
-import {AddBudgetCategoryView, EditBudgetCategoryView} from "./budget_categoryFieldView";
 import {AddBudgetView, EditBudgetView} from "./budgetView";
 import {useNavigation} from "@react-navigation/native";
 import {Icon} from "react-native-elements";
@@ -98,7 +97,6 @@ export const CategoryView = () => {
                                     <View style={styles.CatName}>
                                         <Text style={styles.text}> {item.name}</Text>
                                         <Text> Total cost: {item.totalCost}</Text>
-
                                     </View>
                                     <View style={styles.icons}>
                                         <Icon

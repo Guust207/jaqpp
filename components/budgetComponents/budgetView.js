@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
-import {Alert, Button, Text, TextInput, View} from "react-native";
+import React, {useEffect, useState} from 'react';
+import {Alert, Button, StyleSheet, Text, TextInput, View} from "react-native";
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {Modal} from "../Modal";
 import {currentCategory, currentGathering} from "../global_variables";
+import {useNavigation} from "@react-navigation/native";
 
 
 export const AddBudgetView = () => {
+    const navigation = useNavigation();
 
     const [categoryID, set_categoryID] = currentCategory();
     const [gathering, setGathering] = currentGathering();
@@ -32,7 +34,6 @@ export const AddBudgetView = () => {
             totalCost: 0
             }
         ).then();
-        CategoryAdded();
         setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)
     }
 
@@ -71,6 +72,7 @@ export const AddBudgetView = () => {
         set_categoryID(GenerateID());
         if (await hasError() === true) {
             add_budgetCategory().then();
+            setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)
         }
     }
 
@@ -79,8 +81,12 @@ export const AddBudgetView = () => {
     return (
         <View>
             <Modal isVisible={isCategoryAddViewVisible}>
-                <Modal.Container>
+                <Modal.Container style={styles.modalContainer}>
+                    <View style={styles.container}>
+
+                    <Text style={styles.textModal}>Add a new category:</Text>
                     <TextInput
+                        style={styles.textModal}
                         onChangeText={set_budgetCategory}
                         value={budgetCategory}
                         placeholder="food, decoration, etc"
@@ -93,6 +99,7 @@ export const AddBudgetView = () => {
                         onPress={() => setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)}
                         title="Cancel"
                     />
+                    </View>
                 </Modal.Container>
             </Modal>
         </View>
@@ -100,11 +107,14 @@ export const AddBudgetView = () => {
 }
 
 export const EditBudgetView = () => {
+    const navigation = useNavigation();
+
     const [gathering, setGathering] = currentGathering();
-    const [budgetCategory_tmp, set_budgetCategory_tmp] = useState(null);
     const [categoryID, set_id] = currentCategory();
+    const [budgetCategory_tmp, set_budgetCategory_tmp] = useState('');
 
 
+    console.log(categoryID);
     async function edit_budgetCategory() {
         const docRef = doc(db,"gathering", gathering.id, "budget", categoryID);
         const docSnap = await getDoc(docRef).then();
@@ -113,7 +123,6 @@ export const EditBudgetView = () => {
                 name: budgetCategory_tmp
             }
         ).then();
-        CategoryAdded();
     }
 
     const MissingCategory = () =>
@@ -150,6 +159,7 @@ export const EditBudgetView = () => {
     async function editBudget() {
         if (await hasError() === true) {
             edit_budgetCategory().then();
+            setIsCategoryEditViewVisible(() => !isCategoryEditViewVisible)
         }
     }
 
@@ -158,28 +168,75 @@ export const EditBudgetView = () => {
     return (
         <View>
             <Modal isVisible={isCategoryEditViewVisible}>
-                <Modal.Container>
-                    <TextInput
-                        onChangeText={set_budgetCategory_tmp}
-                        value={budgetCategory_tmp}
-                        placeholder="food, decoration, etc"
-                    />
-                    <Button
-                        onPress={editBudget}
-                        title="Edit"
-                    />
-                    <Button
-                        onPress={() => setIsCategoryEditViewVisible(() => !isCategoryEditViewVisible)}
-                        title="Cancel"
-                    />
+                <Modal.Container style={styles.modalContainer}>
+                    <View style={styles.container}>
+                        <Text style={styles.textModal}>New name for category:</Text>
+                        <TextInput
+                            style={styles.in}
+                            onChangeText={set_budgetCategory_tmp}
+                            value={set_budgetCategory_tmp}
+                            placeholder="food, decoration, etc"
+                        />
+                        <Button
+                            onPress={editBudget}
+                            title="Edit"
+                        />
+                        <Button
+                            onPress={() => setIsCategoryEditViewVisible(() => !isCategoryEditViewVisible)}
+                            title="Cancel"
+                        />
+                     </View>
                 </Modal.Container>
             </Modal>
         </View>
     )
 }
 
-async function DeleteBudgetCategoryView() {
-    const docRef = doc(db,"gathering", gathering.id, "budget", categoryID);
-    // Delete that document
-    await deleteDoc(docRef);
-}
+
+const styles = StyleSheet.create({
+
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        margin: 20,
+    },
+
+    textModal: {
+        fontSize:16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 2,
+    },
+    input: {
+        flex: 1,
+        borderBottomWidth: 1,
+        borderBottomColor: '#666',
+        color: '#333',
+        fontSize: 16,
+        marginBottom: 30,
+
+    },
+    editButton: {
+        color: '#005cfc',
+        fontSize: 20,
+        marginRight: 20,
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 5,
+    },
+    cancelButton: {
+        color: '#FF0400',
+        fontSize: 20,
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 5,
+    },
+
+});

@@ -1,4 +1,4 @@
-import {Alert, Button, Text, TextInput, View} from "react-native";
+import {Alert, Button, StyleSheet, Text, TextInput, View} from "react-native";
 import React, {useState} from "react";
 import {db} from "../../firebaseConfig";
 import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
@@ -91,8 +91,8 @@ export const AddBudgetCategoryView = () => {
     async function button1() {
         if (await hasError() === true) {
             add_CategoryField().then();
-            FieldAdded();
             increase_totalCost(calculate_totalCost()).then();
+            setIsFieldAddViewVisible(() => !isFieldAddViewVisible)
         }
     }
 
@@ -112,30 +112,44 @@ export const AddBudgetCategoryView = () => {
     return (
         <View>
             <Modal isVisible={isFieldAddViewVisible}>
-                <Modal.Container>
-                    <TextInput
-                        onChangeText={set_fieldName}
-                        value={fieldName}
-                        placeholder="Name"
-                    />
-                    <TextInput
-                        onChangeText={set_fieldCost}
-                        value={fieldCost}
-                        placeholder="Cost Pr Unit"
-                    />
-                    <TextInput
-                        onChangeText={set_fieldAmount}
-                        value={fieldAmount}
-                        placeholder="Amount"
-                    />
-                    <Button
-                        onPress={button}
-                        title="Add"
-                    />
-                    <Button
-                        onPress={() => setIsFieldAddViewVisible(() => !isFieldAddViewVisible)}
-                        title="Cancel"
-                    />
+                <Modal.Container style={styles.modalContainer}>
+                    <View style={styles.container}>
+                        <Text style={styles.textModal}>New name for item:</Text>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={set_fieldName}
+                                value={fieldName}
+                                placeholder="Name"
+                            />
+                        </View>
+                        <Text style={styles.textModal}>New price pr Unit:</Text>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={set_fieldCost}
+                                value={fieldCost}
+                                placeholder="Cost Pr Unit"
+                            />
+                        </View>
+                        <Text style={styles.textModal}>New Amount:</Text>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={set_fieldAmount}
+                                value={fieldAmount}
+                                placeholder="Amount"
+                            />
+                        </View>
+                        <Button
+                            onPress={button}
+                            title="Add"
+                        />
+                        <Button
+                            onPress={() => setIsFieldAddViewVisible(() => !isFieldAddViewVisible)}
+                            title="Cancel"
+                        />
+                    </View>
                 </Modal.Container>
             </Modal>
         </View>
@@ -208,9 +222,9 @@ export const EditBudgetCategoryView = () => {
     async function button() {
         if (await hasError() === true) {
             await edit_CategoryField().then();
-            FieldAdded();
             await decrease_totalCost().then();
             await increase_totalCost().then();
+            setIsFieldEditViewVisible(() => !isFieldEditViewVisible)
         }
     }
 
@@ -231,32 +245,96 @@ export const EditBudgetCategoryView = () => {
     return (
         <View>
             <Modal isVisible={isFieldEditViewVisible}>
-                <Modal.Container>
-                    <TextInput
-                        onChangeText={set_fieldName}
-                        value={fieldName}
-                        placeholder="Name"
-                    />
-                    <TextInput
-                        onChangeText={set_fieldCost}
-                        value={fieldCost}
-                        placeholder="Cost Pr Unit"
-                    />
-                    <TextInput
-                        onChangeText={set_fieldAmount}
-                        value={fieldAmount}
-                        placeholder="Amount"
-                    />
-                    <Button
-                        onPress={button}
-                        title="Edit"
-                    />
-                    <Button
-                        onPress={() => setIsFieldEditViewVisible(() => !isFieldEditViewVisible)}
-                        title="Cancel"
-                    />
+                <Modal.Container style={styles.modalContainer}>
+                    <View style={styles.container}>
+                        <Text style={styles.textModal}>New name for gathering:</Text>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={set_fieldName}
+                                value={fieldName}
+                                placeholder="Name"
+                            />
+                        </View>
+                        <Text style={styles.textModal}>Date:</Text>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={set_fieldCost}
+                                value={fieldCost}
+                                placeholder="Cost Pr Unit"
+                            />
+                        </View>
+                        <Text style={styles.textModal}>Time:</Text>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={set_fieldAmount}
+                                value={fieldAmount}
+                                placeholder="Amount"
+                            />
+                        </View>
+                        <Button
+                            onPress={button}
+                            title="Edit"
+                        />
+                        <Button
+                            onPress={() => setIsFieldEditViewVisible(() => !isFieldEditViewVisible)}
+                            title="Cancel"
+                        />
+                    </View>
+
+
                 </Modal.Container>
             </Modal>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        margin: 20,
+    },
+
+    textModal: {
+        fontSize:16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 2,
+    },
+    input: {
+        flex: 1,
+        borderBottomWidth: 1,
+        borderBottomColor: '#666',
+        color: '#333',
+        fontSize: 16,
+        marginBottom: 30,
+
+    },
+    editButton: {
+        color: '#005cfc',
+        fontSize: 20,
+        marginRight: 20,
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 5,
+    },
+    cancelButton: {
+        color: '#FF0400',
+        fontSize: 20,
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 5,
+    },
+
+});

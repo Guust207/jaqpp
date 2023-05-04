@@ -10,15 +10,10 @@ import {auth, db} from "../../firebaseConfig";
 export const GatheringView = ({route}) => {
 
     const [CurrentGathering, setCurrentGathering] = currentGathering();
-
-
     const navigation = useNavigation();
     const { item } = route.params;
     const [user, setUser] = currentUser();
 
-    useEffect(() => {
-        setCurrentGathering(item)
-    }, [item]); // Pass user and isInitialized as dependency array
 
     //Edit part
     //Variables and functions that handles the edit part
@@ -99,9 +94,8 @@ export const GatheringView = ({route}) => {
 
 
     const handleBudgetButton = (gathering) => {
-        console.log(gathering.id)
-        console.log(CurrentGathering.id);
-        navigation.navigate('Budget')
+        console.log("THIS", gathering.id)
+        navigation.navigate('Budget', { gathering: gathering })
     }
 
 

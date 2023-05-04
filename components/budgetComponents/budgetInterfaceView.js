@@ -9,23 +9,20 @@ import {useNavigation} from "@react-navigation/native";
 import {Icon} from "react-native-elements";
 
 
-export const CategoryView = () => {
+export const CategoryView = ({route}) => {
     const navigation = useNavigation();
-
-
-    const [categoryID, setCategory] = currentCategory();
-    const [gathering, set_gathering] = currentGathering();
-
-
-
-    // This is variables and functions for fetching and display all the gatherings
-    const [category, set_category] = useState([]);
+    const { gathering } = route.params;
+    const [gatheringID, set_gatheringID] = useState(gathering.id);
+    const [categoryList, set_categoryList] = useState([]);
+    const [categoryID, set_CategoryID] = useState('');
+    const [categoryName, set_categoryName] = useState('');
+    const [totalCost, set_totalCost] = useState('');
 
 
     useEffect(() => {
         const getCategories = async () => {
 
-            const q = query(collection(db, "gathering", gathering.id, "budget"));
+            const q = query(collection(db, "gathering", gatheringID, "budget"));
             onSnapshot(q, (querySnapshot) => {
                 const  list = [];
 
@@ -40,41 +37,37 @@ export const CategoryView = () => {
                     });
                 });
 
-                set_category(list);
+                set_categoryList(list);
             });
         }
-        getCategories();
+        getCategories().then();
 
     },[])
 
 
-    //Variables and functions that handles the edit part
-    const [category_name, set_Name] = useState(category_name);
-    const [totalCost, set_totalCost] = useState(totalCost);
+
+
 
 
     //Variables used to handle Modal (Popup screen for edit)
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [isCategoryAddViewVisible, setIsCategoryAddViewVisible] = useState(false);
 
+
     const handleCategoryAddModal = () => {
-        setCategory(doc.id)
         setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)
     }
 
     const handleDeleteModal = async (category) => {
-        setCategory(category.id);
-        set_Name(category.name);
-        set_totalCost(category.totalCost);
         // Delete that document
-        await deleteDoc(doc(db,"gathering", gathering.id, "budget", categoryID));
+        await deleteDoc(doc(db,"gathering", gatheringID, "budget", category.id));
     }
 
     const [isCategoryEditViewVisible, setIsCategoryEditViewVisible] = useState(false);
 
     const handleEditModal = async (category) => {
-        setCategory(category.id);
-        set_Name(category.name);
+        set_CategoryID(category.id);
+        set_categoryName(category.name);
         set_totalCost(category.totalCost);
         setIsModalVisible(() => !isModalVisible);
         setIsCategoryEditViewVisible(() => !isCategoryEditViewVisible);
@@ -90,9 +83,9 @@ export const CategoryView = () => {
             />
             <ScrollView>
                 <View>
-                    {category.map((item) => (
+                    {categoryList.map((item) => (
                         <View key={item.id} style={styles.category}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Field', {item})}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Field', {gathering, item})}>
                                 <View style={styles.gat}>
                                     <View style={styles.CatName}>
                                         <Text style={styles.text}> {item.name}</Text>
@@ -119,11 +112,9 @@ export const CategoryView = () => {
                             </TouchableOpacity>
                         </View>
                     ))}
-
-
                 </View>
-                {isCategoryEditViewVisible && <EditBudgetView />}
-                {isCategoryAddViewVisible && <AddBudgetView />}
+                {isCategoryEditViewVisible && <EditBudgetView gathering={gathering} categoryID={categoryID} categoryName={categoryName} totalCost={totalCost}/>}
+                {isCategoryAddViewVisible && <AddBudgetView gathering={gathering}/>}
             </ScrollView>
         </View>
     )

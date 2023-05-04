@@ -9,14 +9,9 @@ import {Icon} from "react-native-elements";
 
 export const FieldView = ({route}) => {
 
-    const { item } = route.params;
-    const [category, setCategory] = useState(item.id);
-    const [gathering, set_gathering] = currentGathering();
-
-
-
-    console.log(category.id);
-    console.log(gathering.id);
+    const { gathering, item } = route.params;
+    const [gatheringID, set_gatheringID] = useState(gathering.id);
+    const [categoryID, set_CategoryID] = useState(item.id);
 
 
     // This is variables and functions for fetching and display all the gatherings
@@ -28,7 +23,7 @@ export const FieldView = ({route}) => {
 
 
 
-            const q = query(collection(db, "gathering", gathering.id, "budget", category,"ListOf" + category));
+            const q = query(collection(db, "gathering", gatheringID, "budget", categoryID,"ListOf" + categoryID));
             onSnapshot(q, (querySnapshot) => {
                 const  list = [];
 
@@ -52,7 +47,8 @@ export const FieldView = ({route}) => {
 
 
     //Variables and functions that handles the edit part
-    const [field_id, set_FieldId] = currentField();
+    const [currentField, set_currentField] = useState('');
+    const [field_id, set_FieldId] = useState(field_id);
     const [field_name, set_name] = useState(field_name);
     const [field_amount, set_amount] = useState(field_amount);
     const [field_cost, set_cost] = useState(field_cost);
@@ -78,26 +74,27 @@ export const FieldView = ({route}) => {
 
     const [isFieldEditViewVisible, setIsFieldEditViewVisible] = useState(false);
 
-    const handleEditModal = () => {
+    const handleEditModal = (item) => {
+        set_currentField(item);
         setIsModalVisible(() => !isModalVisible)
         setIsFieldEditViewVisible(() => !isFieldEditViewVisible)
     }
 
-    const handleDeleteModal = async () => {
+    const handleDeleteModal = async (item) => {
 
-        const docRef1 = doc(db,"gathering", gathering.id, "budget", category)
+        const docRef1 = doc(db,"gathering", gatheringID, "budget", categoryID)
         const docSnap1 = await getDoc(docRef1).then();
 
-        const docRef2 = doc(db,"gathering", gathering.id, "budget", category, "ListOf" + category, field_id)
+        const docRef2 = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, item.id)
         const docSnap2 = await getDoc(docRef2).then();
 
 
-        await setDoc(doc(db,"gathering", gathering.id, "budget", category.id), {
-            name: docSnap2.data().name,
+        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
+            name: docSnap1.data().name,
             totalCost: docSnap1.data().totalCost - docSnap2.data().totalCost
         });
 
-        await deleteDoc(doc(db,"gathering", gathering.id, "budget", category, "ListOf" + category, field_id));
+        await deleteDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, item.id));
         setIsModalVisible(() => !isModalVisible)
     }
 
@@ -117,7 +114,7 @@ export const FieldView = ({route}) => {
                                     <View style={styles.CatName}>
                                         <Text style={styles.text}> {item.name}</Text>
                                         <Text> Amount: {item.amount} </Text>
-                                        <Text> Cost: {item.cost} </Text>
+                                        <Text> Cost: {item.costPrUnit} </Text>
                                         <Text> Total cost: {item.totalCost} </Text>
                                     </View>
                                     <View style={styles.icons}>
@@ -142,8 +139,8 @@ export const FieldView = ({route}) => {
                     ))}
 
                 </View>
-                {isFieldAddViewVisible && <AddBudgetCategoryView/>}
-                {isFieldEditViewVisible && <EditBudgetCategoryView />}
+                {isFieldAddViewVisible && <AddBudgetCategoryView gathering={gathering} category={item} />}
+                {isFieldEditViewVisible && <EditBudgetCategoryView gathering={gathering} category={item} field={currentField}/>}
             </ScrollView>
         </View>
     )

@@ -17,6 +17,7 @@ export const CategoryView = ({route}) => {
     const [categoryID, set_CategoryID] = useState('');
     const [categoryName, set_categoryName] = useState('');
     const [totalCost, set_totalCost] = useState('');
+    const [category, set_category] = currentCategory();
 
 
     useEffect(() => {
@@ -85,7 +86,7 @@ export const CategoryView = ({route}) => {
                 <View>
                     {categoryList.map((item) => (
                         <View key={item.id} style={styles.category}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Field', {gathering, item})}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Field', {gathering, item}, set_category(item))}>
                                 <View style={styles.gat}>
                                     <View style={styles.CatName}>
                                         <Text style={styles.text}> {item.name}</Text>
@@ -119,6 +120,7 @@ export const CategoryView = ({route}) => {
         </View>
     )
 }
+
 
 
 

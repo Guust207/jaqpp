@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     CatName: {
-        width: 240,
+        width: 225,
     },
 
 

@@ -1,11 +1,10 @@
 import {Alert, Button, StyleSheet, Text, TextInput, View} from "react-native";
 import React, {useState} from "react";
 import {db} from "../../firebaseConfig";
-import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
-import {currentCategory, currentField, currentGathering, currentUser} from "../global_variables";
+import { doc, getDoc, setDoc} from "firebase/firestore";
 import {Modal} from "../Modal";
-import {Gathering} from "../gatheringComponents/Gathering";
 import uuid from "react-native-uuid";
+import {currentField} from "../global_variables";
 
 
 //TODO: When creating an interface you need to find a way to get budgetCategory and gathering - Currently the function is using dummy value
@@ -20,21 +19,9 @@ export const AddBudgetCategoryView = (route) => {
     const [categoryID, setCategory] = useState(category.id);
 
 
-    const [fieldName, set_fieldName] = useState(null);
-    const [fieldCost, set_fieldCost] = useState(null);
-    const [fieldAmount, set_fieldAmount] = useState(null);
-    const [fieldID, setField] = useState(null);
-
-
-    function GenerateID() {
-        const number1 = Math.floor(Math.random() * 9) + 1;
-        const number2 = Math.floor(Math.random() * 9) + 1;
-        const number3 = Math.floor(Math.random() * 9) + 1;
-        const number4 = Math.floor(Math.random() * 9) + 1;
-        const number5 = Math.floor(Math.random() * 9) + 1;
-
-        return number1.toString() + number2.toString() + number3.toString() + number4.toString() + number5.toString();
-    }
+    const [fieldName, set_fieldName] = useState("Name");
+    const [fieldCost, set_fieldCost] = useState("Price Pr Unit");
+    const [fieldAmount, set_fieldAmount] = useState("Amount");
 
 
     async function increase_totalCost() {
@@ -107,7 +94,7 @@ export const AddBudgetCategoryView = (route) => {
             <Modal isVisible={isFieldAddViewVisible}>
                 <Modal.Container style={styles.modalContainer}>
                     <View style={styles.container}>
-                        <Text style={styles.textModal}>New name for item:</Text>
+                        <Text style={styles.textModal}>Name of item:</Text>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 style={styles.input}
@@ -116,7 +103,7 @@ export const AddBudgetCategoryView = (route) => {
                                 placeholder="Name"
                             />
                         </View>
-                        <Text style={styles.textModal}>New price pr Unit:</Text>
+                        <Text style={styles.textModal}>Price pr Unit:</Text>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 style={styles.input}
@@ -125,7 +112,7 @@ export const AddBudgetCategoryView = (route) => {
                                 placeholder="Cost Pr Unit"
                             />
                         </View>
-                        <Text style={styles.textModal}>New Amount:</Text>
+                        <Text style={styles.textModal}>Amount:</Text>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 style={styles.input}
@@ -246,7 +233,7 @@ export const EditBudgetCategoryView = (route) => {
             <Modal isVisible={isFieldEditViewVisible}>
                 <Modal.Container style={styles.modalContainer}>
                     <View style={styles.container}>
-                        <Text style={styles.textModal}>New name for gathering:</Text>
+                        <Text style={styles.textModal}>New name of item:</Text>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 style={styles.input}
@@ -255,7 +242,7 @@ export const EditBudgetCategoryView = (route) => {
                                 placeholder="Name"
                             />
                         </View>
-                        <Text style={styles.textModal}>Date:</Text>
+                        <Text style={styles.textModal}>New cost Pr Unit:</Text>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 style={styles.input}
@@ -264,7 +251,7 @@ export const EditBudgetCategoryView = (route) => {
                                 placeholder="Cost Pr Unit"
                             />
                         </View>
-                        <Text style={styles.textModal}>Time:</Text>
+                        <Text style={styles.textModal}>New amount:</Text>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 style={styles.input}

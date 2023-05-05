@@ -44,36 +44,43 @@ const ModalFooter = ({ children }: { children?: React.ReactNode }) => (
     <View style={styles.footer}>{children}</View>
 );
 
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#ffffff",
+        borderRadius: 25,
         borderWidth: 1,
         borderColor: "#000",
         borderStyle: "solid",
-        padding: 10,
     },
     header: {
-        alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-start",
+        padding: '3%',
     },
     text: {
-        paddingTop: 10,
-        textAlign: "center",
+        paddingTop: '3%',
+        marginLeft: '2%',
+        justifyContent: 'flex-start',
         fontSize: 24,
-        marginBottom: 10,
     },
     body: {
         justifyContent: "center",
-        paddingHorizontal: 15,
-        minHeight: 230,
+        paddingHorizontal: '5%',
+        minHeight: 100,
+        padding: '2%',
     },
     footer: {
-        justifyContent: "center",
+        justifyContent: "flex-end",
         alignItems: "center",
         padding: 10,
         flexDirection: "row",
+        backgroundColor: '#f0f0f0',
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+
     },
 });
+
 
 Modal.Header = ModalHeader;
 Modal.Container = ModalContainer;

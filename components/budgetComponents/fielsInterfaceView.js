@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
-import {currentCategory, currentField, currentGathering} from "../global_variables";
+import {currentField} from "../global_variables";
 import {Button, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {AddBudgetCategoryView, EditBudgetCategoryView} from "./budget_categoryFieldView";
 import {Icon} from "react-native-elements";
 
 
 export const FieldView = ({route}) => {
+
+    const [currField, set_currField] = currentField();
 
     const { gathering, item } = route.params;
     const [gatheringID, set_gatheringID] = useState(gathering.id);
@@ -47,12 +49,13 @@ export const FieldView = ({route}) => {
 
 
     //Variables and functions that handles the edit part
-    const [currentField, set_currentField] = useState('');
+    const [currentfield, set_currentfield] = useState('');
     const [field_id, set_FieldId] = useState(field_id);
     const [field_name, set_name] = useState(field_name);
     const [field_amount, set_amount] = useState(field_amount);
     const [field_cost, set_cost] = useState(field_cost);
     const [totalCost, set_totalCost] = useState(totalCost);
+
 
 
     //Variables used to handle Modal (Popup screen for edit)
@@ -75,7 +78,8 @@ export const FieldView = ({route}) => {
     const [isFieldEditViewVisible, setIsFieldEditViewVisible] = useState(false);
 
     const handleEditModal = (item) => {
-        set_currentField(item);
+        set_currField(item)
+        set_currentfield(item);
         setIsModalVisible(() => !isModalVisible)
         setIsFieldEditViewVisible(() => !isFieldEditViewVisible)
     }
@@ -109,7 +113,7 @@ export const FieldView = ({route}) => {
                 <View>
                     {field.map((item) => (
                         <View key={item.id} style={styles.category}>
-                            <TouchableOpacity onPress={() => handleModal(item)}>
+                            <View onPress={() => handleModal(item)}>
                                 <View style={styles.gat}>
                                     <View style={styles.CatName}>
                                         <Text style={styles.text}> {item.name}</Text>
@@ -134,13 +138,13 @@ export const FieldView = ({route}) => {
                                         />
                                     </View>
                                 </View>
-                            </TouchableOpacity>
+                            </View>
                         </View>
                     ))}
 
                 </View>
                 {isFieldAddViewVisible && <AddBudgetCategoryView gathering={gathering} category={item} />}
-                {isFieldEditViewVisible && <EditBudgetCategoryView gathering={gathering} category={item} field={currentField}/>}
+                {isFieldEditViewVisible && <EditBudgetCategoryView gathering={gathering} category={item} field={currentfield}/>}
             </ScrollView>
         </View>
     )
@@ -195,52 +199,5 @@ const styles = StyleSheet.create({
     deleteButton: {
         backgroundColor: '#DE1616'
     },
-
-
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 20,
-        margin: 20,
-    },
-
-    textModal: {
-        fontSize:16,
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginLeft: 2,
-    },
-    input: {
-        flex: 1,
-        borderBottomWidth: 1,
-        borderBottomColor: '#666',
-        color: '#333',
-        fontSize: 16,
-        marginBottom: 30,
-    },
-    editButton: {
-        color: '#005cfc',
-        fontSize: 20,
-        marginRight: 20,
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 5,
-    },
-    cancelButton: {
-        color: '#FF0400',
-        fontSize: 20,
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 5,
-    },
-
-
-
 })
 

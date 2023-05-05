@@ -3,6 +3,8 @@ import React, {useState} from "react";
 import {db} from "../../firebaseConfig";
 import { doc, getDoc, setDoc} from "firebase/firestore";
 import {Modal} from "../Modal";
+import {Buttons} from "../Button";
+
 import uuid from "react-native-uuid";
 import {currentField} from "../global_variables";
 
@@ -93,43 +95,45 @@ export const AddBudgetCategoryView = (route) => {
         <View>
             <Modal isVisible={isFieldAddViewVisible}>
                 <Modal.Container style={styles.modalContainer}>
-                    <View style={styles.container}>
-                        <Text style={styles.textModal}>Name of item:</Text>
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={set_fieldName}
-                                value={fieldName}
-                                placeholder="Name"
-                            />
+                    <Modal.Header title={'Add new item'}/>
+                    <Modal.Body>
+                        <View style={styles.container}>
+                            <Text style={styles.textModal}>Name of item:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.input}
+                                    onChangeText={set_fieldName}
+                                    placeholder="Name"
+                                />
+                            </View>
+                            <Text style={styles.textModal}>Price pr Unit:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.input}
+                                    onChangeText={set_fieldCost}
+                                    placeholder="Cost Pr Unit"
+                                />
+                            </View>
+                            <Text style={styles.textModal}>Amount:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.input}
+                                    onChangeText={set_fieldAmount}
+                                    placeholder="Amount"
+                                />
+                            </View>
                         </View>
-                        <Text style={styles.textModal}>Price pr Unit:</Text>
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={set_fieldCost}
-                                value={fieldCost}
-                                placeholder="Cost Pr Unit"
-                            />
-                        </View>
-                        <Text style={styles.textModal}>Amount:</Text>
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={set_fieldAmount}
-                                value={fieldAmount}
-                                placeholder="Amount"
-                            />
-                        </View>
-                        <Button
-                            onPress={button}
-                            title="Add"
-                        />
-                        <Button
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Buttons
                             onPress={() => setIsFieldAddViewVisible(() => !isFieldAddViewVisible)}
                             title="Cancel"
                         />
-                    </View>
+                        <Buttons
+                            onPress={button}
+                            title="Add"
+                        />
+                    </Modal.Footer>
                 </Modal.Container>
             </Modal>
         </View>
@@ -137,6 +141,8 @@ export const AddBudgetCategoryView = (route) => {
 }
 
 export const EditBudgetCategoryView = (route) => {
+    const [currField, set_currField] = currentField();
+
 
     const gathering = route.gathering
     const category = route.category
@@ -231,46 +237,49 @@ export const EditBudgetCategoryView = (route) => {
     return (
         <View>
             <Modal isVisible={isFieldEditViewVisible}>
-                <Modal.Container style={styles.modalContainer}>
-                    <View style={styles.container}>
-                        <Text style={styles.textModal}>New name of item:</Text>
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={set_fieldName}
-                                value={fieldName}
-                                placeholder="Name"
-                            />
+                <Modal.Container>
+                    <Modal.Header title={'Edit field: ' + currField.name}/>
+                    <Modal.Body>
+                        <View style={styles.container}>
+                            <Text style={styles.textModal}>New name of item:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.input}
+                                    onChangeText={set_fieldName}
+                                    value={fieldName}
+                                    placeholder="Name"
+                                />
+                            </View>
+                            <Text style={styles.textModal}>New cost Pr Unit:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.input}
+                                    onChangeText={set_fieldCost}
+                                    value={fieldCost}
+                                    placeholder="Cost Pr Unit"
+                                />
+                            </View>
+                            <Text style={styles.textModal}>New amount:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.input}
+                                    onChangeText={set_fieldAmount}
+                                    value={fieldAmount}
+                                    placeholder="Amount"
+                                />
+                            </View>
                         </View>
-                        <Text style={styles.textModal}>New cost Pr Unit:</Text>
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={set_fieldCost}
-                                value={fieldCost}
-                                placeholder="Cost Pr Unit"
-                            />
-                        </View>
-                        <Text style={styles.textModal}>New amount:</Text>
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={set_fieldAmount}
-                                value={fieldAmount}
-                                placeholder="Amount"
-                            />
-                        </View>
-                        <Button
-                            onPress={button}
-                            title="Edit"
-                        />
-                        <Button
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Buttons
                             onPress={() => setIsFieldEditViewVisible(() => !isFieldEditViewVisible)}
                             title="Cancel"
                         />
-                    </View>
-
-
+                        <Buttons
+                            onPress={button}
+                            title="Edit"
+                        />
+                    </Modal.Footer>
                 </Modal.Container>
             </Modal>
         </View>
@@ -278,49 +287,29 @@ export const EditBudgetCategoryView = (route) => {
 }
 
 const styles = StyleSheet.create({
-
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 20,
-        margin: 20,
+    text: {
+        paddingTop: 10,
+        textAlign: "center",
+        fontSize: 24,
     },
-
     textModal: {
         fontSize:16,
+        color: '#a19f9f',
         fontWeight: 'bold',
         marginBottom: 5,
     },
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginLeft: 2,
     },
     input: {
         flex: 1,
-        borderBottomWidth: 1,
-        borderBottomColor: '#666',
-        color: '#333',
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#bababa',
         fontSize: 16,
-        marginBottom: 30,
-
+        padding: '0.5%',
+        paddingLeft: 10,
+        marginBottom: 25,
     },
-    editButton: {
-        color: '#005cfc',
-        fontSize: 20,
-        marginRight: 20,
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 5,
-    },
-    cancelButton: {
-        color: '#FF0400',
-        fontSize: 20,
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 5,
-    },
-
 });

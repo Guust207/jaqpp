@@ -3,6 +3,7 @@ import {Alert, Button, StyleSheet, Text, TextInput, View} from "react-native";
 import {addDoc, deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {Modal} from "../Modal";
+import {Buttons} from "../Button";
 import {currentCategory, currentGathering} from "../global_variables";
 import uuid from 'react-native-uuid';
 
@@ -59,23 +60,31 @@ export const AddBudgetView = (route) => {
     return (
         <View>
             <Modal isVisible={isCategoryAddViewVisible}>
-                <Modal.Container style={styles.modalContainer}>
-                    <View style={styles.container}>
+                <Modal.Container>
+                    <Modal.Header title={'Add a new category'}/>
+                    <Modal.Body>
+                        <Text style={styles.textModal}>Add a new category:</Text>
+                        <View style={styles.container}>
+                            <View style={styles.inputContainer}>
 
-                    <Text style={styles.textModal}>Add a new category:</Text>
-                    <TextInput
-                        style={styles.textModal}
-                        onChangeText={set_categoryName}
-                    />
-                    <Button
-                        onPress={addBudget}
-                        title="Add"
-                    />
-                    <Button
-                        onPress={() => setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)}
-                        title="Cancel"
-                    />
-                    </View>
+                                <TextInput
+                                    style={styles.input}
+                                    onChangeText={set_categoryName}
+                                    placeholder="Name"
+                                />
+                            </View>
+                        </View>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Buttons
+                            onPress={() => setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)}
+                            title="Cancel"
+                        />
+                        <Buttons
+                            onPress={addBudget}
+                            title="Add"
+                        />
+                    </Modal.Footer>
                 </Modal.Container>
             </Modal>
         </View>
@@ -83,6 +92,7 @@ export const AddBudgetView = (route) => {
 }
 
 export const EditBudgetView = (route) => {
+    const [category, set_category] = currentCategory();
 
     const [gatheringID, set_gatheringID] = useState(route.gathering.id);
     const [tmp_CategoryID, set_tmp_CategoryID] = useState(route.categoryID);
@@ -144,23 +154,31 @@ export const EditBudgetView = (route) => {
     return (
         <View>
             <Modal isVisible={isCategoryEditViewVisible}>
-                <Modal.Container style={styles.modalContainer}>
-                    <View style={styles.container}>
-                        <Text style={styles.textModal}>New name for category:</Text>
-                        <TextInput
-                            style={styles.in}
-                            onChangeText={set_tmp_categoryName}
-                            value={tmp_categoryName}
-                        />
-                        <Button
-                            onPress={editBudget}
-                            title="Edit"
-                        />
-                        <Button
+                <Modal.Container>
+                    <Modal.Header title={'Edit category: ' + category.name}/>
+                    <Modal.Body>
+                        <View style={styles.container}>
+                            <Text style={styles.textModal}>New name for category:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.input}
+                                    onChangeText={set_tmp_categoryName}
+                                    value={tmp_categoryName}
+                                    placeholder="Name"
+                                />
+                            </View>
+                        </View>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Buttons
                             onPress={() => setIsCategoryEditViewVisible(() => !isCategoryEditViewVisible)}
                             title="Cancel"
                         />
-                     </View>
+                        <Buttons
+                            onPress={editBudget}
+                            title="Edit"
+                        />
+                    </Modal.Footer>
                 </Modal.Container>
             </Modal>
         </View>
@@ -169,49 +187,29 @@ export const EditBudgetView = (route) => {
 
 
 const styles = StyleSheet.create({
-
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 20,
-        margin: 20,
+    text: {
+        paddingTop: 10,
+        textAlign: "center",
+        fontSize: 24,
     },
-
     textModal: {
         fontSize:16,
+        color: '#a19f9f',
         fontWeight: 'bold',
         marginBottom: 5,
     },
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginLeft: 2,
     },
     input: {
         flex: 1,
-        borderBottomWidth: 1,
-        borderBottomColor: '#666',
-        color: '#333',
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#bababa',
         fontSize: 16,
-        marginBottom: 30,
-
+        padding: '0.5%',
+        paddingLeft: 10,
+        marginBottom: 25,
     },
-    editButton: {
-        color: '#005cfc',
-        fontSize: 20,
-        marginRight: 20,
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 5,
-    },
-    cancelButton: {
-        color: '#FF0400',
-        fontSize: 20,
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 5,
-    },
-
 });

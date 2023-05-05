@@ -126,41 +126,40 @@ export const CategoryView = ({route}) => {
 
 //Style
 const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            padding: 5,
-            justifyContent: 'flex-start',
-            backgroundColor: '#D6D5C9'
-        },
-        head: {
-            height: 44,
-            backgroundColor: 'gray'
-        },
-        headText: {
-            fontSize: 20,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            color: 'black'
-        },
-        text: {
-            fontSize: 16,
-            fontWeight: 'bold',
-        },
-        category: {
-            backgroundColor: '#B9BAA3',
-            padding: 10,
-            marginBottom: 2,
-        },
-        gat: {
-            flexDirection: 'row',
-            alignItems: 'center',
-        },
-        icons: {
-            flexDirection: 'row',
-            alignItems: 'center',
-        },
-        CatName: {
-            width: 240,
-        },
-    }
-)
+    container: {
+        flex: 1,
+        padding: 5,
+        justifyContent: 'flex-start',
+        backgroundColor: '#D6D5C9'
+    },
+    head: {
+        height: 44,
+        backgroundColor: 'gray'
+    },
+    headText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: 'black'
+    },
+    text: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    category: {
+        backgroundColor: '#B9BAA3',
+        padding: 10,
+        marginBottom: 2,
+    },
+    gat: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    icons: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    CatName: {
+        width: 240,
+    },
+})

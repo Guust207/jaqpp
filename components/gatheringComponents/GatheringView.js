@@ -1,20 +1,23 @@
-import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {currentGathering, currentUser} from "../global_variables";
 import { useNavigation } from '@react-navigation/native';
+import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc} from "firebase/firestore";
+import {db} from "../../firebaseConfig";
+
 
 import {Modal} from "../Modal";
-import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
-import {auth, db} from "../../firebaseConfig";
+
 
 export const GatheringView = ({route}) => {
 
-    const [CurrentGathering, setCurrentGathering] = currentGathering();
-
-
     const navigation = useNavigation();
+
     const { item } = route.params;
+
+    const [CurrentGathering, setCurrentGathering] = currentGathering();
     const [user, setUser] = currentUser();
+
 
     useEffect(() => {
         setCurrentGathering(item)
@@ -104,10 +107,10 @@ export const GatheringView = ({route}) => {
     const handleBudgetButton = (gathering) => {
         console.log(gathering.id)
         console.log(CurrentGathering.id);
+        console.log(categoryList);
+
         navigation.navigate('Budget')
     }
-
-
 
     return (
         <View style={styles.container}>
@@ -115,7 +118,6 @@ export const GatheringView = ({route}) => {
                 <View>
                     <Text style={styles.headText}>{item.name}</Text>
                     <Text style={styles.descriptionText}>{item.description}</Text>
-
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.button} onPress={() => handleBudgetButton(item)}>
                             <Text style={styles.buttonText}>Administer Budget</Text>
@@ -139,10 +141,10 @@ export const GatheringView = ({route}) => {
 
                     {/* This is the popup that appears when you click edit at the table */}
                     <Modal isVisible={isModalVisible}>
-                        <Modal.Container style={styles.modalContainer}>
-                            <Modal.Header title="Edit"/>
+                        <Modal.Container>
+                            <Modal.Header title={"Edit the gathering"}/>
                             <Modal.Body>
-                                <View style={styles.container}>
+                                <View style={styles.modalContainer}>
                                     <Text style={styles.textModal}>New name for gathering:</Text>
                                     <View style={styles.inputContainer}>
                                         <TextInput
@@ -183,14 +185,12 @@ export const GatheringView = ({route}) => {
                                 </View>
                             </Modal.Body>
                             <Modal.Footer>
-                                <View style={styles.buttonContainer}>
-                                    <TouchableOpacity onPress={() => editData()}>
-                                        <Text style={styles.editButton}> Edit  </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handleModal()}>
-                                        <Text style={styles.cancelButton}>Cancel</Text>
-                                    </TouchableOpacity>
-                                </View>
+                                <TouchableOpacity onPress={() => handleModal()} style={styles.Button}>
+                                    <Text style={styles.Text}>Cancel</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => editData()} style={styles.Button}>
+                                    <Text style={styles.Text}> Edit  </Text>
+                                </TouchableOpacity>
                             </Modal.Footer>
                         </Modal.Container>
                     </Modal>
@@ -220,6 +220,19 @@ const styles = StyleSheet.create({
     descriptionText: {
         fontSize: 16,
         marginBottom: 30,
+    },
+
+    catText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'black',
+        paddingBottom: 5,
+        marginBottom: 15,
+        borderBottomWidth:0.5,
+    },
+    catContainer: {
+        justifyContent: "flex-start",
+        flexDirection: "row",
     },
 
 
@@ -260,45 +273,50 @@ const styles = StyleSheet.create({
 
     modalContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 20,
-        margin: 20,
+        padding: 5,
+        justifyContent: 'flex-start',
+        backgroundColor: '#D6D5C9',
     },
 
+    text: {
+        paddingTop: 10,
+        textAlign: "center",
+        fontSize: 24,
+    },
     textModal: {
         fontSize:16,
+        color: '#a19f9f',
         fontWeight: 'bold',
         marginBottom: 5,
     },
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginLeft: 2,
     },
     input: {
         flex: 1,
-        borderBottomWidth: 1,
-        borderBottomColor: '#666',
-        color: '#333',
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#bababa',
         fontSize: 16,
-        marginBottom: 30,
+        padding: '0.5%',
+        paddingLeft: 10,
+        marginBottom: 25,
     },
-    editButton: {
-        color: '#005cfc',
-        fontSize: 20,
-        marginRight: 20,
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 5,
+
+
+    Button: {
+        margin: 5,
+        padding: 8,
+        borderRadius: 5,
+        borderColor: "black",
+        borderWidth: 1,
+        alignItems: "center",
     },
-    cancelButton: {
-        color: '#FF0400',
-        fontSize: 20,
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 5,
+    Text: {
+        color: "black",
+        fontWeight: "700",
+        fontSize: 18,
     },
 
 });

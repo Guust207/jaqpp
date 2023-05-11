@@ -99,6 +99,11 @@ export const GatheringView = ({route}) => {
     }
 
 
+    const handleAttendees = (gathering) => {
+        console.log("THIS", gathering.id)
+        navigation.navigate('Attendees', { gathering: gathering })
+    }
+
 
     return (
         <View style={styles.container}>
@@ -113,6 +118,7 @@ export const GatheringView = ({route}) => {
                     />
                     <Button
                         title={"Administer Attendees"}
+                        onPress={() => handleAttendees(item)}
 
                     />
                     <View style={styles.gat}>

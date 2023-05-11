@@ -4,9 +4,12 @@ import {collection, doc, getDoc, query, onSnapshot, setDoc, where, deleteDoc} fr
 import { auth , db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
 import {Modal} from "../Modal";
+import uuid from 'react-native-uuid';
+
 
 //Component Imports
 import {currentUser} from "../global_variables";
+
 
 
 
@@ -20,6 +23,7 @@ export const AttendeesInterface = ({route}) => {
     const [attendeeEmail, set_attendeeEmail] = useState("email");
     const { gathering } = route.params;
     const [gatheringID, set_gatheringID] = useState(gathering.id);
+    const [gatheringName, set_gatheringName] = useState(gathering.id);
 
     //Get part
     // This is variables and functions for fetching and display all the gatherings
@@ -73,10 +77,30 @@ export const AttendeesInterface = ({route}) => {
         setIsModalVisible(() => !isModalVisible)
     }
 
+    const generateInvitationID = () => {
+        return uuid.v4();
+    }
 
-    const sendInvitation = () => {
+    const sendFunction = async (userID) => {
+         const invitationID = generateInvitationID();
+        await setDoc(doc(db, "users", userID, "invitations", invitationID), {
+            gathering: gatheringID,
+            gatheringName: gatheringName,
+            accepted: false,
+        });
+    }
+
+    const sendInvitation = async () => {
+
+        const q = query(collection(db, "users"), where("email", "==", attendeeEmail));
+
+        onSnapshot(q, (querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                sendFunction(doc.id);
+            });
+        });
+
         setIsModalVisible(() => !isModalVisible)
-
     }
 
     return (

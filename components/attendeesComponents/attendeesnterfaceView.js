@@ -1,8 +1,9 @@
-import {Button, StyleSheet, Text, TouchableOpacity, View, ScrollView,  TextInput,  Image, Modal} from "react-native";
+import {Button, StyleSheet, Text, TouchableOpacity, View, ScrollView,  TextInput,  Image} from "react-native";
 import React, {useEffect, useState} from "react";
 import {collection, doc, getDoc, query, onSnapshot, setDoc, where, deleteDoc} from "firebase/firestore";
 import { auth , db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
+import {Modal} from "../Modal";
 
 //Component Imports
 import {currentUser} from "../global_variables";
@@ -52,20 +53,45 @@ export const AttendeesInterface = ({route}) => {
 
 
 
+    //Variables used to handle Modal (Popup screen for edit)
+    const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const handleModal = (field) => {
+
+        setIsModalVisible(() => !isModalVisible)
+    };
+
+
      const kickAttendee = () => {
-
-
-
-
+         setIsModalVisible(() => !isModalVisible)
 
      }
+
+
+    const inviteAttendees = () => {
+
+        setIsModalVisible(() => !isModalVisible)
+    }
+
 
     return (
         <View style={styles.container}>
 
-            <>
-                <Text style={[ styles.gatInvite]}>Send invite</Text>
-            </>
+            <TouchableOpacity  onPress={inviteAttendees}>
+                <Text style={[ styles.kickName]}>Invite</Text>
+                    <Modal isVisible={isModalVisible}>
+                        <Modal.Container>
+                            <Modal.Header title={"Attendee"} />
+                            <Modal.Body>
+                                <Text> Halla</Text>
+                                <Button
+                                    onPress={inviteAttendees}
+                                    title="invite"
+                                />
+                            </Modal.Body>
+                        </Modal.Container>
+                    </Modal>
+            </TouchableOpacity>
+
 
             <ScrollView>
                 <View>

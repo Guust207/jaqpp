@@ -26,6 +26,25 @@ export const GatheringInterface = () => {
     const [isOwnerGatherings, Switch] = useState(true);
     const [currentFilter, SwitchFilter] = useState("Created Gatherings");
 
+    //Gather
+    useEffect(() => {
+        const w = query(collection(db, "gathering"));
+        onSnapshot(w, (querySnapshot) => {
+            const  gatheringList = [];
+            querySnapshot.forEach((doc) => {
+                const { name, date, time} = doc.data();
+                //list for storing the data
+                gatheringList.push({
+                    id: doc.id,
+                    name,
+                    date,
+                    time,
+                });
+            });
+            set_gatList(gatheringList)
+        });
+    }, [user])
+
 
     useEffect(() => {
         if (isOwnerGatherings) {
@@ -52,26 +71,10 @@ export const GatheringInterface = () => {
             getAllGat().then();
         } else {
             const getGuestGatherings = async () => {
-                const w = query(collection(db, "gathering"));
-                onSnapshot(w, (querySnapshot) => {
-                    const  gatheringList = [];
-                    querySnapshot.forEach((doc) => {
-                        const { name, date, time} = doc.data();
-                        //list for storing the data
-                        gatheringList.push({
-                            id: doc.id,
-                            name,
-                            date,
-                            time,
-                        });
-                    });
-                    set_gatList(gatheringList)
-                });
                 const list = [];
                 for (let i = 0; i < gatList.length; i++) {
                     const docRef = doc(db,"gathering", gatList[i].id, "attendees", user.id);
                     const docSnap = await getDoc(docRef).then();
-
                     if (docSnap.exists()) {
                         const name = gatList[i].name
                         const date = gatList[i].date
@@ -86,7 +89,6 @@ export const GatheringInterface = () => {
                 }
                 setGat(list);
             }
-
             getGuestGatherings().then();
         }
     },[user, isOwnerGatherings])

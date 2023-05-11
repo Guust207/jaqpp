@@ -1,15 +1,18 @@
 //This is the function that handles profile view and all of its sub functions
 import {Alert, TouchableOpacity, Button, Image, StyleSheet, Text, View} from "react-native";
 import * as React from "react";
-import {deleteDoc, doc, getDoc} from "firebase/firestore";
+import {collection, deleteDoc, doc, getDoc, onSnapshot, query, where} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
+import {useEffect, useState} from "react";
+import {EditBudgetCategoryView} from "../budgetComponents/budget_categoryFieldView";
+import {Modal} from "../Modal";
 
 
 export const ProfileView = (user, setUser) => {
 
-
-    console.log(user.picture);
+    const [Invitations, setInvitations] = useState([]);
+    const [isInvitationView, set_isInvitationView] = useState(false)
 
 
     const accountDeleted = () =>
@@ -57,6 +60,30 @@ export const ProfileView = (user, setUser) => {
         accountDeleted();
     }
 
+    const getInvitation = async () => {
+        const q = query(collection(db, "users", user.id, "invitations"));
+        onSnapshot(q, (querySnapshot) => {
+            const  list = [];
+
+            querySnapshot.forEach((doc) => {
+                const { gathering, gatheringName, accepted} = doc.data();
+
+                //list for storing the data
+                list.push({
+                    id: doc.id,
+                    gathering,
+                    accepted
+                });
+            });
+            setInvitations(list);
+        });
+    }
+
+    const handleInvitations = () => {
+        getInvitation().then();
+        set_isInvitationView(() => !isInvitationView)
+    }
+
 
 
     //The view that you see at profile view
@@ -67,6 +94,32 @@ export const ProfileView = (user, setUser) => {
                 <View style={styles.bioContainer}>
                     <Text style={styles.message}>{user.name}</Text>
                     <Text style={styles.message}>{user.email}</Text>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.button} onPress={handleInvitations}>
+                            <Text style={styles.buttonText}> Invitations</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <Modal isVisible={isInvitationView} >
+                        <Modal.Container>
+                            <Modal.Header title={"Invitations"} />
+                            <Modal.Body>
+                                {Invitations.map((item) => (
+                                    <View key={item.id} style={styles.category}>
+                                        <Text> {item.gathering}</Text>
+                                        <TouchableOpacity>
+                                            <Text style={styles.text}> Accept </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity>
+                                            <Text style={styles.text}> Decline</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                ))}
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button title="Cancel" onPress={handleInvitations} />
+                            </Modal.Footer>
+                        </Modal.Container>
+                    </Modal>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.button} onPress={handleLogout}>
                             <Text style={styles.buttonText}>Sign Out</Text>

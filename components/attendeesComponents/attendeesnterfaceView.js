@@ -1,6 +1,6 @@
 import {Button, StyleSheet, Text, TouchableOpacity, View, ScrollView,  TextInput,  Image} from "react-native";
 import React, {useEffect, useState} from "react";
-import {collection, doc, getDoc, query, onSnapshot, setDoc, where, deleteDoc} from "firebase/firestore";
+import {collection, doc, getDoc, query, onSnapshot, setDoc, getDocs, where, deleteDoc} from "firebase/firestore";
 import { auth , db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
 import {Modal} from "../Modal";
@@ -94,15 +94,27 @@ export const AttendeesInterface = ({route}) => {
 
         const q = query(collection(db, "users"), where("email", "==", attendeeEmail));
 
+        const querySnapshot = await getDocs(q);
+        const foundUser = querySnapshot.size > 0;
+
         onSnapshot(q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 sendFunction(doc.id);
             });
         });
 
+
+        if (foundUser) {
+            console.log("Exists");
+
+        } else if (!foundUser) {
+            console.log("Doesnt exist");
+
+        }
+
+
         setIsModalVisible(() => !isModalVisible)
     }
-
     return (
         <View style={styles.container}>
 

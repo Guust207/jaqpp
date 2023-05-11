@@ -120,7 +120,7 @@ export const Login = () => {
         <View style={styles.container}>
             <View style={styles.googleButtonContainer}>
                 <TouchableOpacity style={[styles.button, styles.googleButton]} onPress={handlerLogin}>
-                    <Text style={[styles.buttonText, styles.googleButtonText]}>Sign in with Google</Text>
+                    <Text style={styles.googleButtonText}>Sign in with Google</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -139,19 +139,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#D6D5C9',
         paddingTop: 100,
     },
-    text: {
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-
     button: {
         backgroundColor: '#0A100D',
         borderRadius: 5,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        marginBottom: 20,
         flex: 1,
         marginHorizontal: 5,
+        padding: 20,
     },
     googleButtonContainer: {
         flexDirection: 'row',

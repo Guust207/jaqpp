@@ -136,11 +136,11 @@ export const GatheringView = ({route}) => {
                         <Modal.Container>
                             <Modal.Header title={"Edit the gathering"}/>
                             <Modal.Body>
-                                <View style={styles.modalContainer}>
+                                <View>
                                     <Text style={styles.textModal}>New name for gathering:</Text>
                                     <View style={styles.inputContainer}>
                                         <TextInput
-                                            style={styles.input}
+                                            style={styles.modalInput}
                                             onChangeText={set_Name}
                                             value={Name}
                                             placeholder='Name'
@@ -149,7 +149,7 @@ export const GatheringView = ({route}) => {
                                     <Text style={styles.textModal}>Date:</Text>
                                     <View style={styles.inputContainer}>
                                         <TextInput
-                                            style={styles.input}
+                                            style={styles.modalInput}
                                             onChangeText={set_Date}
                                             value={Date}
                                             placeholder='Date'
@@ -158,7 +158,7 @@ export const GatheringView = ({route}) => {
                                     <Text style={styles.textModal}>Time:</Text>
                                     <View style={styles.inputContainer}>
                                         <TextInput
-                                            style={styles.input}
+                                            style={styles.modalInput}
                                             onChangeText={set_Time}
                                             value={Time}
                                             placeholder='Time'
@@ -168,7 +168,7 @@ export const GatheringView = ({route}) => {
                                     <View style={styles.inputContainer}>
                                         <TextInput
                                             multiline
-                                            style={styles.input}
+                                            style={styles.modalInput}
                                             onChangeText={set_Description}
                                             value={Description}
                                             placeholder='description'
@@ -177,11 +177,11 @@ export const GatheringView = ({route}) => {
                                 </View>
                             </Modal.Body>
                             <Modal.Footer>
-                                <TouchableOpacity onPress={() => handleModal()} style={styles.Button}>
-                                    <Text style={styles.Text}>Cancel</Text>
+                                <TouchableOpacity onPress={() => handleModal()} style={styles.modalButton}>
+                                    <Text style={styles. buttonTexts}>Cancel</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => editData()} style={styles.Button}>
-                                    <Text style={styles.Text}> Edit  </Text>
+                                <TouchableOpacity onPress={() => editData()} style={styles.modalButton}>
+                                    <Text style={styles.buttonTexts}> Edit  </Text>
                                 </TouchableOpacity>
                             </Modal.Footer>
                         </Modal.Container>
@@ -261,29 +261,19 @@ const styles = StyleSheet.create({
     },
 
 
-    modalContainer: {
-        flex: 1,
-        padding: 5,
-        justifyContent: 'flex-start',
-        backgroundColor: '#D6D5C9',
-    },
-
-    text: {
-        paddingTop: 10,
-        textAlign: "center",
-        fontSize: 24,
-    },
     textModal: {
         fontSize:16,
         color: '#a19f9f',
         fontWeight: 'bold',
-        marginBottom: 5,
+        marginBottom: '2%',
     },
+
     inputContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
+        marginBottom: '8%',
     },
-    input: {
+    modalInput: {
         flex: 1,
         borderRadius: 5,
         borderWidth: 1,
@@ -291,11 +281,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         padding: '0.5%',
         paddingLeft: 10,
-        marginBottom: 25,
     },
 
 
-    Button: {
+    modalButton: {
         margin: 5,
         padding: 8,
         borderRadius: 5,
@@ -303,11 +292,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         alignItems: "center",
     },
-    Text: {
+    buttonTexts: {
         color: "black",
         fontWeight: "700",
         fontSize: 18,
     },
+
 
 });
 

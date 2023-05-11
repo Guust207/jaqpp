@@ -85,11 +85,11 @@ export const CategoryView = ({route}) => {
             <ScrollView>
                 <View>
                     {categoryList.map((item) => (
-                        <View key={item.id} style={styles.category}>
+                        <View key={item.id} style={styles.budgetContainer}>
                             <TouchableOpacity onPress={() => navigation.navigate('Field', {gathering, item}, set_category(item))}>
-                                <View style={styles.gat}>
-                                    <View style={styles.CatName}>
-                                        <Text style={styles.text}> {item.name}</Text>
+                                <View style={styles.budget}>
+                                    <View style={styles.budgetInfo}>
+                                        <Text style={styles.budgetText}> {item.name}</Text>
                                         <Text> Total cost: {item.totalCost}</Text>
                                     </View>
                                     <View style={styles.icons}>
@@ -129,37 +129,26 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 5,
-        justifyContent: 'flex-start',
         backgroundColor: '#D6D5C9'
     },
-    head: {
-        height: 44,
-        backgroundColor: 'gray'
+    budgetContainer: {
+        backgroundColor: '#B9BAA3',
+        padding: 10,
+        marginBottom: '0.2%',
     },
-    headText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: 'black'
+    budgetInfo: {
+        width: '68%',
     },
-    text: {
+    budgetText: {
         fontSize: 16,
         fontWeight: 'bold',
     },
-    category: {
-        backgroundColor: '#B9BAA3',
-        padding: 10,
-        marginBottom: 2,
-    },
-    gat: {
+    budget: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     icons: {
         flexDirection: 'row',
         alignItems: 'center',
-    },
-    CatName: {
-        width: 240,
     },
 })

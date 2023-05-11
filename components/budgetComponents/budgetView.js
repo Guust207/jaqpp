@@ -63,12 +63,12 @@ export const AddBudgetView = (route) => {
                 <Modal.Container>
                     <Modal.Header title={'Add a new category'}/>
                     <Modal.Body>
-                        <Text style={styles.textModal}>Add a new category:</Text>
-                        <View style={styles.container}>
+                        <View>
+                            <Text style={styles.textModal}>Name of category:</Text>
                             <View style={styles.inputContainer}>
 
                                 <TextInput
-                                    style={styles.input}
+                                    style={styles.modalInput}
                                     onChangeText={set_categoryName}
                                     placeholder="Name"
                                 />
@@ -157,11 +157,11 @@ export const EditBudgetView = (route) => {
                 <Modal.Container>
                     <Modal.Header title={'Edit category: ' + category.name}/>
                     <Modal.Body>
-                        <View style={styles.container}>
+                        <View>
                             <Text style={styles.textModal}>New name for category:</Text>
                             <View style={styles.inputContainer}>
                                 <TextInput
-                                    style={styles.input}
+                                    style={styles.modalInput}
                                     onChangeText={set_tmp_categoryName}
                                     value={tmp_categoryName}
                                     placeholder="Name"
@@ -196,13 +196,14 @@ const styles = StyleSheet.create({
         fontSize:16,
         color: '#a19f9f',
         fontWeight: 'bold',
-        marginBottom: 5,
+        marginBottom: '2%',
     },
     inputContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
+        marginBottom: '8%',
     },
-    input: {
+    modalInput: {
         flex: 1,
         borderRadius: 5,
         borderWidth: 1,
@@ -210,6 +211,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
         padding: '0.5%',
         paddingLeft: 10,
-        marginBottom: 25,
     },
 });

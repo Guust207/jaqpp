@@ -97,11 +97,11 @@ export const AddBudgetCategoryView = (route) => {
                 <Modal.Container style={styles.modalContainer}>
                     <Modal.Header title={'Add new item'}/>
                     <Modal.Body>
-                        <View style={styles.container}>
+                        <View>
                             <Text style={styles.textModal}>Name of item:</Text>
                             <View style={styles.inputContainer}>
                                 <TextInput
-                                    style={styles.input}
+                                    style={styles.modalInput}
                                     onChangeText={set_fieldName}
                                     placeholder="Name"
                                 />
@@ -109,7 +109,7 @@ export const AddBudgetCategoryView = (route) => {
                             <Text style={styles.textModal}>Price pr Unit:</Text>
                             <View style={styles.inputContainer}>
                                 <TextInput
-                                    style={styles.input}
+                                    style={styles.modalInput}
                                     onChangeText={set_fieldCost}
                                     placeholder="Cost Pr Unit"
                                 />
@@ -117,7 +117,7 @@ export const AddBudgetCategoryView = (route) => {
                             <Text style={styles.textModal}>Amount:</Text>
                             <View style={styles.inputContainer}>
                                 <TextInput
-                                    style={styles.input}
+                                    style={styles.modalInput}
                                     onChangeText={set_fieldAmount}
                                     placeholder="Amount"
                                 />
@@ -240,11 +240,11 @@ export const EditBudgetCategoryView = (route) => {
                 <Modal.Container>
                     <Modal.Header title={'Edit field: ' + currField.name}/>
                     <Modal.Body>
-                        <View style={styles.container}>
+                        <View>
                             <Text style={styles.textModal}>New name of item:</Text>
                             <View style={styles.inputContainer}>
                                 <TextInput
-                                    style={styles.input}
+                                    style={styles.modalInput}
                                     onChangeText={set_fieldName}
                                     value={fieldName}
                                     placeholder="Name"
@@ -253,7 +253,7 @@ export const EditBudgetCategoryView = (route) => {
                             <Text style={styles.textModal}>New cost Pr Unit:</Text>
                             <View style={styles.inputContainer}>
                                 <TextInput
-                                    style={styles.input}
+                                    style={styles.modalInput}
                                     onChangeText={set_fieldCost}
                                     value={fieldCost}
                                     placeholder="Cost Pr Unit"
@@ -262,7 +262,7 @@ export const EditBudgetCategoryView = (route) => {
                             <Text style={styles.textModal}>New amount:</Text>
                             <View style={styles.inputContainer}>
                                 <TextInput
-                                    style={styles.input}
+                                    style={styles.modalInput}
                                     onChangeText={set_fieldAmount}
                                     value={fieldAmount}
                                     placeholder="Amount"
@@ -287,22 +287,19 @@ export const EditBudgetCategoryView = (route) => {
 }
 
 const styles = StyleSheet.create({
-    text: {
-        paddingTop: 10,
-        textAlign: "center",
-        fontSize: 24,
-    },
+
     textModal: {
         fontSize:16,
         color: '#a19f9f',
         fontWeight: 'bold',
-        marginBottom: 5,
+        marginBottom: '2%',
     },
     inputContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
+        marginBottom: '8%',
     },
-    input: {
+    modalInput: {
         flex: 1,
         borderRadius: 5,
         borderWidth: 1,
@@ -310,6 +307,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
         padding: '0.5%',
         paddingLeft: 10,
-        marginBottom: 25,
     },
 });

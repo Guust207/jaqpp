@@ -197,7 +197,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 5,
-        justifyContent: 'flex-start',
         backgroundColor: '#D6D5C9',
     },
     headText: {
@@ -231,7 +230,6 @@ const styles = StyleSheet.create({
     buttonContainer: {
         alignItems: 'flex-start',
         flexDirection: 'row',
-        justifyContent: 'space-between',
     },
     button: {
         backgroundColor: '#0A100D',

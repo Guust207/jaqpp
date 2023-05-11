@@ -17,6 +17,7 @@ Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
 export const AttendeesInterface = ({route}) => {
     const navigation = useNavigation();
 
+    const [attendeeEmail, set_attendeeEmail] = useState("email");
     const { gathering } = route.params;
     const [gatheringID, set_gatheringID] = useState(gathering.id);
 
@@ -73,19 +74,30 @@ export const AttendeesInterface = ({route}) => {
     }
 
 
+    const sendInvitation = () => {
+        setIsModalVisible(() => !isModalVisible)
+
+    }
+
     return (
         <View style={styles.container}>
 
             <TouchableOpacity  onPress={inviteAttendees}>
-                <Text style={[ styles.kickName]}>Invite</Text>
+                <Text style={[ styles.kickName]}>Invitation</Text>
                     <Modal isVisible={isModalVisible}>
                         <Modal.Container>
-                            <Modal.Header title={"Attendee"} />
+                            <Modal.Header title={"Invite"} />
                             <Modal.Body>
-                                <Text> Halla</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="send invitation to this email"
+                                    onChangeText={set_attendeeEmail}
+                                    placeholderTextColor="#999"
+                                />
+
                                 <Button
-                                    onPress={inviteAttendees}
-                                    title="invite"
+                                    onPress={sendInvitation}
+                                    title="Send"
                                 />
                             </Modal.Body>
                         </Modal.Container>

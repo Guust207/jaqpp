@@ -85,6 +85,22 @@ export const ProfileView = (user, setUser) => {
     }
 
 
+    const acceptInvitations = () => {
+        getInvitation().then();
+
+        set_isInvitationView(() => !isInvitationView)
+        console.log("Accepted");
+    }
+
+
+    const declineInvitations = () => {
+        getInvitation().then();
+        set_isInvitationView(() => !isInvitationView)
+        console.log("Decline");
+    }
+
+
+
 
     //The view that you see at profile view
     return (
@@ -106,10 +122,10 @@ export const ProfileView = (user, setUser) => {
                                 {Invitations.map((item) => (
                                     <View key={item.id} style={styles.category}>
                                         <Text> {item.gathering}</Text>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity onPress={acceptInvitations}>
                                             <Text style={styles.text}> Accept </Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity onPress={declineInvitations}>
                                             <Text style={styles.text}> Decline</Text>
                                         </TouchableOpacity>
                                     </View>

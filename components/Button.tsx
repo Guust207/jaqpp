@@ -8,14 +8,14 @@ export type ButtonProps = {
 
 export const Buttons = ({ title, onPress }: ButtonProps) => {
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.text}>{title}</Text>
+        <TouchableOpacity style={styles.buttons} onPress={onPress}>
+            <Text style={styles.buttonTexts}>{title}</Text>
         </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
-    button: {
+    buttons: {
         margin: 5,
         padding: 8,
         borderRadius: 5,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         alignItems: "center",
     },
-    text: {
+    buttonTexts: {
         color: "black",
         fontWeight: "700",
         fontSize: 18,

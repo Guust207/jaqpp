@@ -104,14 +104,6 @@ export const GatheringView = ({route}) => {
     }
 
 
-    const handleBudgetButton = (gathering) => {
-        console.log(gathering.id)
-        console.log(CurrentGathering.id);
-        console.log(categoryList);
-
-        navigation.navigate('Budget')
-    }
-
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -119,7 +111,7 @@ export const GatheringView = ({route}) => {
                     <Text style={styles.headText}>{item.name}</Text>
                     <Text style={styles.descriptionText}>{item.description}</Text>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button} onPress={() => handleBudgetButton(item)}>
+                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Budget', {CurrentGathering})}>
                             <Text style={styles.buttonText}>Administer Budget</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.button} >

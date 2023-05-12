@@ -3,7 +3,6 @@ import {GatheringInterface} from "./gatheringInterfaceView";
 import {createStackNavigator} from "@react-navigation/stack";
 import {currentCategory, currentFilter, currentGathering} from "../global_variables";
 import {GatheringView} from "./GatheringView";
-import Create from "./CreateGathering";
 import {CategoryView} from "../budgetComponents/budgetInterfaceView";
 import {FieldView} from "../budgetComponents/fielsInterfaceView";
 import {AttendeesInterface} from "../attendeesComponents/attendeesnterfaceView";
@@ -26,7 +25,9 @@ export const Gathering = () => {
             <Stack.Navigator>
                 <Stack.Screen name="Your attendees gatherings" component={AttendeesGatheringInterface} />
                 <Stack.Screen name="CurrentAttendeesGathering" component={AttendeesGatheringView}
-
+                              options={{
+                                  title: CurrentGathering.name,
+                              }}
                 />
             </Stack.Navigator>
         )
@@ -52,7 +53,7 @@ export const Gathering = () => {
         return (
             <Stack.Navigator>
                 <Stack.Screen name="Your attendees gatherings" component={AttendeesGatheringInterface} />
-                <Stack.Screen name="CurrentGathering" component={GatheringView}
+                <Stack.Screen name="CurrentAttendeesGathering" component={AttendeesGatheringView}
                               options={{
                                   title: CurrentGathering.name,
                               }}

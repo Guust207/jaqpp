@@ -146,11 +146,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: 'black',
     },
-
     dropdown: {
-        left: '60%',
+        left: '53%',
         height: '10%',
-        width: '40%',
+        width: '48%',
         borderColor: 'gray',
         borderWidth: 0.5,
         borderRadius: 8,
@@ -206,6 +205,8 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         fontSize: 18,
     },
+
+
 
 
 

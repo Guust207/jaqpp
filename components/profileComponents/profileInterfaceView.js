@@ -77,6 +77,7 @@ export const ProfileView = (user, setUser) => {
                 list.push({
                     id: doc.id,
                     gathering,
+                    gatheringName,
                     accepted
                 });
             });
@@ -142,7 +143,7 @@ export const ProfileView = (user, setUser) => {
                             <Modal.Body>
                                 {Invitations.map((item) => (
                                     <View key={item.id} style={styles.category}>
-                                        <Text> {item.gathering}</Text>
+                                        <Text> {item.gatheringName}</Text>
                                         <TouchableOpacity onPress={() => acceptInvitations(item)}>
                                             <Text style={styles.text}> Accept </Text>
                                         </TouchableOpacity>

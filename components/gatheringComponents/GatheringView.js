@@ -84,6 +84,18 @@ export const GatheringView = ({route}) => {
 
 
 
+    const handleBudgetButton = (gathering) => {
+        console.log("THIS", gathering.id)
+        navigation.navigate('Budget', { gathering: gathering })
+    }
+
+
+    const handleAttendees = (gathering) => {
+        console.log("THIS", gathering.id)
+        navigation.navigate('Attendees', { gathering: gathering })
+    }
+
+
     //Delete part
     async function checkDel(collection, id) {
         const docRef = doc(db, collection, id);
@@ -111,10 +123,10 @@ export const GatheringView = ({route}) => {
                     <Text style={styles.headText}>{item.name}</Text>
                     <Text style={styles.descriptionText}>{item.description}</Text>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.gatheringButton} onPress={() => navigation.navigate('Budget', {CurrentGathering})}>
+                        <TouchableOpacity style={styles.gatheringButton} onPress={() => handleBudgetButton(item)}>
                             <Text style={styles.buttonText}>Administer Budget</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.gatheringButton} >
+                        <TouchableOpacity style={styles.gatheringButton} onPress={() => handleAttendees(item)}>
                             <Text style={styles.buttonText}>Administer Attendees</Text>
                         </TouchableOpacity>
                     </View>

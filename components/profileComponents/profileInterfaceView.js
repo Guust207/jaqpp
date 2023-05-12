@@ -1,21 +1,27 @@
 //This is the function that handles profile view and all of its sub functions
 import {Alert, TouchableOpacity, Button, Image, StyleSheet, Text, View} from "react-native";
 import * as React from "react";
-import {deleteDoc, doc, getDoc} from "firebase/firestore";
+import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
+import {useState} from "react";
+import {Modal} from "../Modal";
 
 
 export const ProfileView = () => {
 
 
     const [user, setUser] = currentUser();
+    const [Invitations, setInvitations] = useState([]);
+    const [isInvitationView, set_isInvitationView] = useState(false)
 
 
     const accountDeleted = () =>
         Alert.alert('Account deleted from JaqPPP','', [
             {text: 'OK'},
         ]);
+
+
 
     const downloadData = async () => {
         // Fetch data from Firestore or any other data source
@@ -57,6 +63,70 @@ export const ProfileView = () => {
         accountDeleted();
     }
 
+    const getInvitation = async () => {
+        const q = query(collection(db, "users", user.id, "invitations"));
+        onSnapshot(q, (querySnapshot) => {
+            const  list = [];
+
+            querySnapshot.forEach((doc) => {
+                const { gathering, gatheringName, accepted} = doc.data();
+
+                //list for storing the data
+                list.push({
+                    id: doc.id,
+                    gathering,
+                    gatheringName,
+                    accepted
+                });
+            });
+            setInvitations(list);
+        });
+    }
+
+    const handleInvitations = () => {
+        getInvitation().then();
+        set_isInvitationView(() => !isInvitationView)
+    }
+
+
+    const acceptInvitations = async (item) => {
+        var date = new Date().getDate();
+        var month = new Date().getMonth() + 1;
+        var year = new Date().getFullYear();
+
+
+        const gatheringRef1 = doc(db, "gathering", item.gathering, "attendees", user.id);
+
+
+
+        // Add gathering data to the main 'gathering' collection
+        await setDoc(gatheringRef1, {
+            date: date + '-' + month + '-' + year,
+            fullName: user.name,
+            email: user.email,
+            image: user.picture,
+        });
+
+
+        // Delete Invitation after accepting
+        const gatheringRef2 = doc(db, "users", user.id, "invitations", item.id);
+        await deleteDoc(gatheringRef2)
+
+        set_isInvitationView(() => !isInvitationView)
+
+        console.log("Accepted");
+    }
+
+
+    const declineInvitations = async (item) => {
+        // Delete Invitation after accepting
+        const gatheringRef2 = doc(db, "users", user.id, "invitations", item.id);
+        await deleteDoc(gatheringRef2)
+
+        set_isInvitationView(() => !isInvitationView)
+        console.log("Decline");
+    }
+
 
 
     //The view that you see at profile view
@@ -76,6 +146,32 @@ export const ProfileView = () => {
                         <Text style={styles.buttonText}>Sign Out</Text>
                     </TouchableOpacity>
                 </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={handleInvitations}>
+                        <Text style={styles.buttonText}> Invitations</Text>
+                    </TouchableOpacity>
+                </View>
+                <Modal isVisible={isInvitationView} >
+                    <Modal.Container>
+                        <Modal.Header title={"Invitations"} />
+                        <Modal.Body>
+                            {Invitations.map((item) => (
+                                <View key={item.id} style={styles.category}>
+                                    <Text> {item.gatheringName}</Text>
+                                    <TouchableOpacity onPress={() => acceptInvitations(item)}>
+                                        <Text style={styles.text}> Accept </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => declineInvitations(item)}>
+                                        <Text style={styles.text}> Delete</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ))}
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button title="Cancel" onPress={handleInvitations} />
+                        </Modal.Footer>
+                    </Modal.Container>
+                </Modal>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={downloadData}>
                         <Text style={styles.buttonText}>Download data about user</Text>

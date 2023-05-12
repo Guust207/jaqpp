@@ -8,6 +8,7 @@ import {GatheringView} from "./GatheringView";
 import Create from "./CreateGathering";
 import {CategoryView} from "../budgetComponents/budgetInterfaceView";
 import {FieldView} from "../budgetComponents/fielsInterfaceView";
+import {AttendeesInterface} from "../attendeesComponents/attendeesnterfaceView";
 
 /*
 OBS!!!!!!
@@ -23,6 +24,7 @@ export const Gathering = () => {
         <Stack.Navigator>
             <Stack.Screen name="Your gatherings" component={GatheringInterface}/>
             <Stack.Screen name="Create" component={Create}/>
+            <Stack.Screen name="Attendees" component={AttendeesInterface}/>
             <Stack.Screen name="CurrentGathering" component={GatheringView}
                           options={{
                               title: CurrentGathering.name,

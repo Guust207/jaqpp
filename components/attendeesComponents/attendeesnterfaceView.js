@@ -134,6 +134,8 @@ export const AttendeesInterface = ({route}) => {
                                 onChangeText={set_attendeeEmail}
                                 placeholderTextColor="#999"
                             />
+                        </Modal.Body>
+                        <Modal.Footer>
                             <Button
                                 onPress={sendInvitation}
                                 title="Send"
@@ -142,7 +144,7 @@ export const AttendeesInterface = ({route}) => {
                                 onPress={() => setIsModalVisible(() => !isModalVisible)}
                                 title="Cancel"
                             />
-                        </Modal.Body>
+                        </Modal.Footer>
                     </Modal.Container>
                 </Modal>
             </TouchableOpacity>

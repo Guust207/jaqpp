@@ -21,31 +21,31 @@ export const AttendeesInterface = ({route}) => {
     const navigation = useNavigation();
 
     const [attendeeEmail, set_attendeeEmail] = useState("email");
-    const { gathering } = route.params;
+    const { gathering , user} = route.params;
     const [gatheringID, set_gatheringID] = useState(gathering.id);
     const [gatheringName, set_gatheringName] = useState(gathering.id);
 
     //Get part
     // This is variables and functions for fetching and display all the gatherings
     const [gat, setGat] = useState([]);
-    const [user, setUser] = currentUser();
 
 
 
-    useEffect(() => {
+    useEffect((user) => {
         const getAllGat = async () => {
             const q = query(collection(db, "gathering", gatheringID, "attendees"));
             onSnapshot(q, (querySnapshot) => {
                 const  list = [];
 
                 querySnapshot.forEach((doc) => {
-                    const { Name } = doc.data();
+                    const { email, fullName, image } = doc.data();
 
                     //list for storing the data
                     list.push({
                         id: doc.id,
-                        Name,
-
+                        email,
+                        fullName,
+                        image,
                     });
                 });
 
@@ -60,15 +60,15 @@ export const AttendeesInterface = ({route}) => {
 
     //Variables used to handle Modal (Popup screen for edit)
     const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const [isModalVisible1, setIsModalVisible1] = React.useState(false);
+
     const handleModal = (field) => {
 
         setIsModalVisible(() => !isModalVisible)
     };
 
 
-     const kickAttendee = () => {
-         setIsModalVisible(() => !isModalVisible)
-     }
+
 
 
     const inviteAttendees = () => {
@@ -113,12 +113,29 @@ export const AttendeesInterface = ({route}) => {
 
         setIsModalVisible(() => !isModalVisible)
     }
+
+
+
+    const kickAttendee = async (item) => {
+
+
+        const docRef = doc(db, "gathering", gatheringID, "attendees", item.id);
+        await deleteDoc(docRef);
+
+        setIsModalVisible1(() => !isModalVisible1)
+        console.log("Kicked");
+
+    }
+
+
+
+
     return (
         <View style={styles.container}>
 
             <TouchableOpacity  onPress={inviteAttendees}>
                 <Text style={[ styles.kickName]}>Invitation</Text>
-                    <Modal isVisible={isModalVisible}>
+                    <Modal isVisible={isModalVisible} >
                         <Modal.Container>
                             <Modal.Header title={"Invite"} />
                             <Modal.Body>
@@ -145,11 +162,15 @@ export const AttendeesInterface = ({route}) => {
                         <View key={item.id} style={styles.gatContainer}>
                             {/* i toppen skriv route og i toippen på denne skriv navigation
                             const drink = route.params.drink*/}
+                            <Image style={styles.profilePicture} source={{ uri: item.image }} />
                                 <View style={styles.gat}>
                                     <View style={styles.nameContainer}>
-                                        <Text style={[styles.text, styles.gatName]}> {item.Name}</Text>
+                                        <Text style={[styles.text, styles.gatName]}> {item.email}</Text>
                                     </View>
-                                    <TouchableOpacity onPress={kickAttendee}>
+                                    <View style={styles.nameContainer}>
+                                        <Text style={[styles.text, styles.gatName]}> {item.fullName}</Text>
+                                    </View>
+                                    <TouchableOpacity  onPress={() => kickAttendee(item)}>
                                         <Text style={[ styles.kickName]}>Kick</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -224,6 +245,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginBottom: 10,
     },
+
     gatImage: {
         aspectRatio: 1,
         width: 80,
@@ -263,7 +285,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         borderBottomWidth: 2,
         borderBottomColor: 'black',
-        paddingLeft: 100,
+        paddingLeft: 20,
     },
 
     buttonContainer: {

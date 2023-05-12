@@ -1,7 +1,7 @@
 //This is the function that handles profile view and all of its sub functions
 import {Alert, TouchableOpacity, Button, Image, StyleSheet, Text, View} from "react-native";
 import * as React from "react";
-import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc, where} from "firebase/firestore";
+import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
 import {useEffect, useState} from "react";
@@ -95,18 +95,26 @@ export const ProfileView = (user, setUser) => {
         var month = new Date().getMonth() + 1;
         var year = new Date().getFullYear();
 
+
         const gatheringRef1 = doc(db, "gathering", item.gathering, "attendees", user.id);
+
+
 
         // Add gathering data to the main 'gathering' collection
         await setDoc(gatheringRef1, {
-            date: date + '-' + month + '-' + year
+            date: date + '-' + month + '-' + year,
+            fullName: user.name,
+            email: user.email,
+            image: user.picture,
         });
+
 
         // Delete Invitation after accepting
         const gatheringRef2 = doc(db, "users", user.id, "invitations", item.id);
         await deleteDoc(gatheringRef2)
 
         set_isInvitationView(() => !isInvitationView)
+
         console.log("Accepted");
     }
 

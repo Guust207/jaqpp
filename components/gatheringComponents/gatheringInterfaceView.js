@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 //Component Imports
 import Create from "./CreateGathering";
 import {currentUser} from "../global_variables";
-
+import  {styles} from "../Styles";
 
 
 /*
@@ -120,60 +120,5 @@ export const GatheringInterface = () => {
 
 
 
-
-
-//Style
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 5,
-        backgroundColor: '#D6D5C9',
-    },
-
-    gatContainer: {
-        backgroundColor: '#B9BAA3',
-        padding: 10,
-        margin:10,
-        borderRadius: 25,
-    },
-    gat: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-    },
-    gatImageContainer: {
-        width: 80,
-        borderRadius: 25,
-        marginRight: 10,
-        marginBottom: 10,
-    },
-    gatImage: {
-        aspectRatio: 1,
-        width: 80,
-        height: undefined,
-        borderRadius: 25,
-    },
-    nameContainer: {
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-    },
-    infoContainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        marginTop: 20,
-        flex: 1,
-    },
-    infoText: {
-        fontSize: 16,
-    },
-    gatName: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        borderBottomWidth: 2,
-        borderBottomColor: 'black',
-    },
-
-
-});
 
 

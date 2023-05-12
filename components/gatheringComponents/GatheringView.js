@@ -7,7 +7,7 @@ import {db} from "../../firebaseConfig";
 
 
 import {Modal} from "../Modal";
-
+import {styles} from "../Styles";
 
 
 export const GatheringView = ({route}) => {
@@ -193,114 +193,6 @@ export const GatheringView = ({route}) => {
 
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 5,
-        backgroundColor: '#D6D5C9',
-    },
-    headText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: 'black',
-        paddingBottom: 5,
-        marginBottom: 15,
-        borderBottomWidth:0.5,
-    },
-    descriptionText: {
-        fontSize: 16,
-        marginBottom: 30,
-    },
-
-    catText: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: 'black',
-        paddingBottom: 5,
-        marginBottom: 15,
-        borderBottomWidth:0.5,
-    },
-    catContainer: {
-        justifyContent: "flex-start",
-        flexDirection: "row",
-    },
-
-
-    buttonContainer: {
-        alignItems: 'flex-start',
-        flexDirection: 'row',
-    },
-    gatheringButton: {
-        backgroundColor: '#0A100D',
-        color: '#B9BAA3',
-        borderRadius: 5,
-        paddingVertical: 10,
-        flex: 1,
-        marginHorizontal: 2,
-        marginBottom: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlignVertical: 'center',
-    },
-    buttonText: {
-        color: '#D6D5C9',
-        textAlign: 'center',
-        fontSize: 16,
-    },
-    bottomButtonContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10,
-        color: '#333',
-    },
-
-
-    deleteButton: {
-        backgroundColor: '#DE1616'
-    },
-
-
-    textModal: {
-        fontSize:16,
-        color: '#a19f9f',
-        fontWeight: 'bold',
-        marginBottom: '2%',
-    },
-
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        marginBottom: '8%',
-    },
-    modalInput: {
-        flex: 1,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: '#bababa',
-        fontSize: 16,
-        padding: '0.5%',
-        paddingLeft: 10,
-    },
-
-
-    modalButton: {
-        margin: 5,
-        padding: 8,
-        borderRadius: 5,
-        borderColor: "black",
-        borderWidth: 1,
-        alignItems: "center",
-    },
-    modalButtonTexts: {
-        color: "black",
-        fontWeight: "700",
-        fontSize: 18,
-    },
-
-
-});
 
 
 

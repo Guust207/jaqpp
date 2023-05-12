@@ -68,12 +68,10 @@ export const AttendeesInterface = ({route}) => {
 
      const kickAttendee = () => {
          setIsModalVisible(() => !isModalVisible)
-
      }
 
 
     const inviteAttendees = () => {
-
         setIsModalVisible(() => !isModalVisible)
     }
 

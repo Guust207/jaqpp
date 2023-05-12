@@ -1,12 +1,13 @@
 //This is the function that handles profile view and all of its sub functions
 import {Alert, TouchableOpacity, Button, Image, StyleSheet, Text, View} from "react-native";
 import * as React from "react";
-import {collection, deleteDoc, doc, getDoc, onSnapshot, query, where} from "firebase/firestore";
+import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc, where} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
 import {useEffect, useState} from "react";
 import {EditBudgetCategoryView} from "../budgetComponents/budget_categoryFieldView";
 import {Modal} from "../Modal";
+import uuid from "react-native-uuid";
 
 
 export const ProfileView = (user, setUser) => {
@@ -26,6 +27,10 @@ export const ProfileView = (user, setUser) => {
             const docRef = doc(db, "users", user.id);
             return await getDoc(docRef);
         }
+    }
+
+    const generateInvitationID = () => {
+        return uuid.v4();
     }
 
     async function deleteAccount() {
@@ -85,16 +90,28 @@ export const ProfileView = (user, setUser) => {
     }
 
 
-    const acceptInvitations = () => {
-        getInvitation().then();
+    const acceptInvitations = async (item) => {
+        const date = new Date()
+
+        // Add gathering data to the main 'gathering' collection
+        await setDoc(gatheringRef1, {
+            date: date
+        });
+
+        // Delete Invitation after accepting
+        const gatheringRef2 = doc(db, "users", user.id, "invitations", item.id);
+        await deleteDoc(gatheringRef2)
 
         set_isInvitationView(() => !isInvitationView)
         console.log("Accepted");
     }
 
 
-    const declineInvitations = () => {
-        getInvitation().then();
+    const declineInvitations = async (item) => {
+        // Delete Invitation after accepting
+        const gatheringRef2 = doc(db, "users", user.id, "invitations", item.id);
+        await deleteDoc(gatheringRef2)
+
         set_isInvitationView(() => !isInvitationView)
         console.log("Decline");
     }
@@ -122,11 +139,11 @@ export const ProfileView = (user, setUser) => {
                                 {Invitations.map((item) => (
                                     <View key={item.id} style={styles.category}>
                                         <Text> {item.gathering}</Text>
-                                        <TouchableOpacity onPress={acceptInvitations}>
+                                        <TouchableOpacity onPress={() => acceptInvitations(item)}>
                                             <Text style={styles.text}> Accept </Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={declineInvitations}>
-                                            <Text style={styles.text}> Decline</Text>
+                                        <TouchableOpacity onPress={() => declineInvitations(item)}>
+                                            <Text style={styles.text}> Delete</Text>
                                         </TouchableOpacity>
                                     </View>
                                 ))}

@@ -41,9 +41,13 @@ export const GatheringInterface = () => {
                     time,
                 });
             });
-            set_gatList(gatheringList)
-        });
-    }, [user])
+          
+            setGat(list);
+          });
+        }
+        getAllGat();
+
+    },[user])
 
 
     useEffect(() => {
@@ -125,7 +129,6 @@ export const GatheringInterface = () => {
                                             <Text style={styles.text}>:{item.time}</Text>
                                         </View>
                                     </View>
-
                                 </View>
                             </TouchableOpacity>
 

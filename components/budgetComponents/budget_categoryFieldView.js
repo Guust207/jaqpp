@@ -1,41 +1,35 @@
-import {Alert, Button, Text, TextInput, View} from "react-native";
+import {Alert, Button, StyleSheet, Text, TextInput, View} from "react-native";
 import React, {useState} from "react";
 import {db} from "../../firebaseConfig";
-import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
-import {currentCategory, currentField, currentGathering, currentUser} from "../global_variables";
+import { doc, getDoc, setDoc} from "firebase/firestore";
 import {Modal} from "../Modal";
-import {Gathering} from "../gatheringComponents/Gathering";
+import {Buttons} from "../Button";
+
+import uuid from "react-native-uuid";
+import {currentField} from "../global_variables";
 
 
 //TODO: When creating an interface you need to find a way to get budgetCategory and gathering - Currently the function is using dummy value
 
 
-export const AddBudgetCategoryView = () => {
+export const AddBudgetCategoryView = (route) => {
 
-    const [user, setUser] = currentUser();
-    const [fieldName, set_fieldName] = useState(null);
-    const [fieldCost, set_fieldCost] = useState(null);
-    const [fieldAmount, set_fieldAmount] = useState(null);
-    const [categoryID, setCategory] = currentCategory();
-    const [gathering, set_gathering] = currentGathering();
-    const [fieldID, setField] = useState(null);
+    const gathering = route.gathering
+    const category = route.category
+
+    const [gatheringID, set_gatheringID] = useState(gathering.id);
+    const [categoryID, setCategory] = useState(category.id);
 
 
-    function GenerateID() {
-        const number1 = Math.floor(Math.random() * 9) + 1;
-        const number2 = Math.floor(Math.random() * 9) + 1;
-        const number3 = Math.floor(Math.random() * 9) + 1;
-        const number4 = Math.floor(Math.random() * 9) + 1;
-        const number5 = Math.floor(Math.random() * 9) + 1;
-
-        return number1.toString() + number2.toString() + number3.toString() + number4.toString() + number5.toString();
-    }
+    const [fieldName, set_fieldName] = useState("Name");
+    const [fieldCost, set_fieldCost] = useState("Price Pr Unit");
+    const [fieldAmount, set_fieldAmount] = useState("Amount");
 
 
     async function increase_totalCost() {
-        const docRef = doc(db,"gathering", gathering.id, "budget", categoryID)
+        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID)
         const docSnap = await getDoc(docRef).then();
-        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID), {
+        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
             name: docSnap.data().name,
             totalCost: docSnap.data().totalCost + (fieldAmount * fieldCost)
             }
@@ -61,116 +55,128 @@ export const AddBudgetCategoryView = () => {
             {text: 'OK'},
         ]);
 
-    async function hasError() {
-        const docRef = doc(db,"gathering", gathering.id, "budget", categoryID, "ListOf", fieldID);
-        const docSnap = await getDoc(docRef).then();
-        if (fieldCost == null || fieldAmount == null) {
-            MissingField();
-            return false;
-        } else if (docSnap.exists()) {
-            FieldExist();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     const button = () => {
-        const tmpID = GenerateID();
-        console.log(gathering.id);
-        console.log(categoryID);
-        console.log(fieldID);
-        if (tmpID > 0) {
-            setField(tmpID);
-            button1().then()
-        } else
-            button();
+        const id = uuid.v4();
+        setField(id);
+        button1(id).then()
     }
 
 
-    async function button1() {
-        if (await hasError() === true) {
-            add_CategoryField().then();
-            FieldAdded();
-            increase_totalCost(calculate_totalCost()).then();
-        }
+    async function button1(fieldID) {
+        add_CategoryField(fieldID).then();
+        setIsFieldAddViewVisible(() => !isFieldAddViewVisible)
     }
 
 
     const [isFieldAddViewVisible, setIsFieldAddViewVisible] = useState(true);
 
-    async function add_CategoryField() {
-        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID, "ListOf" + categoryID, fieldID), {
-                name: fieldName,
-                costPrUnit: fieldCost,
-                amount: fieldAmount,
-                totalCost: fieldAmount * fieldCost
-            }
-        ).then();
+    async function add_CategoryField(id) {
+        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf", id);
+        const docSnap = await getDoc(docRef).then();
+        if (fieldCost == null || fieldAmount == null) {
+            MissingField();
+            return ;
+        } else if (docSnap.exists()) {
+            FieldExist();
+            return ;
+        } else {
+            await setDoc(doc(db, "gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, id), {
+                    name: fieldName,
+                    costPrUnit: fieldCost,
+                    amount: fieldAmount,
+                    totalCost: fieldAmount * fieldCost
+                }
+            ).then();
+        }
+        increase_totalCost(calculate_totalCost()).then();
     }
 
     return (
         <View>
             <Modal isVisible={isFieldAddViewVisible}>
-                <Modal.Container>
-                    <TextInput
-                        onChangeText={set_fieldName}
-                        value={fieldName}
-                        placeholder="Name"
-                    />
-                    <TextInput
-                        onChangeText={set_fieldCost}
-                        value={fieldCost}
-                        placeholder="Cost Pr Unit"
-                    />
-                    <TextInput
-                        onChangeText={set_fieldAmount}
-                        value={fieldAmount}
-                        placeholder="Amount"
-                    />
-                    <Button
-                        onPress={button}
-                        title="Add"
-                    />
-                    <Button
-                        onPress={() => setIsFieldAddViewVisible(() => !isFieldAddViewVisible)}
-                        title="Cancel"
-                    />
+                <Modal.Container style={styles.modalContainer}>
+                    <Modal.Header title={'Add new item'}/>
+                    <Modal.Body>
+                        <View>
+                            <Text style={styles.textModal}>Name of item:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.modalInput}
+                                    onChangeText={set_fieldName}
+                                    placeholder="Name"
+                                />
+                            </View>
+                            <Text style={styles.textModal}>Price pr Unit:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.modalInput}
+                                    onChangeText={set_fieldCost}
+                                    placeholder="Cost Pr Unit"
+                                />
+                            </View>
+                            <Text style={styles.textModal}>Amount:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.modalInput}
+                                    onChangeText={set_fieldAmount}
+                                    placeholder="Amount"
+                                />
+                            </View>
+                        </View>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Buttons
+                            onPress={() => setIsFieldAddViewVisible(() => !isFieldAddViewVisible)}
+                            title="Cancel"
+                        />
+                        <Buttons
+                            onPress={button}
+                            title="Add"
+                        />
+                    </Modal.Footer>
                 </Modal.Container>
             </Modal>
         </View>
     )
 }
 
-export const EditBudgetCategoryView = () => {
+export const EditBudgetCategoryView = (route) => {
+    const [currField, set_currField] = currentField();
 
-    const [fieldName, set_fieldName] = useState(null);
-    const [fieldCost, set_fieldCost] = useState(null);
-    const [fieldAmount, set_fieldAmount] = useState(null);
-    const [categoryID, setCategory] = currentCategory();
-    const [fieldID, setField] = currentField();
-    const [gathering, setGathering] = currentGathering();
+
+    const gathering = route.gathering
+    const category = route.category
+    const field = route.field
+
+    const [gatheringID, set_gatheringID] = useState(gathering.id);
+    const [categoryID, setCategory] = useState(category.id);
+
+    const [fieldID, setField] = useState(field.id);
+    const [fieldName, set_fieldName] = useState(field.name);
+    const [fieldCost, set_fieldCost] = useState(field.costPrUnit);
+    const [fieldAmount, set_fieldAmount] = useState(field.amount);
+    const [field_totalCost, set_field_totalCost] = useState(field.totalCost);
+
 
 
 
     async function increase_totalCost() {
-        const docRef = doc(db,"gathering", gathering.id, "budget", categoryID)
+        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID)
         const docSnap = await getDoc(docRef).then();
-        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID), {
+        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
+                name: docSnap.data().name,
                 totalCost: docSnap.data().totalCost + (fieldAmount * fieldCost)
             }
         ).then();
     }
 
     async function decrease_totalCost() {
-        const docRef1 = doc(db,"gathering", gathering.id, "budget", categoryID)
+        const docRef1 = doc(db,"gathering", gatheringID, "budget", categoryID)
         const docSnap1 = await getDoc(docRef1).then();
 
-        const docRef2 = doc(db,"gathering", gathering.id, "budget", categoryID, "List", fieldID)
-        const docSnap2 = await getDoc(docRef2).then();
-
-        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID), {
-                totalCost: (docSnap1.data().totalCost) - (docSnap2.data().totalCost)
+        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID), {
+                name: docSnap1.data().name,
+                totalCost: (docSnap1.data().totalCost) - field_totalCost
             }
         ).then();
     }
@@ -191,7 +197,7 @@ export const EditBudgetCategoryView = () => {
         ]);
 
     async function hasError() {
-        const docRef = doc(db,"gathering", gathering.id, "budget", categoryID, "ListOf", fieldID);
+        const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf", fieldID);
         const docSnap = await getDoc(docRef).then();
         if (fieldCost == null || fieldAmount == null) {
             MissingField();
@@ -208,16 +214,16 @@ export const EditBudgetCategoryView = () => {
     async function button() {
         if (await hasError() === true) {
             await edit_CategoryField().then();
-            FieldAdded();
             await decrease_totalCost().then();
             await increase_totalCost().then();
+            setIsFieldEditViewVisible(() => !isFieldEditViewVisible)
         }
     }
 
 
 
     async function edit_CategoryField() {
-        await setDoc(doc(db,"gathering", gathering.id, "budget", categoryID, "ListOf" + categoryID, fieldID), {
+        await setDoc(doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID, fieldID), {
                 name: fieldName,
                 costPrUnit: fieldCost,
                 amount: fieldAmount,
@@ -232,31 +238,74 @@ export const EditBudgetCategoryView = () => {
         <View>
             <Modal isVisible={isFieldEditViewVisible}>
                 <Modal.Container>
-                    <TextInput
-                        onChangeText={set_fieldName}
-                        value={fieldName}
-                        placeholder="Name"
-                    />
-                    <TextInput
-                        onChangeText={set_fieldCost}
-                        value={fieldCost}
-                        placeholder="Cost Pr Unit"
-                    />
-                    <TextInput
-                        onChangeText={set_fieldAmount}
-                        value={fieldAmount}
-                        placeholder="Amount"
-                    />
-                    <Button
-                        onPress={button}
-                        title="Edit"
-                    />
-                    <Button
-                        onPress={() => setIsFieldEditViewVisible(() => !isFieldEditViewVisible)}
-                        title="Cancel"
-                    />
+                    <Modal.Header title={'Edit field: ' + currField.name}/>
+                    <Modal.Body>
+                        <View>
+                            <Text style={styles.textModal}>New name of item:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.modalInput}
+                                    onChangeText={set_fieldName}
+                                    value={fieldName}
+                                    placeholder="Name"
+                                />
+                            </View>
+                            <Text style={styles.textModal}>New cost Pr Unit:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.modalInput}
+                                    onChangeText={set_fieldCost}
+                                    value={fieldCost}
+                                    placeholder="Cost Pr Unit"
+                                />
+                            </View>
+                            <Text style={styles.textModal}>New amount:</Text>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.modalInput}
+                                    onChangeText={set_fieldAmount}
+                                    value={fieldAmount}
+                                    placeholder="Amount"
+                                />
+                            </View>
+                        </View>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Buttons
+                            onPress={() => setIsFieldEditViewVisible(() => !isFieldEditViewVisible)}
+                            title="Cancel"
+                        />
+                        <Buttons
+                            onPress={button}
+                            title="Edit"
+                        />
+                    </Modal.Footer>
                 </Modal.Container>
             </Modal>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+
+    textModal: {
+        fontSize:16,
+        color: '#a19f9f',
+        fontWeight: 'bold',
+        marginBottom: '2%',
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        marginBottom: '8%',
+    },
+    modalInput: {
+        flex: 1,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#bababa',
+        fontSize: 16,
+        padding: '0.5%',
+        paddingLeft: 10,
+    },
+});

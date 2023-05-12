@@ -23,7 +23,7 @@ export const AttendeesInterface = ({route}) => {
     const [attendeeEmail, set_attendeeEmail] = useState("email");
     const { gathering , user} = route.params;
     const [gatheringID, set_gatheringID] = useState(gathering.id);
-    const [gatheringName, set_gatheringName] = useState(gathering.id);
+    const [gatheringName, set_gatheringName] = useState(gathering.name);
 
     //Get part
     // This is variables and functions for fetching and display all the gatherings

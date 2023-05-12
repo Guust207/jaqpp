@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Alert, Button, StyleSheet, Text, TextInput, View} from "react-native";
-import {addDoc, deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
+import {Alert, StyleSheet, Text, TextInput, View} from "react-native";
+import {doc, getDoc, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {Modal} from "../Modal";
 import {Buttons} from "../Button";

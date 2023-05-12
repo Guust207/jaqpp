@@ -1,7 +1,7 @@
 import {Button, StyleSheet, Text, TouchableOpacity, View, ScrollView,  TextInput,  Image} from "react-native";
 import React, {useEffect, useState} from "react";
-import {collection, doc, getDoc, query, onSnapshot, setDoc, getDocs, where, deleteDoc} from "firebase/firestore";
-import { auth , db} from "../../firebaseConfig";
+import {collection, doc, query, onSnapshot, setDoc, getDocs, where, deleteDoc} from "firebase/firestore";
+import {db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
 import {Modal} from "../Modal";
 import uuid from 'react-native-uuid';

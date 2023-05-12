@@ -1,9 +1,8 @@
 import {Button, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {auth, db} from "../../firebaseConfig";
-import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc, where} from "firebase/firestore";
-import {Modal} from "../Modal";
-import {currentCategory, currentField, currentGathering} from "../global_variables";
+import {collection, deleteDoc, doc, onSnapshot, query} from "firebase/firestore";
+import {currentCategory} from "../global_variables";
 import {AddBudgetView, EditBudgetView} from "./budgetView";
 import {useNavigation} from "@react-navigation/native";
 import {Icon} from "react-native-elements";

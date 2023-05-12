@@ -1,13 +1,11 @@
-import {Button, StyleSheet, Text, TouchableOpacity, View, ScrollView,  TextInput,  Image} from "react-native";
+import {Text, TouchableOpacity, View, ScrollView,  Image} from "react-native";
 import React, {useEffect, useState} from "react";
-import {collection, doc, getDoc, query, onSnapshot, setDoc, where, deleteDoc, getDocs} from "firebase/firestore";
-import { auth , db} from "../../firebaseConfig";
+import {collection, doc, getDoc, query, onSnapshot, where} from "firebase/firestore";
+import {db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
 
 //Component Imports
-import Create from "./CreateGathering";
 import {currentUser} from "../global_variables";
-import {EditBudgetCategoryView} from "../budgetComponents/budget_categoryFieldView";
 import  {styles} from "../Styles";
 
 /*

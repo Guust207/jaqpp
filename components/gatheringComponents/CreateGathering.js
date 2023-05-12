@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, Button, Text, TextInput, View} from "react-native";
-import {auth, db} from "../../firebaseConfig";
+import {StyleSheet, TouchableOpacity, Text, TextInput, View} from "react-native";
+import {db} from "../../firebaseConfig";
 import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
 import {currentUser} from "../global_variables";
 import {useNavigation} from "@react-navigation/native";

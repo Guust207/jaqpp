@@ -91,12 +91,15 @@ export const ProfileView = (user, setUser) => {
 
 
     const acceptInvitations = async (item) => {
-        const date = new Date().setFullYear()
+        var date = new Date().getDate();
+        var month = new Date().getMonth() + 1;
+        var year = new Date().getFullYear();
+
         const gatheringRef1 = doc(db, "gathering", item.gathering, "attendees", user.id);
 
         // Add gathering data to the main 'gathering' collection
         await setDoc(gatheringRef1, {
-            date: date
+            date: date + '-' + month + '-' + year
         });
 
         // Delete Invitation after accepting

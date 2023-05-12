@@ -108,8 +108,6 @@ export const AttendeesInterface = ({route}) => {
 
 
     const kickAttendee = async (item) => {
-
-
         const docRef = doc(db, "gathering", gatheringID, "attendees", item.id);
         await deleteDoc(docRef);
 
@@ -164,14 +162,10 @@ export const AttendeesInterface = ({route}) => {
                                 <View style={styles.nameContainer}>
                                     <Text style={[styles.text, styles.gatName]}> {item.fullName}</Text>
                                 </View>
-                                <TouchableOpacity  onPress={() => kickAttendee(item)}>
-                                    <Text style={[ styles.kickName]}>Kick</Text>
-                                </TouchableOpacity>
                             </View>
-
-                            <View style={styles.gat}>
-
-                            </View>
+                            <TouchableOpacity  onPress={() => kickAttendee(item)}>
+                                <Text style={[ styles.kickName]}>Kick</Text>
+                            </TouchableOpacity>
                         </View>
                     ))}
                 </View>

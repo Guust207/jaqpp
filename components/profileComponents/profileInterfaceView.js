@@ -91,7 +91,8 @@ export const ProfileView = (user, setUser) => {
 
 
     const acceptInvitations = async (item) => {
-        const date = new Date()
+        const date = new Date().setFullYear()
+        const gatheringRef1 = doc(db, "gathering", item.gathering, "attendees", user.id);
 
         // Add gathering data to the main 'gathering' collection
         await setDoc(gatheringRef1, {

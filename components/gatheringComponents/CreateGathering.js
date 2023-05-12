@@ -59,13 +59,12 @@ const Create = () => {
 
    const addData = () => {
         check("gathering", GenerateID()).then();
-
     }
 
 
 
     return (
-        <View style={styles.container}>
+        <View style={styles.createContainer}>
             <Text style={styles.title}>Add information to the new Gathering</Text>
             <View style={styles.inputContainer}>
                 <TextInput
@@ -93,7 +92,7 @@ const Create = () => {
             </View>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={() => addData()}>
+                <TouchableOpacity style={styles.createButton} onPress={() => addData()}>
                     <Text style={styles.buttonText}>Create</Text>
                 </TouchableOpacity>
             </View>
@@ -107,11 +106,12 @@ export default Create;
 
 
 const styles = StyleSheet.create({
-    container: {
+    createContainer: {
         flex: 1,
         backgroundColor: '#D6D5C9',
         paddingHorizontal: 20,
         paddingVertical: 40,
+        paddingTop: 100,
     },
     inputContainer: {
         flexDirection: 'row',
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    button: {
+    createButton: {
         backgroundColor: '#0A100D',
         borderRadius: 5,
         paddingVertical: 10,

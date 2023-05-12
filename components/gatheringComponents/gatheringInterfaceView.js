@@ -48,7 +48,7 @@ export const GatheringInterface = () => {
                 setGat(list);
             });
         }
-        getAllGat();
+        getAllGat().then();
 
     },[user])
 
@@ -101,7 +101,6 @@ export const GatheringInterface = () => {
                                             <Text style={styles.infoText}>:{item.time}</Text>
                                         </View>
                                     </View>
-
                                 </View>
                             </TouchableOpacity>
 

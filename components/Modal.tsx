@@ -27,53 +27,59 @@ export const Modal = (
 };
 
 const ModalContainer = ({ children }: { children: React.ReactNode }) => (
-    <View style={styles.container}>{children}</View>
+    <View style={styles.modalContainer}>{children}</View>
 );
 
 const ModalHeader = ({ title }: { title: string }) => (
-    <View style={styles.header}>
-        <Text style={styles.text}>{title}</Text>
+    <View style={styles.modalHeader}>
+        <Text style={styles.modalText}>{title}</Text>
     </View>
 );
 
 const ModalBody = ({ children }: { children?: React.ReactNode }) => (
-    <View style={styles.body}>{children}</View>
+    <View style={styles.modalBody}>{children}</View>
 );
 
 const ModalFooter = ({ children }: { children?: React.ReactNode }) => (
-    <View style={styles.footer}>{children}</View>
+    <View style={styles.modalFooter}>{children}</View>
 );
 
+
 const styles = StyleSheet.create({
-    container: {
+    modalContainer: {
         backgroundColor: "#ffffff",
         borderRadius: 25,
         borderWidth: 1,
         borderColor: "#000",
         borderStyle: "solid",
     },
-    header: {
-        alignItems: "center",
-        justifyContent: "center",
+    modalHeader: {
+        justifyContent: "flex-start",
+        padding: '3%',
     },
-    text: {
-        paddingTop: 10,
-        textAlign: "center",
+    modalText: {
+        paddingTop: '3%',
+        marginLeft: '2%',
+        justifyContent: 'flex-start',
         fontSize: 24,
-        marginBottom: 10,
     },
-    body: {
+    modalBody: {
         justifyContent: "center",
-        paddingHorizontal: 15,
-        minHeight: 500,
+        paddingHorizontal: '5%',
+        minHeight: 100,
+        padding: '2%',
     },
-    footer: {
-        justifyContent: "center",
+    modalFooter: {
+        justifyContent: "flex-end",
         alignItems: "center",
         padding: 10,
         flexDirection: "row",
+        backgroundColor: '#f0f0f0',
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
     },
 });
+
 
 Modal.Header = ModalHeader;
 Modal.Container = ModalContainer;

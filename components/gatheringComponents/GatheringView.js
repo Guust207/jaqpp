@@ -19,7 +19,6 @@ export const GatheringView = ({route}) => {
     const [CurrentGathering, setCurrentGathering] = currentGathering();
     const [user, setUser] = currentUser();
 
-
     useEffect(() => {
         setCurrentGathering(item)
     }, [item]); // Pass user and isInitialized as dependency array

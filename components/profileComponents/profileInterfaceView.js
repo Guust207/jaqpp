@@ -6,10 +6,10 @@ import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
 
 
-export const ProfileView = (user, setUser) => {
+export const ProfileView = () => {
 
 
-    console.log(user.picture);
+    const [user, setUser] = currentUser();
 
 
     const accountDeleted = () =>
@@ -61,109 +61,85 @@ export const ProfileView = (user, setUser) => {
 
     //The view that you see at profile view
     return (
-        <View>
-            <View>
-                <Image style={styles.profilePicture} source={{ uri: user.picture }} />
-                <View style={styles.bioContainer}>
-                    <Text style={styles.message}>{user.name}</Text>
-                    <Text style={styles.message}>{user.email}</Text>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button} onPress={handleLogout}>
-                            <Text style={styles.buttonText}>Sign Out</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button} onPress={downloadData}>
-                            <Text style={styles.buttonText}>Download data about user</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        <TouchableOpacity onPress={userAlert}>
-                            <Text style={styles.buttonText}> Delete my JaqPP account</Text>
-                        </TouchableOpacity>
-                    </View>
+        <View style={styles.container}>
+
+            <View style={styles.bioContainer}>
+                <View style={styles.imageContainer}>
+                    <Image style={styles.profilePicture} source={{ uri: user.picture }} />
+                </View>
+                <Text style={styles.name}>{user.name}</Text>
+            </View>
+            <View style={styles.bottomContainer}>
+                <Text style={styles.bioEmail}>Mail: {user.email}</Text>
+                <View style={[styles.signOutButtonContainer, styles.buttonContainer]}>
+                    <TouchableOpacity style={styles.button} onPress={handleLogout}>
+                        <Text style={styles.buttonText}>Sign Out</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={downloadData}>
+                        <Text style={styles.buttonText}>Download data about user</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.deleteButtonContainer}>
+                    <TouchableOpacity onPress={userAlert}>
+                        <Text style={styles.deleteButtonText}> Delete my JaqPP account</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
     );
 }
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 5,
-        justifyContent: 'flex-start',
-        backgroundColor: '#D6D5C9'
-    },
-    head: {
-        height: 44,
-        backgroundColor: 'gray'
-    },
-    headText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: 'black'},
-    text: {
-        margin: 4,
-        fontSize: 16,
-        textAlign: 'center',
-        backgroundColor: 'blue'
-    },
-    category: {
-        backgroundColor: 'lightgrey',
-        padding: 20
-    },
-    edit: {
-        fontSize: 20,
-        color: 'orange',
-        width: '100%',
-        backgroundColor: 'grey',
-        textAlign: 'center'
-    },
-    profilePicture: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        marginRight: 10,
-    },
-    name: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        backgroundColor: '#D6D5C9',
+        paddingTop: 100,
     },
     bioContainer: {
         justifyContent: 'space-between',
-        marginBottom: 20,
-    },
-
-    top: {
-        flexDirection: 'row',
-        marginBottom: -20
+        marginBottom: 30,
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: '#0A100D',
+        paddingBottom: 10,
     },
     imageContainer: {
-        marginLeft: 8,
-        height: 60,
-        width: 60,
+        alignItems: 'center',
+        height: 130,
+        width: 130,
         borderRadius: 50,
-        marginRight: 40,
-        marginBottom: 50,
-
+        marginBottom: 20,
     },
-    logo: {
+    profilePicture: {
         aspectRatio: 1,
-        marginLeft: 8,
         width: '100%',
         height: undefined,
         borderRadius: 50,
     },
-    bioName: {
-        fontSize: 18,
+    name: {
+        fontSize: 22,
         fontWeight: 'bold',
-        marginTop: 20,
     },
-    image: {
-        width: 200,
-        height: 200,
+
+    bottomContainer: {
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
+    bioEmail: {
+        fontSize: 18,
+        marginBottom: 10,
+        marginLeft: 5,
+    },
+
+    signOutButtonContainer: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#0A100D',
+        paddingBottom: 10,
+        marginBottom: 20,
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -172,7 +148,6 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#0A100D',
         borderRadius: 5,
-        marginBottom: 20,
         flex: 1,
         marginHorizontal: 5,
         padding: 20,
@@ -182,4 +157,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 16,
     },
+    deleteButtonContainer: {
+        marginTop: 20,
+        alignItems: 'center',
+    },
+    deleteButtonText: {
+        color: '#808080',
+        textAlign: 'center',
+        fontSize: 16
+    },
 })
+
+
+
+
+
+

@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, Button, Text, TextInput, View} from "react-native";
 import {auth, db} from "../../firebaseConfig";
 import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
-import {login, userid, name} from "../loginComponents/loginView";
 import {currentUser} from "../global_variables";
+import {useNavigation} from "@react-navigation/native";
 
 const Create = () => {
+    const navigation = useNavigation();
+
 
     const [user, setUser] = currentUser();
 
@@ -23,9 +25,10 @@ const Create = () => {
     const [gathName, set_gathName] = useState("Name");
     const [gathTime, set_gathTime] = useState("time");
     const [gathDate, set_gathDate] = useState("mm.dd.yyyy");
+    const [gathDescription, set_gathDescription] = useState("");
 
 
-    async function add(id, gathName, gathTime, gathDate) {
+    async function add(id, gathName, gathTime, gathDate, gathDescription) {
         const gatheringRef = doc(db, "gathering", id);
 
         // Add gathering data to the main 'gathering' collection
@@ -33,6 +36,7 @@ const Create = () => {
             name: gathName,
             time: gathTime,
             date: gathDate,
+            description: gathDescription,
             userID: user.id,
         });
 
@@ -52,8 +56,10 @@ const Create = () => {
         if (docSnap.exists()) {
             check("gathering", GenerateID()).then();
         } else {
-            add(id, gathName, gathTime, gathDate).then();
+            add(id, gathName, gathTime, gathDate, gathDescription).then();
         }
+        navigation.navigate('Your gatherings');
+
     }
 
 
@@ -87,6 +93,14 @@ const Create = () => {
                     style={styles.input}
                     placeholder="Time of gathering"
                     onChangeText={set_gathTime}
+                    placeholderTextColor="#999"
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Description for the gathering"
+                    onChangeText={set_gathDescription}
                     placeholderTextColor="#999"
                 />
             </View>

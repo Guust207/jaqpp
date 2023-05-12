@@ -28,12 +28,12 @@ export const GatheringInterface = () => {
     //Gather
     useEffect(() => {
         const getAllGat = async () => {
-        const w = query(collection(db, "gathering"));
+            const w = query(collection(db, "gathering"));
             onSnapshot(w, (querySnapshot) => {
-            const  gatheringList = [];
+                const gatheringList = [];
 
                 querySnapshot.forEach((doc) => {
-                    const { name, date, time, description} = doc.data();
+                    const {name, date, time, description} = doc.data();
 
                     //list for storing the data
                     gatheringList.push({
@@ -44,13 +44,12 @@ export const GatheringInterface = () => {
                         description,
                     });
                 });
+                set_gatList(gatheringList);
             });
-          
-            set_gatList(gatheringList);
-          });
         }
+        getAllGat()
     },[user])
-      
+
     useEffect(() => {
         if (isOwnerGatherings) {
             const getAllGat = async () => {
@@ -85,7 +84,7 @@ export const GatheringInterface = () => {
                         const name = gatList[i].name
                         const date = gatList[i].date
                         const time = gatList[i].time
-                        const time = gatList[i].description
+                        const description = gatList[i].description
                         list.push({
                             id: gatList[i].id,
                             name,

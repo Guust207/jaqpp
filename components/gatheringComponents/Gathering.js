@@ -3,10 +3,11 @@ import signInView from "../loginComponents/signInView";
 import React from "react";
 import {GatheringInterface} from "./gatheringInterfaceView";
 import {createStackNavigator} from "@react-navigation/stack";
-import {currentGathering} from "../global_variables";
+import {currentCategory, currentField, currentGathering} from "../global_variables";
 import {GatheringView} from "./GatheringView";
 import Create from "./CreateGathering";
 import {CategoryView} from "../budgetComponents/budgetInterfaceView";
+import {FieldView} from "../budgetComponents/fielsInterfaceView";
 
 /*
 OBS!!!!!!
@@ -14,6 +15,8 @@ Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
  */
 export const Gathering = () => {
     const [CurrentGathering, setCurrentGathering] = currentGathering();
+    const [CurrentCategory, setCurrentCategory] = currentCategory();
+
     const Stack = createStackNavigator();
 
     return (
@@ -26,6 +29,11 @@ export const Gathering = () => {
                           }}
             />
             <Stack.Screen name="Budget" component={CategoryView}/>
+            <Stack.Screen name="Field" component={FieldView}
+                          options={{
+                              title: CurrentCategory.name,
+                          }}
+            />
         </Stack.Navigator>
     )
 }

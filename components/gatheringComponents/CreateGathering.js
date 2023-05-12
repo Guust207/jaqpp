@@ -59,7 +59,6 @@ const Create = () => {
 
    const addData = () => {
         check("gathering", GenerateID()).then();
-
     }
 
 

@@ -1,19 +1,27 @@
-import {Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {currentGathering, currentUser} from "../global_variables";
 import { useNavigation } from '@react-navigation/native';
+import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
+import {db} from "../../firebaseConfig";
+
 
 import {Modal} from "../Modal";
-import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
-import {auth, db} from "../../firebaseConfig";
+import {styles} from "../Styles";
+
 
 export const GatheringView = ({route}) => {
 
-    const [CurrentGathering, setCurrentGathering] = currentGathering();
     const navigation = useNavigation();
+
     const { item } = route.params;
+
+    const [CurrentGathering, setCurrentGathering] = currentGathering();
     const [user, setUser] = currentUser();
 
+    useEffect(() => {
+        setCurrentGathering(item)
+    }, [item]); // Pass user and isInitialized as dependency array
 
     //Edit part
     //Variables and functions that handles the edit part
@@ -21,15 +29,17 @@ export const GatheringView = ({route}) => {
     const [Name, set_Name] = useState(Name);
     const [Date, set_Date] = useState(Date);
     const [Time, set_Time] = useState(Time);
+    const [Description, set_Description] = useState(Description);
 
 
 
     //Function for editing a gathering
-    async function edit(id, gatName, gatDate, gatTime) {
+    async function edit(id, gatName, gatDate, gatTime, gatDescription) {
         await setDoc(doc(db, "gathering", id), {
                 name: gatName,
                 date: gatDate,
                 time: gatTime,
+                description: gatDescription,
                 userID: user.id,
             }
         );
@@ -44,6 +54,7 @@ export const GatheringView = ({route}) => {
         set_Name(gat.name);
         set_Date(gat.date);
         set_Time(gat.time);
+        set_Description(gat.description)
         handleModal();
     }
 
@@ -52,7 +63,7 @@ export const GatheringView = ({route}) => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            edit(id, Name, Date, Time).then();
+            edit(id, Name, Date, Time, Description).then();
             handleModal();
         }
     }
@@ -93,49 +104,43 @@ export const GatheringView = ({route}) => {
     }
 
 
-    const handleBudgetButton = (gathering) => {
-        console.log("THIS", gathering.id)
-        navigation.navigate('Budget', { gathering: gathering })
-    }
-
-
-
     return (
         <View style={styles.container}>
             <ScrollView>
                 <View>
-                    <Text>
-                        Hello {item.name}
-                    </Text>
-                    <Button
-                        title={"Administer Budget"}
-                        onPress={() => handleBudgetButton(item)}
-                    />
-                    <Button
-                        title={"Administer Attendees"}
-
-                    />
-                    <View style={styles.gat}>
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={() => EditBtnFunc(item)}>
-                                <Text style={styles.button}> Edit  </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => deleteData(item)}>
-                                <Text style={styles.button}>Delete</Text>
-                            </TouchableOpacity>
-                        </View>
+                    <Text style={styles.headText}>{item.name}</Text>
+                    <Text style={styles.descriptionText}>{item.description}</Text>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.gatheringButton} onPress={() => navigation.navigate('Budget', {CurrentGathering})}>
+                            <Text style={styles.buttonText}>Administer Budget</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.gatheringButton} >
+                            <Text style={styles.buttonText}>Administer Attendees</Text>
+                        </TouchableOpacity>
                     </View>
+
+                    <View style={styles.bottomButtonContainer}>
+                        <TouchableOpacity style={styles.gatheringButton} onPress={() => EditBtnFunc(item)}>
+                            <Text style={styles.buttonText}>Edit Gathering</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.bottomButtonContainer}>
+                    <TouchableOpacity style={[styles.gatheringButton, styles.deleteButton]} onPress={() => deleteData(item)}>
+                            <Text style={styles.buttonText}>Delete </Text>
+                        </TouchableOpacity>
+                    </View>
+
 
                     {/* This is the popup that appears when you click edit at the table */}
                     <Modal isVisible={isModalVisible}>
-                        <Modal.Container style={styles.modalContainer}>
-                            <Modal.Header title="Edit"/>
+                        <Modal.Container>
+                            <Modal.Header title={"Edit the gathering"}/>
                             <Modal.Body>
-                                <View style={styles.container}>
+                                <View>
                                     <Text style={styles.textModal}>New name for gathering:</Text>
                                     <View style={styles.inputContainer}>
                                         <TextInput
-                                            style={styles.input}
+                                            style={styles.modalInput}
                                             onChangeText={set_Name}
                                             value={Name}
                                             placeholder='Name'
@@ -144,7 +149,7 @@ export const GatheringView = ({route}) => {
                                     <Text style={styles.textModal}>Date:</Text>
                                     <View style={styles.inputContainer}>
                                         <TextInput
-                                            style={styles.input}
+                                            style={styles.modalInput}
                                             onChangeText={set_Date}
                                             value={Date}
                                             placeholder='Date'
@@ -153,139 +158,40 @@ export const GatheringView = ({route}) => {
                                     <Text style={styles.textModal}>Time:</Text>
                                     <View style={styles.inputContainer}>
                                         <TextInput
-                                            style={styles.input}
+                                            style={styles.modalInput}
                                             onChangeText={set_Time}
                                             value={Time}
                                             placeholder='Time'
                                         />
                                     </View>
+                                    <Text style={styles.textModal}>Description:</Text>
+                                    <View style={styles.inputContainer}>
+                                        <TextInput
+                                            multiline
+                                            style={styles.modalInput}
+                                            onChangeText={set_Description}
+                                            value={Description}
+                                            placeholder='description'
+                                        />
+                                    </View>
                                 </View>
                             </Modal.Body>
                             <Modal.Footer>
-                                <View style={styles.buttonContainer}>
-                                    <TouchableOpacity onPress={() => editData()}>
-                                        <Text style={styles.editButton}> Edit  </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => handleModal()}>
-                                        <Text style={styles.cancelButton}>Cancel</Text>
-                                    </TouchableOpacity>
-                                </View>
+                                <TouchableOpacity onPress={() => handleModal()} style={styles.modalButton}>
+                                    <Text style={styles. buttonTexts}>Cancel</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => editData()} style={styles.modalButton}>
+                                    <Text style={styles.buttonTexts}> Edit  </Text>
+                                </TouchableOpacity>
                             </Modal.Footer>
                         </Modal.Container>
                     </Modal>
                 </View>
-        </ScrollView>
-    </View>
+            </ScrollView>
+        </View>
 
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 5,
-        justifyContent: 'flex-start',
-        backgroundColor: '#D6D5C9',
-    },
-        head: {
-            height: 44,
-            backgroundColor: 'gray'
-        },
-        headText: {
-            fontSize: 20,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            color: 'black'},
-        category: {
-            backgroundColor: 'lightgrey',
-            padding: 20
-        },
-        edit: {
-            fontSize: 20,
-            color: 'orange',
-            width: '100%',
-            backgroundColor: 'grey',
-            textAlign: 'center'
-        },
-
-
-    gatContainer: {
-        backgroundColor: '#B9BAA3',
-        padding: 10,
-        margin:10,
-        borderRadius: '10%',
-    },
-    gat: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-    },
-
-    text: {
-        fontSize: 16,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    button: {
-        backgroundColor: '#0A100D',
-        color: '#B9BAA3',
-        borderRadius: 5,
-        paddingVertical: 3,
-        paddingHorizontal: 57,
-        flex: 1,
-        marginHorizontal: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlignVertical: 'center',
-    },
-
-
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 20,
-        margin: 20,
-    },
-
-    textModal: {
-        fontSize:16,
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginLeft: 2,
-    },
-    input: {
-        flex: 1,
-        borderBottomWidth: 1,
-        borderBottomColor: '#666',
-        color: '#333',
-        fontSize: 16,
-        marginBottom: 30,
-
-    },
-    editButton: {
-        color: '#005cfc',
-        fontSize: 20,
-        marginRight: 20,
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 5,
-    },
-    cancelButton: {
-        color: '#FF0400',
-        fontSize: 20,
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 5,
-    },
-
-});
 
 
 

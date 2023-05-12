@@ -14,9 +14,7 @@ import { ProfileView } from "./components/profileComponents/profileInterfaceView
 import Create from "./components/gatheringComponents/CreateGathering";
 
 const App = () => {
-    const [user, setUser] = currentUser(); // Initialize user state with null
-
-    // The navigation bar that you see at the bottom
+    const [user, setUser] = currentUser();
     const Tab = createBottomTabNavigator();
 
     useEffect(() => {
@@ -25,14 +23,10 @@ const App = () => {
                 setUser(user);
             } else {
                 setUser(null);
-                // navigator.reset({  // This line seems to be incorrect, navigator is not defined
-                //   index: 0,
-                //   routes: [{ name: 'signInView' }],
-                // });
             }
         });
 
-        return () => unsubscribe(); // Unsubscribe from the onAuthStateChanged listener when the component unmounts
+        return () => unsubscribe();
     }, []);
 
     if (user === null) {

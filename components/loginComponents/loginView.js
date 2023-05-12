@@ -1,13 +1,10 @@
-import {Button, StyleSheet, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
-import * as React from 'react';
-import {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
-import {auth, db} from "../../firebaseConfig";
+import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
-import {ProfileView} from "../profileComponents/profileInterfaceView";
-import {signInWithCredential, GoogleAuthProvider} from "@firebase/auth";
 
 /* API Used for fetching information about user logged-in
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get
@@ -21,8 +18,9 @@ WebBrowser.maybeCompleteAuthSession();
 //This is the function that handles login and how the loginView should look like.
 export const Login = () => {
 
+    //This is the function that handles login and how the loginView should look like.
 
-        //Use states that are used to complete different task such as setting accessToken, user etc.
+    //Use states that are used to complete different task such as setting accessToken, user etc.
     const [accessToken, setAccessToken] = React.useState("r");
     const [user, setUser] = currentUser();
     const [request, response, promptAsync] = Google.useAuthRequest({
@@ -31,17 +29,19 @@ export const Login = () => {
 
     //Function that is run before adding the student to database. It checks if a user with the same id already exists.
     async function add() {
-        if (user) {
-
+        if (user === null)
+            return;
+        if (user === undefined) {
+            return;
+        }
+        console.log("HALLA")
+        if (check("users").then()) {
             await setDoc(doc(db,"users", user.id), {
-                    fullName: user.name,
-                    email: user.email,
-                    picture: user.picture,
-                }
-            );
-        } else
-        {
-            add().then();
+                fullName: user.name,
+                email: user.email,
+                picture: user.picture,
+            })
+            console.log("User", user.name, "has been added to database")
         }
     }
 
@@ -51,11 +51,27 @@ export const Login = () => {
             const docSnap = await getDoc(docRef);
 
             if (!docSnap.exists()) {
-                add(user).then();
+                return false;
             }
         } else {
+            return true;
         }
     }
+
+    const [UserNotLoggedIn, SetUserLoggedIn] = useState(true);
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    useEffect(() => {
+        add().then();
+        // Check if user is not null and app has been initialized
+        if (isInitialized) {
+            SetUserLoggedIn(() => !UserNotLoggedIn);
+        } else {
+            // Set isInitialized to true after the first render
+            setIsInitialized(true);
+        }
+    }, [user]); // Pass user and isInitialized as dependency array
+
 
 //Function that fetches information about logged-in user using access token.
     const fetchUserInfo = async () => {
@@ -70,14 +86,15 @@ export const Login = () => {
             const user = await response.json();
             setUser(user);
             if(user){
-                console.log(user.name);
-                console.log(user.id);
-                check("users",user).then();
+                SetUserLoggedIn(() => !UserNotLoggedIn)
             }
         } catch (error) {
             console.log("Failed!");
         }
     };
+
+
+
 
 
     //A React function that triggers when there is a response from above the fetchUserInfo function
@@ -97,16 +114,15 @@ export const Login = () => {
     }, [promptAsync])
 
 
+
     //What you will see when you first come open the app
     return (
         <View style={styles.container}>
-            {user === null ? (
-                <Button
-                    title="Sign in with Google"
-                    disabled={!request}
-                    onPress={handlerLogin}
-                />
-            ) : ProfileView(user, setUser)}
+            <View style={styles.googleButtonContainer}>
+                <TouchableOpacity style={[styles.button, styles.googleButton]} onPress={handlerLogin}>
+                    <Text style={styles.googleButtonText}>Sign in with Google</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -119,13 +135,28 @@ export const Login = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
+        padding: 5,
+        backgroundColor: '#D6D5C9',
+        paddingTop: 100,
     },
-    text: {
-        fontSize: 20,
-        fontWeight: "bold",
+    button: {
+        backgroundColor: '#0A100D',
+        borderRadius: 5,
+        flex: 1,
+        marginHorizontal: 5,
+        padding: 20,
+    },
+    googleButtonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+        color: '#333',
+    },
+    googleButton: {
+        alignItems: 'center',
+    },
+    googleButtonText: {
+        color: '#D6D5C9',
     },
 });
 

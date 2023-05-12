@@ -18,6 +18,7 @@ export const Gathering = () => {
     const [CurrentCategory, setCurrentCategory] = currentCategory();
 
     const Stack = createStackNavigator();
+
     return (
         <Stack.Navigator>
             <Stack.Screen name="Your gatherings" component={GatheringInterface}/>

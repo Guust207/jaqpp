@@ -57,7 +57,6 @@ export const AddBudgetCategoryView = (route) => {
 
     const button = () => {
         const id = uuid.v4();
-        setField(id);
         button1(id).then()
     }
 

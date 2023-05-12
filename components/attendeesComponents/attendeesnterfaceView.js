@@ -60,12 +60,8 @@ export const AttendeesInterface = ({route}) => {
     const [isModalVisible1, setIsModalVisible1] = React.useState(false);
 
     const handleModal = (field) => {
-
         setIsModalVisible(() => !isModalVisible)
     };
-
-
-
 
 
     const inviteAttendees = () => {
@@ -106,8 +102,6 @@ export const AttendeesInterface = ({route}) => {
             console.log("Doesnt exist");
 
         }
-
-
         setIsModalVisible(() => !isModalVisible)
     }
 
@@ -142,10 +136,13 @@ export const AttendeesInterface = ({route}) => {
                                 onChangeText={set_attendeeEmail}
                                 placeholderTextColor="#999"
                             />
-
                             <Button
                                 onPress={sendInvitation}
                                 title="Send"
+                            />
+                            <Button
+                                onPress={() => setIsModalVisible(() => !isModalVisible)}
+                                title="Cancel"
                             />
                         </Modal.Body>
                     </Modal.Container>

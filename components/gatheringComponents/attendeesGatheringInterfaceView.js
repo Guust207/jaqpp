@@ -1,23 +1,20 @@
-import {Button, StyleSheet, Text, TouchableOpacity, View, ScrollView,  TextInput,  Image} from "react-native";
+import {Text, TouchableOpacity, View, ScrollView,  Image} from "react-native";
 import React, {useEffect, useState} from "react";
-import {collection, doc, getDoc, query, onSnapshot, setDoc, where, deleteDoc} from "firebase/firestore";
-import { auth , db} from "../../firebaseConfig";
+import {collection, query, onSnapshot, where, doc, getDoc} from "firebase/firestore";
+import {db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
-import {Dropdown} from "react-native-element-dropdown";
+import { Dropdown } from "react-native-element-dropdown";
 import { Entypo } from '@expo/vector-icons';
 
-
 //Component Imports
-import Create from "./CreateGathering";
-import {currentUser, currentFilter} from "../global_variables";
+import {currentFilter, currentUser} from "../global_variables";
 import {styles} from "../Styles";
-
 
 /*
 OBS!!!!!!
 Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
  */
-export const GatheringInterface = () => {
+export const AttendeesGatheringInterface = () => {
     const navigation = useNavigation();
 
 
@@ -30,55 +27,33 @@ export const GatheringInterface = () => {
 
 
     useEffect(() => {
-        const getAllGat = async () => {
-            const q = query(collection(db, "gathering"), where("userID", "==", user.id));
-            onSnapshot(q, (querySnapshot) => {
-                const  list = [];
-
-                querySnapshot.forEach((doc) => {
-                    const {name, date, time, description} = doc.data();
-
-                    //list for storing the data
+        const getGuestGatherings = async () => {
+            const list = [];
+            for (let i = 0; i < gatList.length; i++) {
+                const docRef = doc(db,"gathering", gatList[i].id, "attendees", user.id);
+                const docSnap = await getDoc(docRef).then();
+                if (docSnap.exists()) {
+                    const name = gatList[i].name
+                    const date = gatList[i].date
+                    const time = gatList[i].time
+                    const description = gatList[i].description
                     list.push({
-                        id: doc.id,
+                        id: gatList[i].id,
                         name,
                         date,
                         time,
                         description,
                     });
-                });
-
-                setGat(list);
-            });
+                }
+            }
+            setGat(list);
         }
-        getAllGat();
+        getGuestGatherings().then();
 
     },[user])
 
-    const getGatheringsForUser = async () => {
-        if (user !== null) {
 
 
-            const q = query(collection(db, "gathering"), where("userID", "==", user.id));
-            onSnapshot(q, (querySnapshot) => {
-                const  list = [];
-
-                querySnapshot.forEach((doc) => {
-                    const { name, date, time} = doc.data();
-
-                    //list for storing the data
-                    list.push({
-                        id: doc.id,
-                        name,
-                        date,
-                        time,
-                    });
-                });
-
-                setGat(list);
-            });
-        }
-    }
 
 
     const dropdownItems = [
@@ -98,6 +73,9 @@ export const GatheringInterface = () => {
         }
         return null;
     };
+
+
+
 
 
 
@@ -135,9 +113,7 @@ export const GatheringInterface = () => {
                     />
                     {gat.map((item) => (
                         <View key={item.id} style={styles.gatContainer}>
-                            {/* i toppen skriv route og i toippen på denne skriv navigation
-                            const drink = route.params.drink*/}
-                            <TouchableOpacity onPress={() => navigation.navigate('CurrentGathering', { item })}>
+                            <TouchableOpacity onPress={() => navigation.navigate('CurrentAttendeesGathering', { item })}>
                                 <View style={styles.gat}>
                                     <View style={styles.gatImageContainer}>
                                         <Image style={styles.gatImage}/>
@@ -153,10 +129,6 @@ export const GatheringInterface = () => {
 
                                 </View>
                             </TouchableOpacity>
-
-                            <View style={styles.gat}>
-
-                            </View>
                         </View>
                     ))}
                 </View>
@@ -164,6 +136,4 @@ export const GatheringInterface = () => {
         </View>
     )
 }
-
-
 

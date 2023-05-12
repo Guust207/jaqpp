@@ -147,6 +147,25 @@ const styles = StyleSheet.create({
         borderBottomColor: 'black',
     },
 
+    dropdown: {
+        left: '60%',
+        height: '10%',
+        width: '40%',
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+    },
+    icon: {
+        marginRight: 5,
+    },
+    placeholderStyle: {
+        fontSize: 12,
+    },
+    selectedTextStyle: {
+        fontSize: 12,
+    },
+
 
 
 

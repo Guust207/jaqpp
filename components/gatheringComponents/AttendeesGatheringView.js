@@ -3,6 +3,8 @@ import React, {useEffect, useState} from "react";
 import {currentGathering, currentUser} from "../global_variables";
 import { useNavigation } from '@react-navigation/native';
 
+import { styles } from "../Styles";
+
 export const AttendeesGatheringView = ({route}) => {
 
     const [CurrentGathering, setCurrentGathering] = currentGathering();
@@ -28,9 +30,10 @@ export const AttendeesGatheringView = ({route}) => {
     return (
         <View style={styles.container}>
             <ScrollView>
-                <View>
-                    <Text style={styles.headText}>{item.name}</Text>
+                <View style={styles.gatheringInformation}>
+                    <Text style={styles.headText}>Gathering Information</Text>
                     <Text style={styles.descriptionText}>{item.description}</Text>
+                    <Text style={styles.descriptionText2}>Date - {item.date}, Time - {item.time}</Text>
                 </View>
             </ScrollView>
         </View>

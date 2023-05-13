@@ -1,14 +1,14 @@
 import {Text, TouchableOpacity, View, ScrollView,  Image} from "react-native";
 import React, {useEffect, useState} from "react";
-import {collection, query, onSnapshot, where, doc, getDoc} from "firebase/firestore";
+import {collection, doc, getDoc, query, onSnapshot, where} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
-import { Dropdown } from "react-native-element-dropdown";
-import { Entypo } from '@expo/vector-icons';
 
 //Component Imports
 import {currentFilter, currentUser} from "../global_variables";
-import {styles} from "../Styles";
+import  {styles} from "../Styles";
+import {Dropdown} from "react-native-element-dropdown";
+import {Entypo} from "@expo/vector-icons";
 
 /*
 OBS!!!!!!
@@ -17,17 +17,36 @@ Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
 export const AttendeesGatheringInterface = () => {
     const navigation = useNavigation();
 
-
-
-    //Get part
     // This is variables and functions for fetching and display all the gatherings
     const [gat, setGat] = useState([]);
+    const [gatList, set_gatList] = useState([]);
     const [user, setUser] = currentUser();
 
 
 
+    //Gather
     useEffect(() => {
-        const getGuestGatherings = async () => {
+        const getAllGat = async () => {
+            const w = query(collection(db, "gathering"));
+
+            onSnapshot(w, (querySnapshot) => {
+                const gatheringList = [];
+
+                querySnapshot.forEach((doc) => {
+                    const {name, date, time, description} = doc.data();
+
+                    //list for storing the data
+                    gatheringList.push({
+                        id: doc.id,
+                        name,
+                        date,
+                        time,
+                        description,
+                    });
+                });
+                set_gatList(gatheringList);
+            });
+
             const list = [];
             for (let i = 0; i < gatList.length; i++) {
                 const docRef = doc(db,"gathering", gatList[i].id, "attendees", user.id);
@@ -46,14 +65,15 @@ export const AttendeesGatheringInterface = () => {
                     });
                 }
             }
-            setGat(list);
+        setGat(list);
         }
-        getGuestGatherings().then();
+        getAllGat()
 
     },[user])
 
 
 
+    console.log(gat)
 
 
     const dropdownItems = [
@@ -73,10 +93,6 @@ export const AttendeesGatheringInterface = () => {
         }
         return null;
     };
-
-
-
-
 
 
 
@@ -113,6 +129,8 @@ export const AttendeesGatheringInterface = () => {
                     />
                     {gat.map((item) => (
                         <View key={item.id} style={styles.gatContainer}>
+                            {/* i toppen skriv route og i toippen på denne skriv navigation
+                        const drink = route.params.drink*/}
                             <TouchableOpacity onPress={() => navigation.navigate('CurrentAttendeesGathering', { item })}>
                                 <View style={styles.gat}>
                                     <View style={styles.gatImageContainer}>
@@ -122,13 +140,16 @@ export const AttendeesGatheringInterface = () => {
                                     <View style={styles.nameContainer}>
                                         <Text style={[styles.text, styles.gatName]}> {item.name}</Text>
                                         <View style={styles.infoContainer}>
-                                            <Text style={styles.text}> 📅{item.date}</Text>
-                                            <Text style={styles.text}>:{item.time}</Text>
+                                            <Text style={styles.infoText}> 📅{item.date}</Text>
+                                            <Text style={styles.infoText}>:{item.time}</Text>
                                         </View>
                                     </View>
-
                                 </View>
                             </TouchableOpacity>
+
+                            <View style={styles.gat}>
+
+                            </View>
                         </View>
                     ))}
                 </View>

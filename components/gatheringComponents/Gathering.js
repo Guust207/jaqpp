@@ -6,7 +6,7 @@ import {GatheringView} from "./GatheringView";
 import {CategoryView} from "../budgetComponents/budgetInterfaceView";
 import {FieldView} from "../budgetComponents/fielsInterfaceView";
 import {AttendeesInterface} from "../attendeesComponents/attendeesnterfaceView";
-import {AttendeesGatheringInterface} from "./attendeesGatheringInterfaceView";
+import {AttendeesGatheringInterface} from "./attendeesInterfaceGateringView";
 import {AttendeesGatheringView} from "./AttendeesGatheringView";
 
 

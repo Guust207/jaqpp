@@ -146,15 +146,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: 'black',
     },
-    dropdown: {
-        left: '53%',
-        height: '10%',
-        width: '48%',
-        borderColor: 'gray',
-        borderWidth: 0.5,
-        borderRadius: 8,
-        paddingHorizontal: 8,
-    },
+
     icon: {
         marginRight: 5,
     },
@@ -171,17 +163,24 @@ const styles = StyleSheet.create({
 
 //GatheringView styles
     headText: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'center',
+        textAlign: 'left',
         color: 'black',
-        paddingBottom: 5,
-        marginBottom: 15,
+        paddingBottom: '2%',
+        marginBottom: '5%',
         borderBottomWidth:0.5,
+    },
+    gatheringInformation: {
+        margin: '3%',
     },
     descriptionText: {
         fontSize: 16,
-            marginBottom: 30,
+            marginBottom: '6%',
+    },
+    descriptionText2: {
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     bottomButtonContainer: {
         flexDirection: 'row',

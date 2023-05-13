@@ -55,30 +55,6 @@ export const GatheringInterface = () => {
 
     },[user])
 
-    const getGatheringsForUser = async () => {
-        if (user !== null) {
-
-
-            const q = query(collection(db, "gathering"), where("userID", "==", user.id));
-            onSnapshot(q, (querySnapshot) => {
-                const  list = [];
-
-                querySnapshot.forEach((doc) => {
-                    const { name, date, time} = doc.data();
-
-                    //list for storing the data
-                    list.push({
-                        id: doc.id,
-                        name,
-                        date,
-                        time,
-                    });
-                });
-
-                setGat(list);
-            });
-        }
-    }
 
 
     const dropdownItems = [

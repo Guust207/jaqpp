@@ -119,8 +119,7 @@ export const GatheringView = ({route}) => {
     return (
         <View style={styles.container}>
             <ScrollView>
-                <View>
-                    <Text style={styles.headText}>{item.name}</Text>
+                <View style={styles.gatheringInformation}>
                     <Text style={styles.descriptionText}>{item.description}</Text>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => handleBudgetButton(item)}>

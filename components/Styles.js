@@ -238,6 +238,15 @@ const styles = StyleSheet.create({
 
 
 // Profile styles
+    profileContainer: {
+        flex: 1,
+        padding: 5,
+        backgroundColor: '#D6D5C9',
+        paddingTop: 100,
+    },
+    category: {
+        marginBottom: '2%'
+    },
     bioContainer: {
         justifyContent: 'space-between',
         marginBottom: 30,
@@ -258,6 +267,14 @@ const styles = StyleSheet.create({
         width: '100%',
         height: undefined,
         borderRadius: 50,
+    },
+
+    invitesContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    invitesText: {
+        fontWeight: 'bold',
     },
 
     bottomContainer: {

@@ -6,7 +6,8 @@ import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
 import {useState} from "react";
 import {Modal} from "../Modal";
-
+import {Buttons} from "../Button";
+import {styles} from "../Styles";
 
 export const ProfileView = () => {
 
@@ -131,7 +132,7 @@ export const ProfileView = () => {
 
     //The view that you see at profile view
     return (
-        <View style={styles.container}>
+        <View style={styles.profileContainer}>
 
             <View style={styles.bioContainer}>
                 <View style={styles.imageContainer}>
@@ -148,7 +149,7 @@ export const ProfileView = () => {
                 </View>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={handleInvitations}>
-                        <Text style={styles.buttonText}> Invitations</Text>
+                        <Text style={styles.buttonText}> Your invitations</Text>
                     </TouchableOpacity>
                 </View>
                 <Modal isVisible={isInvitationView} >
@@ -157,18 +158,22 @@ export const ProfileView = () => {
                         <Modal.Body>
                             {Invitations.map((item) => (
                                 <View key={item.id} style={styles.category}>
+                                    <View style={styles.invitesContainer}>
                                     <Text> {item.gatheringName}</Text>
-                                    <TouchableOpacity onPress={() => acceptInvitations(item)}>
-                                        <Text style={styles.text}> Accept </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => declineInvitations(item)}>
-                                        <Text style={styles.text}> Delete</Text>
-                                    </TouchableOpacity>
+                                        <View style={styles.invitesContainer}>
+                                            <TouchableOpacity onPress={() => acceptInvitations(item)}>
+                                                <Text style={styles.invitesText}> Accept </Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => declineInvitations(item)}>
+                                                <Text style={styles.invitesText}> Decline</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
                                 </View>
                             ))}
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button title="Cancel" onPress={handleInvitations} />
+                            <Buttons title="Cancel" onPress={handleInvitations} />
                         </Modal.Footer>
                     </Modal.Container>
                 </Modal>
@@ -186,86 +191,4 @@ export const ProfileView = () => {
         </View>
     );
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 5,
-        backgroundColor: '#D6D5C9',
-        paddingTop: 100,
-    },
-    bioContainer: {
-        justifyContent: 'space-between',
-        marginBottom: 30,
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: '#0A100D',
-        paddingBottom: 10,
-    },
-    imageContainer: {
-        alignItems: 'center',
-        height: 130,
-        width: 130,
-        borderRadius: 50,
-        marginBottom: 20,
-    },
-    profilePicture: {
-        aspectRatio: 1,
-        width: '100%',
-        height: undefined,
-        borderRadius: 50,
-    },
-    name: {
-        fontSize: 22,
-        fontWeight: 'bold',
-    },
-
-    bottomContainer: {
-        justifyContent: 'space-between',
-        marginBottom: 20,
-    },
-    bioEmail: {
-        fontSize: 18,
-        marginBottom: 10,
-        marginLeft: 5,
-    },
-
-    signOutButtonContainer: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#0A100D',
-        paddingBottom: 10,
-        marginBottom: 20,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    button: {
-        backgroundColor: '#0A100D',
-        borderRadius: 5,
-        flex: 1,
-        marginHorizontal: 5,
-        padding: 20,
-    },
-    buttonText: {
-        color: '#D6D5C9',
-        textAlign: 'center',
-        fontSize: 16,
-    },
-    deleteButtonContainer: {
-        marginTop: 20,
-        alignItems: 'center',
-    },
-    deleteButtonText: {
-        color: '#808080',
-        textAlign: 'center',
-        fontSize: 16
-    },
-})
-
-
-
-
-
 

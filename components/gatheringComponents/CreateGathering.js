@@ -101,7 +101,7 @@ const Create = () => {
             </View>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.createbutton} onPress={() => addData()}>
+                <TouchableOpacity style={styles.createButton} onPress={() => addData()}>
                     <Text style={styles.buttonText}>Create</Text>
                 </TouchableOpacity>
             </View>

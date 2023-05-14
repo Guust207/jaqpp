@@ -187,8 +187,4 @@ export const GatheringInterface = () => {
             </View>
         )
     }
-
-
 }
-
-

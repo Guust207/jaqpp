@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {TouchableOpacity, Text, TextInput, View} from "react-native";
-import {auth, db} from "../../firebaseConfig";
+import {db} from "../../firebaseConfig";
 import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
 import {currentUser} from "../global_variables";
 import {useNavigation} from "@react-navigation/native";
@@ -62,8 +62,6 @@ const Create = () => {
         check("gathering", GenerateID()).then();
     }
 
-
-
     return (
         <View style={styles.nonHeaderContainer}>
             <Text style={styles.title}>Add information to the new Gathering</Text>
@@ -107,8 +105,6 @@ const Create = () => {
             </View>
         </View>
     );
-
 }
-
 
 export default Create;

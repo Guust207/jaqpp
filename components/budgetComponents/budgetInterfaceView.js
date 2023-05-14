@@ -1,6 +1,6 @@
 import {Button, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
-import { db} from "../../firebaseConfig";
+import {db} from "../../firebaseConfig";
 import {collection, deleteDoc, doc, onSnapshot, query} from "firebase/firestore";
 import {currentCategory} from "../global_variables";
 import {AddBudgetView, EditBudgetView} from "./budgetView";

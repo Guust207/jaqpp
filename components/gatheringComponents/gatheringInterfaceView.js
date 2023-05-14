@@ -1,17 +1,13 @@
-import {Button, StyleSheet, Text, TouchableOpacity, View, ScrollView,  TextInput,  Image} from "react-native";
+import {Text, TouchableOpacity, View, ScrollView,  Image} from "react-native";
 import React, {useEffect, useState} from "react";
-import {collection, doc, getDoc, query, onSnapshot, setDoc, where, deleteDoc} from "firebase/firestore";
-import { auth , db} from "../../firebaseConfig";
+import {collection, doc, getDoc, query, onSnapshot, where} from "firebase/firestore";
+import {db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
-import {Dropdown} from "react-native-element-dropdown";
-import { Entypo } from '@expo/vector-icons';
-
 
 //Component Imports
-import Create from "./CreateGathering";
-import {currentUser, currentFilter} from "../global_variables";
-import {styles} from "../Styles";
-
+import {currentFilter, currentGatheringHeader, currentUser} from "../global_variables";
+import  {styles} from "../Styles";
+import {Entypo} from "@expo/vector-icons";
 
 /*
 OBS!!!!!!
@@ -20,26 +16,28 @@ Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
 export const GatheringInterface = () => {
     const navigation = useNavigation();
 
-
-
-    //Get part
     // This is variables and functions for fetching and display all the gatherings
     const [gat, setGat] = useState([]);
+    const [gatList, set_gatList] = useState([]);
+    const [isOwnerGatherings, Switch] = useState(true);
+    const [currentFilters, SwitchFilter] = currentFilter();
     const [user, setUser] = currentUser();
+    const [CurrentGatheringHeader, setCurrentGatheringHeader] = currentGatheringHeader();
 
 
 
+    //Gather
     useEffect(() => {
         const getAllGat = async () => {
-            const q = query(collection(db, "gathering"), where("userID", "==", user.id));
-            onSnapshot(q, (querySnapshot) => {
-                const  list = [];
+            const w = query(collection(db, "gathering"));
+            onSnapshot(w, (querySnapshot) => {
+                const gatheringList = [];
 
                 querySnapshot.forEach((doc) => {
                     const {name, date, time, description} = doc.data();
 
                     //list for storing the data
-                    list.push({
+                    gatheringList.push({
                         id: doc.id,
                         name,
                         date,
@@ -47,99 +45,155 @@ export const GatheringInterface = () => {
                         description,
                     });
                 });
-
-                setGat(list);
+                set_gatList(gatheringList);
             });
         }
-        getAllGat();
-
+        getAllGat()
     },[user])
 
+    useEffect(() => {
+        if (isOwnerGatherings) {
+            const getAllGat = async () => {
+                const q = query(collection(db, "gathering"), where("userID", "==", user.id));
+                onSnapshot(q, (querySnapshot) => {
+                    const  list = [];
 
+                    querySnapshot.forEach((doc) => {
+                        const { name, date, time, description} = doc.data();
 
-    const dropdownItems = [
-        { label: 'Guest Gatherings', value: 'Guest Gatherings' },
-        { label: 'Own Gatherings', value: 'Own Gatherings' },
-    ];
+                        //list for storing the data
+                        list.push({
+                            id: doc.id,
+                            name,
+                            date,
+                            time,
+                            description,
+                        });
+                    });
 
-    const [value, setValue] = currentFilter();
-    const [isFocus, setIsFocus] = useState(false);
-
-    const renderLabel = () => {
-        if (value || isFocus) {
-            return (
-                <TouchableOpacity >
-                </TouchableOpacity>
-            );
+                    setGat(list);
+                });
+            }
+            getAllGat().then();
+        } else {
+            const getGuestGatherings = async () => {
+                const list = [];
+                for (let i = 0; i < gatList.length; i++) {
+                    const docRef = doc(db,"gathering", gatList[i].id, "attendees", user.id);
+                    const docSnap = await getDoc(docRef).then();
+                    if (docSnap.exists()) {
+                        const name = gatList[i].name
+                        const date = gatList[i].date
+                        const time = gatList[i].time
+                        const description = gatList[i].description
+                        list.push({
+                            id: gatList[i].id,
+                            name,
+                            date,
+                            time,
+                            description,
+                        });
+                    }
+                }
+                setGat(list);
+            }
+            getGuestGatherings().then();
         }
-        return null;
-    };
+    },[user, isOwnerGatherings])
 
+    const switchHandler = () => {
+        Switch(() => !isOwnerGatherings)
+        if (isOwnerGatherings){
+            SwitchFilter("Guest Gatherings")
+            setCurrentGatheringHeader('Gatherings you are invited to')
+        }
+        else {
+            SwitchFilter("Created Gatherings")
+            setCurrentGatheringHeader('Gathering you have created')
+        }
+    }
 
-
-
-    return (
-        <View style={styles.container}>
-            <ScrollView>
-                <View>
-                    {renderLabel()}
-                    <Dropdown
-                        style={[styles.dropdown, isFocus && { borderColor: 'black' }]}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={dropdownItems}
-                        maxHeight={200}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isFocus ? 'Filter' : 'Filter'}
-                        value={value}
-                        onFocus={() => setIsFocus(true)}
-                        onChange={item => {
-                            setValue(item.value);
-                            setIsFocus(false);
-                        }}
-                        renderLeftIcon={() => (
-                            <Entypo
-                                style={styles.icon}
-                                name="sound-mix"
-                                size={12}
-                                color={isFocus ? 'black' : 'grey'}
-                            />
-                        )}
-                    />
-                    {gat.map((item) => (
-                        <View key={item.id} style={styles.gatContainer}>
-                            {/* i toppen skriv route og i toippen på denne skriv navigation
-                            const drink = route.params.drink*/}
-                            <TouchableOpacity onPress={() => navigation.navigate('CurrentGathering', { item })}>
-                                <View style={styles.gat}>
-                                    <View style={styles.gatImageContainer}>
-                                        <Image style={styles.gatImage}/>
-                                        {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
-                                    </View>
-                                    <View style={styles.nameContainer}>
-                                        <Text style={[styles.text, styles.gatName]}> {item.name}</Text>
-                                        <View style={styles.infoContainer}>
-                                            <Text style={styles.text}> 📅{item.date}</Text>
-                                            <Text style={styles.text}>:{item.time}</Text>
+    if(currentFilters == "Created Gatherings") {
+        return (
+            <View style={styles.container}>
+                <View style={styles.filterContainer}>
+                    <TouchableOpacity onPress={switchHandler} style={styles.buttonContainer}>
+                        <Entypo
+                            style={styles.icon}
+                            name="sound-mix"
+                            size={18}
+                            color='balck'
+                        />
+                        <Text style={styles.selectedTextStyle}> Filter - {currentFilters}</Text>
+                    </TouchableOpacity>
+                </View>
+                <ScrollView>
+                    <View>
+                        {gat.map((item) => (
+                            <View key={item.id} style={styles.gatContainer}>
+                                <TouchableOpacity onPress={() => navigation.navigate('CurrentGathering', { item })}>
+                                    <View style={styles.gat}>
+                                        <View style={styles.gatImageContainer}>
+                                            <Image style={styles.gatImage}/>
+                                            {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
+                                        </View>
+                                        <View style={styles.nameContainer}>
+                                            <Text style={[styles.text, styles.gatName]}>{item.name}</Text>
+                                            <View style={styles.infoContainer}>
+                                                <Text style={styles.infoText}>📅{item.date}</Text>
+                                                <Text style={styles.infoText}>:{item.time}</Text>
+                                            </View>
                                         </View>
                                     </View>
-
-                                </View>
-                            </TouchableOpacity>
-
-                            <View style={styles.gat}>
-
+                                </TouchableOpacity>
                             </View>
-                        </View>
-                    ))}
+                        ))}
+                    </View>
+                </ScrollView>
+            </View>
+        )
+    } else {
+        return (
+            <View style={styles.container}>
+                <View style={styles.filterContainer}>
+                    <TouchableOpacity onPress={switchHandler} style={styles.buttonContainer}>
+                        <Entypo
+                            style={styles.icon}
+                            name="sound-mix"
+                            size={18}
+                            color='balck'
+                        />
+                        <Text style={styles.selectedTextStyle}> Filter - {currentFilters}</Text>
+                    </TouchableOpacity>
                 </View>
-            </ScrollView>
-        </View>
-    )
-}
+                <ScrollView>
+                    <View>
+                        {gat.map((item) => (
+                            <View key={item.id} style={styles.gatContainer}>
+                                <TouchableOpacity onPress={() => navigation.navigate('CurrentAttendeesGathering', { item })}>
+                                    <View style={styles.gat}>
+                                        <View style={styles.gatImageContainer}>
+                                            <Image style={styles.gatImage}/>
+                                            {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
+                                        </View>
+                                        <View style={styles.nameContainer}>
+                                            <Text style={[styles.text, styles.gatName]}>{item.name}</Text>
+                                            <View style={styles.infoContainer}>
+                                                <Text style={styles.infoText}>📅{item.date}</Text>
+                                                <Text style={styles.infoText}>:{item.time}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                    </View>
+                </ScrollView>
+            </View>
+        )
+    }
 
+
+}
 
 

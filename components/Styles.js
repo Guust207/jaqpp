@@ -160,14 +160,19 @@ const styles = StyleSheet.create({
         borderBottomColor: 'black',
     },
 
+    filterContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        padding: 5,
+        borderRadius: 5,
+        borderWidth: 0.5,
+        width: '59%',
+    },
     icon: {
         marginRight: 5,
     },
-    placeholderStyle: {
-        fontSize: 12,
-    },
     selectedTextStyle: {
-        fontSize: 12,
+        fontSize: 16,
     },
 
 

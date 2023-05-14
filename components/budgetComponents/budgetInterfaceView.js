@@ -1,12 +1,12 @@
-import {Button, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Button, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
-import {auth, db} from "../../firebaseConfig";
-import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc, where} from "firebase/firestore";
-import {Modal} from "../Modal";
-import {currentCategory, currentField, currentGathering} from "../global_variables";
+import { db} from "../../firebaseConfig";
+import {collection, deleteDoc, doc, onSnapshot, query} from "firebase/firestore";
+import {currentCategory} from "../global_variables";
 import {AddBudgetView, EditBudgetView} from "./budgetView";
 import {useNavigation} from "@react-navigation/native";
 import {Icon} from "react-native-elements";
+import {styles} from "../Styles";
 
 
 export const CategoryView = ({route}) => {
@@ -108,7 +108,6 @@ export const CategoryView = ({route}) => {
                                             color='#FF0000'
                                         />
                                     </View>
-
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -120,35 +119,3 @@ export const CategoryView = ({route}) => {
         </View>
     )
 }
-
-
-
-
-//Style
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 5,
-        backgroundColor: '#D6D5C9'
-    },
-    budgetContainer: {
-        backgroundColor: '#B9BAA3',
-        padding: 10,
-        marginBottom: '0.2%',
-    },
-    budgetInfo: {
-        width: '68%',
-    },
-    budgetText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    budget: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    icons: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-})

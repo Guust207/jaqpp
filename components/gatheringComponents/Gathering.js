@@ -1,9 +1,7 @@
-import {Button, StyleSheet, Text, View} from "react-native";
-import signInView from "../loginComponents/signInView";
 import React from "react";
 import {GatheringInterface} from "./gatheringInterfaceView";
 import {createStackNavigator} from "@react-navigation/stack";
-import {currentCategory, currentField, currentGathering, currentGatheringHeader} from "../global_variables";
+import {currentCategory, currentGathering, currentGatheringHeader} from "../global_variables";
 import {GatheringView} from "./GatheringView";
 import Create from "./CreateGathering";
 import {CategoryView} from "../budgetComponents/budgetInterfaceView";
@@ -11,10 +9,8 @@ import {FieldView} from "../budgetComponents/fielsInterfaceView";
 import {AttendeesInterface} from "../attendeesComponents/attendeesnterfaceView";
 import {AttendeesGatheringView} from "./AttendeesGatheringView";
 
-/*
-OBS!!!!!!
-Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
- */
+
+
 export const Gathering = () => {
     const [CurrentGathering, setCurrentGathering] = currentGathering();
     const [CurrentCategory, setCurrentCategory] = currentCategory();

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, Button, Text, TextInput, View} from "react-native";
+import {TouchableOpacity, Text, TextInput, View} from "react-native";
 import {auth, db} from "../../firebaseConfig";
 import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
 import {currentUser} from "../global_variables";
@@ -8,11 +8,7 @@ import {styles} from "../Styles";
 
 const Create = () => {
     const navigation = useNavigation();
-
-
     const [user, setUser] = currentUser();
-
-
     function GenerateID() {
         const number1 = Math.floor(Math.random() * 9) + 1;
         const number2 = Math.floor(Math.random() * 9) + 1;
@@ -45,7 +41,6 @@ const Create = () => {
 
         await addDoc(attendeesRef, {
 
-
         });
     }
 
@@ -60,7 +55,6 @@ const Create = () => {
             add(id, gathName, gathTime, gathDate, gathDescription).then();
         }
         navigation.navigate('Your gatherings');
-
     }
 
 

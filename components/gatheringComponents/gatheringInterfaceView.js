@@ -131,8 +131,7 @@ export const GatheringInterface = () => {
                                 <TouchableOpacity onPress={() => navigation.navigate('CurrentGathering', { item })}>
                                     <View style={styles.gat}>
                                         <View style={styles.gatImageContainer}>
-                                            <Image style={styles.gatImage}/>
-                                            {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
+                                            <Image style={styles.gatImage} source={require('../../images/tiger_bakgrun.jpg')} />
                                         </View>
                                         <View style={styles.nameContainer}>
                                             <Text style={[styles.text, styles.gatName]}>{item.name}</Text>
@@ -170,8 +169,7 @@ export const GatheringInterface = () => {
                                 <TouchableOpacity onPress={() => navigation.navigate('CurrentAttendeesGathering', { item })}>
                                     <View style={styles.gat}>
                                         <View style={styles.gatImageContainer}>
-                                            <Image style={styles.gatImage}/>
-                                            {/*<Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />*/}
+                                            <Image style={styles.gatImage} source={require('../../images/tiger_bakgrun.jpg')} />
                                         </View>
                                         <View style={styles.nameContainer}>
                                             <Text style={[styles.text, styles.gatName]}>{item.name}</Text>

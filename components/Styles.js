@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
     },
-    createbutton: {
+    createButton: {
         backgroundColor: '#0A100D',
         color: '#B9BAA3',
         borderRadius: 5,
@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlignVertical: 'center',
     },
-
     title: {
         fontSize: 20,
         fontWeight: "bold",

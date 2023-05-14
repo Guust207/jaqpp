@@ -120,7 +120,9 @@ export const GatheringView = ({route}) => {
         <View style={styles.container}>
             <ScrollView>
                 <View style={styles.gatheringInformation}>
+                    <Text style={styles.headText}>Gathering Information</Text>
                     <Text style={styles.descriptionText}>{item.description}</Text>
+                    <Text style={styles.descriptionText2}>Date - {item.date}, Time - {item.time}</Text>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => handleBudgetButton(item)}>
                             <Text style={styles.buttonText}>Administer Budget</Text>
@@ -200,7 +202,6 @@ export const GatheringView = ({route}) => {
                 </View>
             </ScrollView>
         </View>
-
     )
 }
 

@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     descriptionText2: {
         fontSize: 16,
         fontWeight: 'bold',
+        marginBottom: '10%',
     },
     bottomButtonContainer: {
         flexDirection: 'row',

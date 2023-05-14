@@ -9,10 +9,7 @@ import {currentFilter, currentGatheringHeader, currentUser} from "../global_vari
 import  {styles} from "../Styles";
 import {Entypo} from "@expo/vector-icons";
 
-/*
-OBS!!!!!!
-Edit og Delete skal være tilgjengelig når du klikker på en av gatheringene
- */
+
 export const GatheringInterface = () => {
     const navigation = useNavigation();
 

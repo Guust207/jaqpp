@@ -377,7 +377,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f0f0f0',
         borderBottomRightRadius: 25,
         borderBottomLeftRadius: 25,
-
     },
 
 
@@ -399,6 +398,40 @@ const styles = StyleSheet.create({
     },
 
 
+
+//Invite attendees view
+    attendees:{
+        backgroundColor: '#B9BAA3',
+        padding: 10,
+        margin:'5%',
+        borderRadius: 5,
+    },
+    attendeesText: {
+        fontSize: 16,
+        marginTop: '3%',
+        marginBottom: '3%',
+        borderBottomWidth: 1,
+        borderBottomColor: 'black',
+    },
+    attendeesCont: {
+        borderBottomWidth: 1,
+        borderBottom: 'black',
+    },
+    attendeesImageContainer: {
+        width: '16%',
+        borderRadius: 25,
+        marginRight: '5%',
+        marginLeft: '-5%',
+    },
+    attendeesName: {
+        fontSize: 20,
+        fontWeight: "bold",
+
+    },
+    attendeesIcons: {
+        top: '2%',
+        left: '80%',
+    },
 });
 
 

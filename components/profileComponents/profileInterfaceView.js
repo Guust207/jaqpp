@@ -132,7 +132,7 @@ export const ProfileView = () => {
 
     //The view that you see at profile view
     return (
-        <View style={styles.profileContainer}>
+        <View style={styles.nonHeaderContainer}>
 
             <View style={styles.bioContainer}>
                 <View style={styles.imageContainer}>

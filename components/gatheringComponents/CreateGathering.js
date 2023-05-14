@@ -4,6 +4,7 @@ import {auth, db} from "../../firebaseConfig";
 import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
 import {currentUser} from "../global_variables";
 import {useNavigation} from "@react-navigation/native";
+import {styles} from "../Styles";
 
 const Create = () => {
     const navigation = useNavigation();
@@ -70,7 +71,7 @@ const Create = () => {
 
 
     return (
-        <View style={styles.createContainer}>
+        <View style={styles.nonHeaderContainer}>
             <Text style={styles.title}>Add information to the new Gathering</Text>
             <View style={styles.inputContainer}>
                 <TextInput
@@ -117,50 +118,3 @@ const Create = () => {
 
 
 export default Create;
-
-
-const styles = StyleSheet.create({
-    createContainer: {
-        flex: 1,
-        backgroundColor: '#D6D5C9',
-        paddingHorizontal: 20,
-        paddingVertical: 40,
-        paddingTop: 100,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        marginBottom:20,
-    },
-    input: {
-        flex: 1,
-        height: 40,
-        marginLeft: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#666',
-        color: '#333',
-        fontSize: 16,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    createButton: {
-        backgroundColor: '#0A100D',
-        borderRadius: 5,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        flex: 1,
-        marginHorizontal: 5,
-    },
-    buttonText: {
-        color: '#D6D5C9',
-        textAlign: 'center',
-        fontSize: 16,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginBottom: 30,
-    },
-});

@@ -7,8 +7,12 @@ const styles = StyleSheet.create({
         padding: 5,
         backgroundColor: '#D6D5C9',
     },
-
-
+    nonHeaderContainer: {
+        flex: 1,
+        padding: 5,
+        backgroundColor: '#D6D5C9',
+        paddingTop: 100,
+    },
     button: {
         backgroundColor: '#0A100D',
         borderRadius: 5,
@@ -57,6 +61,15 @@ const styles = StyleSheet.create({
     },
     googleButtonText: {
         color: '#D6D5C9',
+    },
+    logo: {
+        width: '100%',
+        height: undefined,
+        aspectRatio: 1,
+        marginTop: '-30%',
+        marginBottom: '-15%',
+        resizeMode: 'center',
+
     },
 
 
@@ -238,12 +251,6 @@ const styles = StyleSheet.create({
 
 
 // Profile styles
-    profileContainer: {
-        flex: 1,
-        padding: 5,
-        backgroundColor: '#D6D5C9',
-        paddingTop: 100,
-    },
     category: {
         marginBottom: '2%'
     },

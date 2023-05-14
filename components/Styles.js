@@ -209,6 +209,16 @@ const styles = StyleSheet.create({
     deleteButton: {
         backgroundColor: '#DE1616'
     },
+    categoryInfoContainer: {
+        marginBottom: '10%',
+    },
+    categoryInfo: {
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 5,
+        margin: '2%',
+        backgroundColor: 'white',
+    },
     modalButton: {
         margin: 5,
             padding: 8,

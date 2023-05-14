@@ -119,7 +119,7 @@ export const GatheringInterface = () => {
                             style={styles.icon}
                             name="sound-mix"
                             size={18}
-                            color='balck'
+                            color='black'
                         />
                         <Text style={styles.selectedTextStyle}> Filter - {currentFilters}</Text>
                     </TouchableOpacity>
@@ -187,8 +187,6 @@ export const GatheringInterface = () => {
             </View>
         )
     }
-
-
 }
 
 

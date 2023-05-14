@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {StyleSheet} from "react-native";
 import {onAuthStateChanged} from "firebase/auth";
 import {auth} from "./firebaseConfig";
 import {AntDesign, Ionicons, MaterialIcons} from '@expo/vector-icons';
@@ -34,7 +32,6 @@ const App = () => {
                     index: 0,
                     routes: [{ name: 'signInView' }],
                 });
-
             }
         });
 

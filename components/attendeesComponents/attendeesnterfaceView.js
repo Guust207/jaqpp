@@ -1,7 +1,7 @@
 import {Button, StyleSheet, Text, TouchableOpacity, View, ScrollView,  TextInput,  Image} from "react-native";
 import React, {useEffect, useState} from "react";
-import {collection, doc, query, onSnapshot, setDoc, getDocs, where, deleteDoc} from "firebase/firestore";
-import {db} from "../../firebaseConfig";
+import {collection, doc, getDoc, query, onSnapshot, setDoc, getDocs, where, deleteDoc} from "firebase/firestore";
+import { auth , db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
 import {Modal} from "../Modal";
 import uuid from 'react-native-uuid';
@@ -120,34 +120,40 @@ export const AttendeesInterface = ({route}) => {
 
     }
 
+
+
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity  onPress={inviteAttendees}>
-                <Text style={[ styles.kickName]}>Invitation</Text>
-                <Modal isVisible={isModalVisible} >
-                    <Modal.Container>
-                        <Modal.Header title={"Invite"} />
-                        <Modal.Body>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="send invitation to this email"
-                                onChangeText={set_attendeeEmail}
-                                placeholderTextColor="#999"
-                            />
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button
-                                onPress={sendInvitation}
-                                title="Send"
-                            />
-                            <Button
-                                onPress={() => setIsModalVisible(() => !isModalVisible)}
-                                title="Cancel"
-                            />
-                        </Modal.Footer>
-                    </Modal.Container>
-                </Modal>
-            </TouchableOpacity>
+            <Button
+                title={'Invite friends'}
+                onPress={inviteAttendees}
+            />
+            <Modal isVisible={isModalVisible} >
+                <Modal.Container>
+                    <Modal.Header title={"Invite"} />
+                    <Modal.Body>
+                        <TextInput
+                            style={styles.modalInput}
+                            placeholder="Invite by email of the user"
+                            onChangeText={set_attendeeEmail}
+                            placeholderTextColor="#999"
+                        />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Buttons
+                            onPress={sendInvitation}
+                            title="Send"
+                        />
+                        <Buttons
+                            onPress={() => setIsModalVisible(() => !isModalVisible)}
+                            title="Cancel"
+                        />
+                    </Modal.Footer>
+                </Modal.Container>
+            </Modal>
+
+
             <ScrollView>
                 <View>
                     <View style={styles.attendees}>
@@ -181,3 +187,6 @@ export const AttendeesInterface = ({route}) => {
         </View>
     )
 }
+
+
+

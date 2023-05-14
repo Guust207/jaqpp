@@ -1,35 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet } from "react-native";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebaseConfig";
-import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import React, {useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {StyleSheet} from "react-native";
+import {onAuthStateChanged} from "firebase/auth";
+import {auth} from "./firebaseConfig";
+import {AntDesign, Ionicons, MaterialIcons} from '@expo/vector-icons';
 
-import { currentUser } from "./components/global_variables";
-import { Login } from "./components/loginComponents/loginView";
-import { Gathering } from "./components/gatheringComponents/Gathering";
-import { ProfileView } from "./components/profileComponents/profileInterfaceView";
+
+import {currentUser} from "./components/global_variables";
+import {Login} from "./components/loginComponents/loginView";
+import {Gathering} from "./components/gatheringComponents/Gathering";
+import {ProfileView} from "./components/profileComponents/profileInterfaceView";
 import Create from "./components/gatheringComponents/CreateGathering";
 
+
+
 const App = () => {
+
     const [user, setUser] = currentUser();
+
+
+    //The navigation bar that you see at the bottom
     const Tab = createBottomTabNavigator();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user);
             } else {
                 setUser(null);
+                navigator.reset({
+                    index: 0,
+                    routes: [{ name: 'signInView' }],
+                });
+
             }
         });
 
-        return () => unsubscribe();
     }, []);
 
-    if (user === null) {
+
+    if (user == null) {
         return (
             <NavigationContainer>
                 <Tab.Navigator>
@@ -39,7 +51,7 @@ const App = () => {
                         options={{
                             headerShown: false,
                             tabBarIcon: ({ color, size }) => (
-                                <MaterialIcons name="login" size={24} color="black" />
+                                <MaterialIcons name="login" size={24}login color="black" />
                             ),
                         }}
                     />
@@ -84,6 +96,7 @@ const App = () => {
             </NavigationContainer>
         );
     }
-};
+}
 
 export default App;
+

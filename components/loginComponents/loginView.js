@@ -12,6 +12,7 @@ import {useNavigation} from "@react-navigation/native";
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get
 https://docs.expo.dev/guides/google-authentication/
  */
+WebBrowser.maybeCompleteAuthSession();
 
 //Function that watches for requests to use browser.
 export const Login = () => {

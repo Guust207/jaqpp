@@ -1,6 +1,6 @@
 import React from "react";
 import {GatheringInterface} from "./gatheringInterfaceView";
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {currentCategory, currentGathering, currentGatheringHeader} from "../global_variables";
 import {GatheringView} from "./GatheringView";
 import Create from "./CreateGathering";

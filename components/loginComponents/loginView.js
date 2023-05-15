@@ -6,6 +6,7 @@ import {doc, getDoc, setDoc} from 'firebase/firestore';
 import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
 import {styles} from "../Styles";
+import {useNavigation} from "@react-navigation/native";
 
 /* API Used for fetching information about user logged-in
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get
@@ -18,6 +19,8 @@ WebBrowser.maybeCompleteAuthSession();
 
 //This is the function that handles login and how the loginView should look like.
 export const Login = () => {
+    const navigation = useNavigation();
+
 
     //This is the function that handles login and how the loginView should look like.
 
@@ -91,6 +94,7 @@ export const Login = () => {
             }
         } catch (error) {
             console.log("Failed!");
+            navigation.navigate('SignIn');
         }
     };
 

@@ -169,7 +169,7 @@ export const GatheringInterface = () => {
                                 <TouchableOpacity onPress={() => navigation.navigate('CurrentAttendeesGathering', { item })}>
                                     <View style={styles.gat}>
                                         <View style={styles.gatImageContainer}>
-                                            <Image style={styles.gatImage} source={require('../../images/tiger_bakgrun.jpg')} />
+                                            <Image style={styles.gatImage} source={require('../../images/logo_2.png')} />
                                         </View>
                                         <View style={styles.nameContainer}>
                                             <Text style={[styles.text, styles.gatName]}>{item.name}</Text>

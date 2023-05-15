@@ -143,6 +143,8 @@ export const GatheringView = ({route}) => {
     },[])
 
 
+
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -152,15 +154,14 @@ export const GatheringView = ({route}) => {
                     <Text style={styles.descriptionText2}>Date - {item.date}, Time - {item.time}</Text>
                     <Text style={styles.headText}>Categories</Text>
                     <View style={styles.categoryInfoContainer}>
-                    {categoryList.map((item) => (
-                        <View key={item.id}>
-                            <View style={styles.categoryInfo}>
-                                <Text style={styles.infoText}>{item.name} - {item.totalCost} kr</Text>
+                        {categoryList.map((item) => (
+                            <View key={item.id}>
+                                <View style={styles.categoryInfo}>
+                                    <Text style={styles.infoText}>{item.name} - {item.totalCost} kr</Text>
+                                </View>
                             </View>
-                        </View>
-                    ))}
+                        ))}
                     </View>
-
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => handleBudgetButton(item)}>
                             <Text style={styles.buttonText}>Administer Budget</Text>
@@ -176,7 +177,7 @@ export const GatheringView = ({route}) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.bottomButtonContainer}>
-                    <TouchableOpacity style={[styles.gatheringButton, styles.deleteButton]} onPress={() => deleteData(item)}>
+                        <TouchableOpacity style={[styles.gatheringButton, styles.deleteButton]} onPress={() => deleteData(item)}>
                             <Text style={styles.buttonText}>Delete </Text>
                         </TouchableOpacity>
                     </View>

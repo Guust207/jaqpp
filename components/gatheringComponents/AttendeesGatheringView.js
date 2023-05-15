@@ -51,7 +51,6 @@ export const AttendeesGatheringView = ({route}) => {
             });
         }
         getCategories().then();
-
     },[])
 
 

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Alert, Text, TextInput, View} from "react-native";
-import { doc, getDoc, setDoc} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, where} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {Modal} from "../Modal";
 import {Buttons} from "../Button";
@@ -16,16 +16,19 @@ export const AddBudgetView = (route) => {
 
 
     async function add_budgetCategory(categoryID) {
-        const docRef = doc(db, "gathering", gatheringID, "budget", categoryID);
-        const docSnap = await getDoc(docRef);
-        if (categoryName.toLowerCase() === null) {
+        if (categoryName === null) {
             MissingCategory();
             return;
         }
-        if (docSnap.exists()) {
+
+        const q = query(collection(db, "gathering", gatheringID, "budget"), where("name", "==", categoryName));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.size > 0) {
             CategoryExist();
             return;
         }
+
         await setDoc(doc(db, "gathering", gatheringID, "budget", categoryID), {
             name: categoryName,
             totalCost: 0
@@ -35,7 +38,7 @@ export const AddBudgetView = (route) => {
     }
 
     const MissingCategory = () =>
-        Alert.alert('Alert!r', 'Please add valid category', [
+        Alert.alert('Alert!', 'Please add valid category', [
             {text: 'OK'},
         ]);
 

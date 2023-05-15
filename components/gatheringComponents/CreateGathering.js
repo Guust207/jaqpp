@@ -9,18 +9,14 @@ import firebase from 'firebase/compat/app'
 import 'firebase/compat/storage'
 import { initializeApp } from "firebase/app";
 import * as ImagePicker from "expo-image-picker";
+import uuid from "react-native-uuid";
 
 const Create = () => {
     const navigation = useNavigation();
     const [user, setUser] = currentUser();
     function GenerateID() {
-        const number1 = Math.floor(Math.random() * 9) + 1;
-        const number2 = Math.floor(Math.random() * 9) + 1;
-        const number3 = Math.floor(Math.random() * 9) + 1;
-        const number4 = Math.floor(Math.random() * 9) + 1;
-        const number5 = Math.floor(Math.random() * 9) + 1;
+        return uuid.v4();
 
-        return 'gathering' + number1 + number2 + number3 + number4 + number5;
     }
 
     const [gathName, set_gathName] = useState("Name");

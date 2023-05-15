@@ -110,7 +110,7 @@ export const GatheringInterface = () => {
         }
     }
 
-    if(currentFilters == "Created Gatherings") {
+    if(currentFilters === "Created Gatherings") {
         return (
             <View style={styles.container}>
                 <View style={styles.filterContainer}>

@@ -6,7 +6,6 @@ import {doc, getDoc, setDoc} from 'firebase/firestore';
 import {db} from "../../firebaseConfig";
 import {currentUser} from "../global_variables";
 import {styles} from "../Styles";
-import {useNavigation} from "@react-navigation/native";
 
 /* API Used for fetching information about user logged-in
 https://any-api.com/googleapis_com/oauth2/docs/userinfo/oauth2_userinfo_v2_me_get

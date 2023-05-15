@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {StyleSheet, View, TextInput, Button, Text, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, View, TextInput, Text, TouchableOpacity, Image} from 'react-native';
 import { auth , db} from "../../firebaseConfig";
 import { signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification } from "firebase/auth"
 import {doc, getDoc, setDoc} from 'firebase/firestore';

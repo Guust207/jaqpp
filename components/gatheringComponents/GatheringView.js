@@ -1,8 +1,8 @@
-import {Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Image, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {currentGathering, currentUser} from "../global_variables";
 import { useNavigation } from '@react-navigation/native';
-import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc, where} from "firebase/firestore";
+import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 
 
@@ -17,7 +17,7 @@ export const GatheringView = ({route}) => {
     const { item } = route.params;
 
     const [CurrentGathering, setCurrentGathering] = currentGathering();
-    const [user, setUser] = currentUser();
+    const [user] = currentUser();
 
     useEffect(() => {
         setCurrentGathering(item)

@@ -7,7 +7,6 @@ import {useNavigation} from "@react-navigation/native";
 import {styles} from "../Styles";
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/storage'
-import { initializeApp } from "firebase/app";
 import * as ImagePicker from "expo-image-picker";
 import uuid from "react-native-uuid";
 

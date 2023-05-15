@@ -1,5 +1,5 @@
 //This is the function that handles profile view and all of its sub functions
-import {Alert, TouchableOpacity, Button, Image, StyleSheet, Text, View} from "react-native";
+import {Alert, TouchableOpacity, Image, Text, View} from "react-native";
 import * as React from "react";
 import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";

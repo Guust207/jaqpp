@@ -1,6 +1,6 @@
-import {Button, StyleSheet, Text, TouchableOpacity, View, ScrollView,  TextInput,  Image} from "react-native";
+import {Button, Text, View, ScrollView,  TextInput,  Image} from "react-native";
 import React, {useEffect, useState} from "react";
-import {collection, doc, getDoc, query, onSnapshot, setDoc, getDocs, where, deleteDoc} from "firebase/firestore";
+import {collection, doc, query, onSnapshot, setDoc, getDocs, where, deleteDoc} from "firebase/firestore";
 import { auth , db} from "../../firebaseConfig";
 import { useNavigation } from '@react-navigation/native';
 import {Modal} from "../Modal";
@@ -8,10 +8,8 @@ import uuid from 'react-native-uuid';
 
 
 //Component Imports
-import {currentUser} from "../global_variables";
 import {styles} from "../Styles";
 import {Buttons} from "../Button";
-import {Icon} from "react-native-elements";
 import {FontAwesome} from "@expo/vector-icons";
 
 /*

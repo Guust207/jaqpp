@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet } from "react-native";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebaseConfig";
 import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import { currentUser } from "./components/global_variables";
@@ -17,17 +13,7 @@ const App = () => {
     const [user, setUser] = currentUser();
     const Tab = createBottomTabNavigator();
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        });
 
-        return () => unsubscribe();
-    }, []);
 
     if (user === null) {
         return (

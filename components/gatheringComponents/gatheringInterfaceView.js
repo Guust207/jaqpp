@@ -31,7 +31,7 @@ export const GatheringInterface = () => {
                 const gatheringList = [];
 
                 querySnapshot.forEach((doc) => {
-                    const {name, date, time, description} = doc.data();
+                    const {name, date, time, description, image} = doc.data();
 
                     //list for storing the data
                     gatheringList.push({
@@ -40,6 +40,7 @@ export const GatheringInterface = () => {
                         date,
                         time,
                         description,
+                        image,
                     });
                 });
                 set_gatList(gatheringList);
@@ -56,7 +57,7 @@ export const GatheringInterface = () => {
                     const  list = [];
 
                     querySnapshot.forEach((doc) => {
-                        const { name, date, time, description} = doc.data();
+                        const { name, date, time, description, image} = doc.data();
 
                         //list for storing the data
                         list.push({
@@ -65,6 +66,7 @@ export const GatheringInterface = () => {
                             date,
                             time,
                             description,
+                            image: { uri: image },
                         });
                     });
 
@@ -83,12 +85,16 @@ export const GatheringInterface = () => {
                         const date = gatList[i].date
                         const time = gatList[i].time
                         const description = gatList[i].description
+                        const image = gatList[i].image
+
                         list.push({
                             id: gatList[i].id,
                             name,
                             date,
                             time,
                             description,
+                            image: { uri: image },
+
                         });
                     }
                 }
@@ -102,11 +108,11 @@ export const GatheringInterface = () => {
         Switch(() => !isOwnerGatherings)
         if (isOwnerGatherings){
             SwitchFilter("Guest Gatherings")
-            setCurrentGatheringHeader('Gatherings you are invited to')
+            setCurrentGatheringHeader("Gatherings you're in")
         }
         else {
             SwitchFilter("Created Gatherings")
-            setCurrentGatheringHeader('Gathering you have created')
+            setCurrentGatheringHeader('Your gatherings')
         }
     }
 
@@ -131,7 +137,7 @@ export const GatheringInterface = () => {
                                 <TouchableOpacity onPress={() => navigation.navigate('CurrentGathering', { item })}>
                                     <View style={styles.gat}>
                                         <View style={styles.gatImageContainer}>
-                                            <Image style={styles.gatImage} source={require('../../images/tiger_bakgrun.jpg')} />
+                                            <Image style={styles.gatImage} source={item.image} />
                                         </View>
                                         <View style={styles.nameContainer}>
                                             <Text style={[styles.text, styles.gatName]}>{item.name}</Text>

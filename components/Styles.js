@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#0A100D',
         borderRadius: 5,
         flex: 1,
-        marginHorizontal: 5,
+        marginHorizontal: '1%',
         padding: 20,
     },
 
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         flex: 1,
         marginHorizontal: 2,
-        marginBottom: 10,
+        marginBottom: '2%',
         alignItems: 'center',
         justifyContent: 'center',
         textAlignVertical: 'center',
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     googleButtonContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
         color: '#333',
     },
     googleButton: {
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         height: 40,
-        marginLeft: 10,
+        marginLeft: '2%',
         borderBottomWidth: 1,
         borderBottomColor: '#666',
         color: '#333',
@@ -99,8 +98,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingVertical: 10,
         flex: 1,
-        marginHorizontal: 2,
-        marginBottom: 10,
+        marginHorizontal: '1%',
         alignItems: 'center',
         justifyContent: 'center',
         textAlignVertical: 'center',
@@ -108,7 +106,8 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: "bold",
-        marginBottom: 30,
+        marginBottom: '8%',
+        marginLeft: '2%'
     },
 
 
@@ -119,7 +118,7 @@ const styles = StyleSheet.create({
     gatContainer: {
         backgroundColor: '#B9BAA3',
         padding: 10,
-        margin:10,
+        margin: '2%',
         borderRadius: 25,
     },
     gat: {
@@ -127,27 +126,23 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     gatImageContainer: {
-        width: 80,
+        width: '25%',
         borderRadius: 25,
-        marginRight: 10,
-        marginBottom: 10,
     },
     gatImage: {
         aspectRatio: 1,
-        width: 80,
+        width: '80%',
         height: undefined,
         borderRadius: 25,
     },
     nameContainer: {
         flexDirection: 'column',
         justifyContent: 'space-between',
-        marginBottom: 20,
     },
     infoContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        marginTop: 20,
-        flex: 1,
+        marginTop: '10%',
     },
     infoText: {
         fontSize: 16,
@@ -155,7 +150,7 @@ const styles = StyleSheet.create({
     gatName: {
         fontSize: 20,
         fontWeight: 'bold',
-        borderBottomWidth: 2,
+        borderBottomWidth: 1,
         borderBottomColor: 'black',
     },
 
@@ -202,9 +197,9 @@ const styles = StyleSheet.create({
     },
     bottomButtonContainer: {
         flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 10,
-            color: '#333',
+        alignItems: 'center',
+        marginBottom: '4%',
+        color: '#333',
     },
     deleteButton: {
         backgroundColor: '#DE1616'
@@ -271,7 +266,7 @@ const styles = StyleSheet.create({
     },
     bioContainer: {
         justifyContent: 'space-between',
-        marginBottom: 30,
+        marginBottom: '5%',
         alignItems: 'center',
         borderBottomWidth: 1,
         borderBottomColor: '#0A100D',
@@ -280,9 +275,9 @@ const styles = StyleSheet.create({
     imageContainer: {
         alignItems: 'center',
         height: 130,
-        width: 130,
+        width: '35%',
         borderRadius: 50,
-        marginBottom: 20,
+        marginBottom: '5%',
     },
     profilePicture: {
         aspectRatio: 1,
@@ -298,26 +293,21 @@ const styles = StyleSheet.create({
     invitesText: {
         fontWeight: 'bold',
     },
-
-    bottomContainer: {
-        justifyContent: 'space-between',
-        marginBottom: 20,
-    },
     bioEmail: {
         fontSize: 18,
-        marginBottom: 10,
-        marginLeft: 5,
+        marginBottom: '4%',
+        marginLeft: '2%',
     },
 
     signOutButtonContainer: {
         borderBottomWidth: 1,
         borderBottomColor: '#0A100D',
         paddingBottom: 10,
-        marginBottom: 20,
+        marginBottom: '5%',
     },
 
     deleteButtonContainer: {
-        marginTop: 20,
+        marginTop: '5%',
         alignItems: 'center',
     },
     deleteButtonText: {
@@ -376,7 +366,6 @@ const styles = StyleSheet.create({
     modalBody: {
         justifyContent: "center",
         paddingHorizontal: '5%',
-        minHeight: 100,
         padding: '2%',
     },
     modalFooter: {
@@ -394,7 +383,6 @@ const styles = StyleSheet.create({
 
 //button.tsx styles
     buttons: {
-        margin: 5,
         padding: 8,
         borderRadius: 5,
         borderColor: "black",

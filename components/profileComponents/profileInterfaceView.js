@@ -133,14 +133,12 @@ export const ProfileView = () => {
     //The view that you see at profile view
     return (
         <View style={styles.nonHeaderContainer}>
-
             <View style={styles.bioContainer}>
                 <View style={styles.imageContainer}>
                     <Image style={styles.profilePicture} source={{ uri: user.picture }} />
                 </View>
                 <Text style={styles.name}>{user.name}</Text>
             </View>
-            <View style={styles.bottomContainer}>
                 <Text style={styles.bioEmail}>Mail: {user.email}</Text>
                 <View style={[styles.signOutButtonContainer, styles.buttonContainer]}>
                     <TouchableOpacity style={styles.button} onPress={handleLogout}>
@@ -152,41 +150,41 @@ export const ProfileView = () => {
                         <Text style={styles.buttonText}> Your invitations</Text>
                     </TouchableOpacity>
                 </View>
-                <Modal isVisible={isInvitationView} >
-                    <Modal.Container>
-                        <Modal.Header title={"Invitations"} />
-                        <Modal.Body>
-                            {Invitations.map((item) => (
-                                <View key={item.id} style={styles.category}>
+
+            <Modal isVisible={isInvitationView} >
+                <Modal.Container>
+                    <Modal.Header title={"Invitations"} />
+                    <Modal.Body>
+                        {Invitations.map((item) => (
+                            <View key={item.id} style={styles.category}>
+                                <View style={styles.invitesContainer}>
+                                <Text> {item.gatheringName}</Text>
                                     <View style={styles.invitesContainer}>
-                                    <Text> {item.gatheringName}</Text>
-                                        <View style={styles.invitesContainer}>
-                                            <TouchableOpacity onPress={() => acceptInvitations(item)}>
-                                                <Text style={styles.invitesText}> Accept </Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => declineInvitations(item)}>
-                                                <Text style={styles.invitesText}> Decline</Text>
-                                            </TouchableOpacity>
-                                        </View>
+                                        <TouchableOpacity onPress={() => acceptInvitations(item)}>
+                                            <Text style={styles.invitesText}> Accept </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => declineInvitations(item)}>
+                                            <Text style={styles.invitesText}> Decline</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
-                            ))}
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Buttons title="Cancel" onPress={handleInvitations} />
-                        </Modal.Footer>
-                    </Modal.Container>
-                </Modal>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={downloadData}>
-                        <Text style={styles.buttonText}>Download data about user</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.deleteButtonContainer}>
-                    <TouchableOpacity onPress={userAlert}>
-                        <Text style={styles.deleteButtonText}> Delete my JaqPP account</Text>
-                    </TouchableOpacity>
-                </View>
+                            </View>
+                        ))}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Buttons title="Cancel" onPress={handleInvitations} />
+                    </Modal.Footer>
+                </Modal.Container>
+            </Modal>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={downloadData}>
+                    <Text style={styles.buttonText}>Download data about user</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.deleteButtonContainer}>
+                <TouchableOpacity onPress={userAlert}>
+                    <Text style={styles.deleteButtonText}> Delete my JaqPP account</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );

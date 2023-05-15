@@ -1,6 +1,6 @@
 import React from "react";
 import {GatheringInterface} from "./gatheringInterfaceView";
-import {createStackNavigator} from "@react-navigation/stack";
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import {currentCategory, currentGathering, currentGatheringHeader} from "../global_variables";
 import {GatheringView} from "./GatheringView";
 import Create from "./CreateGathering";
@@ -16,7 +16,7 @@ export const Gathering = () => {
     const [CurrentCategory, setCurrentCategory] = currentCategory();
     const [CurrentGatheringHeader, setCurrentGatheringHeader] = currentGatheringHeader();
 
-    const Stack = createStackNavigator();
+    const Stack = createNativeStackNavigator();
 
     return (
         <Stack.Navigator>

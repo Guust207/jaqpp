@@ -156,9 +156,6 @@ const Create = () => {
             <View style={styles.inputContainer}>
                 {image && <Image source={{uri: image}} style={{width: 170 , height: 170}}/>}
                 <Button title='Select Image' onPress={selectImage} />
-                {!uploading ? <Button title='Upload Image'        onChangeText={setImage}
-                                      onPress={uploadImage} />: <ActivityIndicator size={'small'} color='black' />}
-
             </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.createButton} onPress={() => addData()}>

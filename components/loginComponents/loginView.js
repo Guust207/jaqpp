@@ -17,7 +17,9 @@ WebBrowser.maybeCompleteAuthSession();
 //Function that watches for requests to use browser.
 export const Login = () => {
     const [accessToken, setAccessToken] = React.useState(null);
+
     const [user, setUser] = currentUser();
+
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: "766637901593-id760o157h0bieoq7eiukbbvhnbhae0h.apps.googleusercontent.com",
     });
@@ -74,19 +76,23 @@ export const Login = () => {
             console.log("Failed!", error);
         }
     };
+
     useEffect(() => {
         if (response?.type === "success") {
             setAccessToken(response.authentication.accessToken);
         }
     }, [response]);
+
     useEffect(() => {
         if (accessToken) {
             fetchUserInfo().then();
         }
     }, [accessToken]);
+
     const handleLogin = useCallback(() => {
         promptAsync().then();
     }, [promptAsync]);
+
     return (
         <View style={styles.nonHeaderContainer}>
             <View>

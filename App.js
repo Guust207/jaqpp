@@ -10,7 +10,6 @@ import { ProfileView } from "./components/profileComponents/profileInterfaceView
 import Create from "./components/gatheringComponents/CreateGathering";
 import 'expo-dev-client'
 
-import 'expo-dev-client';
 
 const App = () => {
     const [user, setUser] = currentUser();

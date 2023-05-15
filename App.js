@@ -8,6 +8,7 @@ import { Login } from "./components/loginComponents/loginView";
 import { Gathering } from "./components/gatheringComponents/Gathering";
 import { ProfileView } from "./components/profileComponents/profileInterfaceView";
 import Create from "./components/gatheringComponents/CreateGathering";
+import 'expo-dev-client'
 
 const App = () => {
     const [user, setUser] = currentUser();

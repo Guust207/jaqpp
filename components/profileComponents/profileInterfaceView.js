@@ -171,29 +171,51 @@ export const ProfileView = () => {
                 </View>
                 <Modal isVisible={isInvitationView} >
                     <Modal.Container>
+
                         <Modal.Header title={"Invitations"} />
+
                         <Modal.Body>
-                            <ScrollView>
-                                {Invitations.map((item) => (
+                                <View style={styles.inviteModalContainer}>
+                                    <ScrollView>
+
+                                    {Invitations.map((item) => (
                                     <View key={item.id} style={styles.category}>
-                                        <View style={styles.invitesContainer}>
-                                            <Text> {item.gatheringName}</Text>
+
+                                        <View style={styles.gatContainer}>
+
                                             <View style={styles.invitesContainer}>
+                                                <Text> {item.gatheringName}</Text>
+
                                                 <TouchableOpacity onPress={() => acceptInvitations(item)}>
+
                                                     <Text style={styles.invitesText}> Accept </Text>
+
                                                 </TouchableOpacity>
+
                                                 <TouchableOpacity onPress={() => declineInvitations(item)}>
+
                                                     <Text style={styles.invitesText}> Decline</Text>
+
                                                 </TouchableOpacity>
+
+
                                             </View>
+
+
                                         </View>
+
                                     </View>
                                 ))}
-                            </ScrollView>
+                                    </ScrollView >
+
+                                </View>
+
                         </Modal.Body>
+
                         <Modal.Footer>
                             <Buttons title="Cancel" onPress={handleInvitations} />
                         </Modal.Footer>
+
                     </Modal.Container>
                 </Modal>
             </ScrollView>

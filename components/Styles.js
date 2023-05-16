@@ -154,13 +154,21 @@ const styles = StyleSheet.create({
 //GatheringInterfaceView styles
     gatContainer: {
         backgroundColor: '#B9BAA3',
-        padding: 10,
+        padding: 6,
         margin: '2%',
         borderRadius: 25,
+
+
+    },
+
+    inviteModalContainer:{
+
+        height: 300,
     },
     gat: {
         flexDirection: 'row',
         alignItems: 'flex-start',
+
     },
     gatImageContainer: {
         width: '25%',
@@ -307,7 +315,15 @@ const styles = StyleSheet.create({
 
 // Profile styles
     category: {
-        marginBottom: '2%'
+        marginBottom: '2%',
+        height: 70,
+
+    },
+
+
+    invitationContainer: {
+        height: 60,
+        position: "absolute",
     },
     bioContainer: {
         justifyContent: 'space-between',
@@ -333,7 +349,9 @@ const styles = StyleSheet.create({
 
     invitesContainer: {
         flexDirection: 'row',
+
         justifyContent: 'space-between',
+        padding: 15,
     },
     invitesText: {
         fontWeight: 'bold',

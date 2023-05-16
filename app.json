@@ -26,7 +26,8 @@
         "foregroundImage": "./images/logo_transparent.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.athiene.jaqpp"
+      "package": "com.athiene.jaqpp",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./images/logo_transparent.png"

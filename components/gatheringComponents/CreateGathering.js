@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {TouchableOpacity, Text, TextInput, View, Button, Image, ActivityIndicator} from "react-native";
-import {auth, db} from "../../firebaseConfig";
+import {db} from "../../firebaseConfig";
 import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
 import {currentUser} from "../global_variables";
 import {useNavigation} from "@react-navigation/native";
@@ -120,7 +120,7 @@ const Create = () => {
 
     return (
         <View style={styles.nonHeaderContainer}>
-            <Text style={styles.title}>Add information to the new Gathering</Text>
+            <Text style={styles.title}>Add Gathering</Text>
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}

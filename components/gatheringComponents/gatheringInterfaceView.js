@@ -108,28 +108,28 @@ export const GatheringInterface = () => {
         Switch(() => !isOwnerGatherings)
         if (isOwnerGatherings){
             SwitchFilter("Guest Gatherings")
-            setCurrentGatheringHeader("Gatherings you're in")
+            setCurrentGatheringHeader("Guest Gatherings")
         }
         else {
             SwitchFilter("Created Gatherings")
-            setCurrentGatheringHeader('Your gatherings')
+            setCurrentGatheringHeader('Owner Gatherings')
         }
     }
 
     if(currentFilters === "Created Gatherings") {
         return (
             <View style={styles.container}>
-                <View style={styles.filterContainer}>
-                    <TouchableOpacity onPress={switchHandler} style={styles.buttonContainer}>
+                <TouchableOpacity onPress={switchHandler} style={styles.filterButton}>
+                    <View style={{flexDirection: "row",}}>
                         <Entypo
                             style={styles.icon}
                             name="sound-mix"
                             size={18}
                             color='black'
                         />
-                        <Text style={styles.selectedTextStyle}> Filter - {currentFilters}</Text>
-                    </TouchableOpacity>
-                </View>
+                        <Text style={styles.filterText}> Filter - {currentFilters}</Text>
+                    </View>
+                </TouchableOpacity>
                 <ScrollView>
                     <View>
                         {gat.map((item) => (
@@ -157,17 +157,17 @@ export const GatheringInterface = () => {
     } else {
         return (
             <View style={styles.container}>
-                <View style={styles.filterContainer}>
-                    <TouchableOpacity onPress={switchHandler} style={styles.buttonContainer}>
+                <TouchableOpacity onPress={switchHandler} style={styles.filterButton}>
+                    <View style={{flexDirection: "row",}}>
                         <Entypo
                             style={styles.icon}
                             name="sound-mix"
                             size={18}
-                            color='balck'
+                            color='black'
                         />
-                        <Text style={styles.selectedTextStyle}> Filter - {currentFilters}</Text>
-                    </TouchableOpacity>
-                </View>
+                        <Text style={styles.filterText}> Filter - {currentFilters}</Text>
+                    </View>
+                </TouchableOpacity>
                 <ScrollView>
                     <View>
                         {gat.map((item) => (

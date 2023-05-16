@@ -1,5 +1,5 @@
 //This is the function that handles profile view and all of its sub functions
-import {Alert, TouchableOpacity, Image, Text, View} from "react-native";
+import {Alert, TouchableOpacity, Image, Text, View, ScrollView} from "react-native";
 import * as React from "react";
 import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
@@ -133,59 +133,70 @@ export const ProfileView = () => {
     //The view that you see at profile view
     return (
         <View style={styles.nonHeaderContainer}>
-            <View style={styles.bioContainer}>
-                <View style={styles.imageContainer}>
-                    <Image style={styles.profilePicture} source={{ uri: user.picture }} />
+            <ScrollView>
+                <View>
+                    <View style={styles.bioContainer}>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.profilePicture} source={{ uri: user.picture }} />
+                        </View>
+                        <Text style={
+                            {fontSize: 24,
+                            fontWeight: 'bold',
+                            color: '#333333',
+                            textAlign: 'center',
+                            marginBottom: 16,}
+                        }>{user.name}</Text>
+                    </View>
+                    <Text style={styles.bioEmail}>Mail: {user.email}</Text>
+                    <View style={styles.profileButton}>
+                        <TouchableOpacity style={styles.button} onPress={handleInvitations}>
+                            <Text style={styles.buttonText}> Your invitations</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.profileButton}>
+                        <TouchableOpacity style={styles.button} onPress={downloadData}>
+                            <Text style={styles.buttonText}>Download data about user</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.profileButton}>
+                        <TouchableOpacity onPress={userAlert} style={{alignItems: 'center'}}>
+                            <Text style={styles.deleteButtonText}> Delete my JaqPP account</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={[styles.profileButton]}>
+                        <TouchableOpacity style={styles.signOutButtonContainer} onPress={handleLogout}>
+                            <Text style={styles.signOutButtonText}>Sign Out</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <Text style={styles.name}>{user.name}</Text>
-            </View>
-                <Text style={styles.bioEmail}>Mail: {user.email}</Text>
-                <View style={[styles.signOutButtonContainer, styles.buttonContainer]}>
-                    <TouchableOpacity style={styles.button} onPress={handleLogout}>
-                        <Text style={styles.buttonText}>Sign Out</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={handleInvitations}>
-                        <Text style={styles.buttonText}> Your invitations</Text>
-                    </TouchableOpacity>
-                </View>
-
-            <Modal isVisible={isInvitationView} >
-                <Modal.Container>
-                    <Modal.Header title={"Invitations"} />
-                    <Modal.Body>
-                        {Invitations.map((item) => (
-                            <View key={item.id} style={styles.category}>
-                                <View style={styles.invitesContainer}>
-                                <Text> {item.gatheringName}</Text>
-                                    <View style={styles.invitesContainer}>
-                                        <TouchableOpacity onPress={() => acceptInvitations(item)}>
-                                            <Text style={styles.invitesText}> Accept </Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => declineInvitations(item)}>
-                                            <Text style={styles.invitesText}> Decline</Text>
-                                        </TouchableOpacity>
+                <Modal isVisible={isInvitationView} >
+                    <Modal.Container>
+                        <Modal.Header title={"Invitations"} />
+                        <Modal.Body>
+                            <ScrollView>
+                                {Invitations.map((item) => (
+                                    <View key={item.id} style={styles.category}>
+                                        <View style={styles.invitesContainer}>
+                                            <Text> {item.gatheringName}</Text>
+                                            <View style={styles.invitesContainer}>
+                                                <TouchableOpacity onPress={() => acceptInvitations(item)}>
+                                                    <Text style={styles.invitesText}> Accept </Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={() => declineInvitations(item)}>
+                                                    <Text style={styles.invitesText}> Decline</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
                                     </View>
-                                </View>
-                            </View>
-                        ))}
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Buttons title="Cancel" onPress={handleInvitations} />
-                    </Modal.Footer>
-                </Modal.Container>
-            </Modal>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={downloadData}>
-                    <Text style={styles.buttonText}>Download data about user</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.deleteButtonContainer}>
-                <TouchableOpacity onPress={userAlert}>
-                    <Text style={styles.deleteButtonText}> Delete my JaqPP account</Text>
-                </TouchableOpacity>
-            </View>
+                                ))}
+                            </ScrollView>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Buttons title="Cancel" onPress={handleInvitations} />
+                        </Modal.Footer>
+                    </Modal.Container>
+                </Modal>
+            </ScrollView>
         </View>
     );
 }

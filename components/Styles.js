@@ -21,9 +21,29 @@ const styles = StyleSheet.create({
         padding: 20,
     },
 
+    profileButton: {
+        alignItems: 'center',
+        margin: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
+
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+
+    filterButton: {
+        borderWidth: 0.5,
+        padding: 10,
+        margin: '2%',
+        borderRadius: 25,
+    },
+
+    filterText: {
+        fontSize: 15,
+        fontWeight: "bold",
     },
 
     gatheringButton: {
@@ -108,7 +128,8 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
     },
     title: {
-        fontSize: 20,
+        textAlign: "center",
+        fontSize: 30,
         fontWeight: "bold",
         marginBottom: '8%',
         marginLeft: '2%'
@@ -312,10 +333,17 @@ const styles = StyleSheet.create({
     },
 
     signOutButtonContainer: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#0A100D',
-        paddingBottom: 10,
-        marginBottom: '5%',
+        backgroundColor: '#DE1616',
+        borderRadius: 5,
+        flex: 1,
+        marginHorizontal: '1%',
+        padding: 20,
+    },
+
+    signOutButtonText: {
+        color: 'black',
+        textAlign: 'center',
+        fontSize: 16,
     },
 
     deleteButtonContainer: {

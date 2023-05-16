@@ -9,6 +9,7 @@ import firebase from 'firebase/compat/app'
 import 'firebase/compat/storage'
 import * as ImagePicker from "expo-image-picker";
 import uuid from "react-native-uuid";
+import {EvilIcons, Ionicons} from "@expo/vector-icons";
 
 const Create = () => {
     const navigation = useNavigation();
@@ -153,10 +154,14 @@ const Create = () => {
                     placeholderTextColor="#999"
                 />
             </View>
-            <View style={styles.inputContainer}>
+                <View style={styles.bottomButtonContainer}>
+                    <TouchableOpacity style={styles.imageButton} onPress={() => selectImage()}>
+                        <Ionicons name="image-outline" size={16} color="#808080" >
+                            <Text style={styles.buttonText}> Add image</Text>
+                        </Ionicons>
+                    </TouchableOpacity>
+                </View>
                 {image && <Image source={{uri: image}} style={{width: 170 , height: 170}}/>}
-                <Button title='Select Image' onPress={selectImage} />
-            </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.createButton} onPress={() => addData()}>
                     <Text style={styles.buttonText}>Create</Text>

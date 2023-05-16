@@ -58,6 +58,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlignVertical: 'center',
     },
+    imageButton: {
+        backgroundColor: '#0A100D',
+        color: '#B9BAA3',
+        borderRadius: 5,
+        paddingVertical: 10,
+        flex: 1,
+        marginHorizontal: 2,
+        marginBottom: '2%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlignVertical: 'center',
+    },
     buttonText: {
         color: '#D6D5C9',
         textAlign: 'center',
@@ -370,7 +382,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        marginBottom: '8%',
+        marginBottom: '5%',
     },
     modalInput: {
         flex: 1,

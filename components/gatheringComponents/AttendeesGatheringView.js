@@ -86,11 +86,11 @@ export const AttendeesGatheringView = ({route}) => {
                         ))}
                     </View>
                     <View style={styles.bottomButtonContainer}>
-                    <TouchableOpacity style={styles.gatheringButton} onPress={() => handleAttendees(item)}>
-                        <Ionicons name="md-people-outline" size={24} color="#D6D5C9" >
-                            <Text style={styles.buttonText}> Members</Text>
-                        </Ionicons>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.gatheringButton} onPress={() => handleAttendees(item)}>
+                            <Ionicons name="md-people-outline" size={16} color="#D6D5C9" >
+                                <Text style={styles.buttonText}> Members</Text>
+                            </Ionicons>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>

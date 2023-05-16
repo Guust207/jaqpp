@@ -21,6 +21,7 @@ export const Login = () => {
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: "766637901593-id760o157h0bieoq7eiukbbvhnbhae0h.apps.googleusercontent.com",
+        androidClientId: "766637901593-iju7du3khej5nng1i5cqp6vfu2thpj0m.apps.googleusercontent.com",
     });
 
     async function add() {

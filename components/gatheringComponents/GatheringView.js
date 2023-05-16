@@ -1,4 +1,4 @@
-import {Image, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {currentGathering, currentUser} from "../global_variables";
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import {db} from "../../firebaseConfig";
 
 import {Modal} from "../Modal";
 import {styles} from "../Styles";
+import {AntDesign, Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 
 
 export const GatheringView = ({route}) => {
@@ -17,7 +18,7 @@ export const GatheringView = ({route}) => {
     const { item } = route.params;
 
     const [CurrentGathering, setCurrentGathering] = currentGathering();
-    const [user] = currentUser();
+    const [user, setUser] = currentUser();
 
     useEffect(() => {
         setCurrentGathering(item)
@@ -157,28 +158,38 @@ export const GatheringView = ({route}) => {
                         {categoryList.map((item) => (
                             <View key={item.id}>
                                 <View style={styles.categoryInfo}>
-                                    <Text style={styles.infoText}>{item.name} - {item.totalCost} kr</Text>
+                                    <MaterialCommunityIcons name="bookmark-outline" size={16} color="black" >
+                                        <Text style={styles.infoText}> {item.name}</Text>
+                                    </MaterialCommunityIcons>
                                 </View>
                             </View>
                         ))}
                     </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => handleBudgetButton(item)}>
-                            <Text style={styles.buttonText}>Administer Budget</Text>
+                            <MaterialCommunityIcons name="piggy-bank-outline" size={16} color="#D6D5C9" >
+                                <Text style={styles.buttonText}> Administer Budget</Text>
+                            </MaterialCommunityIcons>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => handleAttendees(item)}>
-                            <Text style={styles.buttonText}>Administer Attendees</Text>
+                            <Ionicons name="md-people-outline" size={24} color="#D6D5C9" >
+                                <Text style={styles.buttonText}> Administer Guests</Text>
+                            </Ionicons>
                         </TouchableOpacity>
                     </View>
 
                     <View style={styles.bottomButtonContainer}>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => EditBtnFunc(item)}>
-                            <Text style={styles.buttonText}>Edit Gathering</Text>
+                            <AntDesign name="edit" size={16} color="#D6D5C9" >
+                                <Text style={styles.buttonText}> Edit Gathering</Text>
+                            </AntDesign>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.bottomButtonContainer}>
                         <TouchableOpacity style={[styles.gatheringButton, styles.deleteButton]} onPress={() => deleteData(item)}>
-                            <Text style={styles.buttonText}>Delete </Text>
+                            <Ionicons name="trash-bin-outline" size={16} color="black" >
+                                <Text style={styles.deleteText} color="black"> Delete</Text>
+                            </Ionicons>
                         </TouchableOpacity>
                     </View>
 

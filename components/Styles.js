@@ -38,9 +38,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlignVertical: 'center',
     },
-
     buttonText: {
         color: '#D6D5C9',
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    deleteText: {
+        color: 'black',
         textAlign: 'center',
         fontSize: 16,
     },
@@ -205,13 +209,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#DE1616'
     },
     categoryInfoContainer: {
+        flex: 1,
         marginBottom: '10%',
+        flexDirection: "row",
+        width: '100%',
+        height: undefined,
+        flexWrap: 'wrap',
     },
     categoryInfo: {
-        borderWidth: 1,
         borderRadius: 10,
         padding: 5,
         margin: '2%',
+        marginRight: '4%',
         backgroundColor: 'white',
     },
     modalButton: {
@@ -241,7 +250,7 @@ const styles = StyleSheet.create({
         marginBottom: '0.2%',
     },
     budgetInfo: {
-        width: '68%',
+        width: '65%',
     },
     budgetText: {
         fontSize: 16,
@@ -313,7 +322,7 @@ const styles = StyleSheet.create({
     deleteButtonText: {
         color: '#808080',
         textAlign: 'center',
-        fontSize: 16
+        fontSize: 16,
     },
 
 

@@ -8,7 +8,7 @@ import {CategoryView} from "../budgetComponents/budgetInterfaceView";
 import {FieldView} from "../budgetComponents/fielsInterfaceView";
 import {AttendeesInterface} from "../attendeesComponents/attendeesnterfaceView";
 import {AttendeesGatheringView} from "./AttendeesGatheringView";
-
+import {ShowGuests} from "../attendeesComponents/ShowGuests"
 
 
 export const Gathering = () => {
@@ -27,6 +27,7 @@ export const Gathering = () => {
             />
             <Stack.Screen name="Create" component={Create}/>
             <Stack.Screen name="Attendees" component={AttendeesInterface}/>
+            <Stack.Screen name="Guests" component={ShowGuests}/>
             <Stack.Screen name="CurrentGathering" component={GatheringView}
                           options={{
                               title: CurrentGathering.name,

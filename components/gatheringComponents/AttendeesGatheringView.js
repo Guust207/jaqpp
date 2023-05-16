@@ -1,4 +1,4 @@
-import {ScrollView, Text, View} from "react-native";
+import {ScrollView, Text, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {currentGathering, currentUser} from "../global_variables";
 import { useNavigation } from '@react-navigation/native';
@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { styles } from "../Styles";
 import {collection, onSnapshot, query} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {AntDesign, Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 
 export const AttendeesGatheringView = ({route}) => {
 
@@ -57,6 +57,15 @@ export const AttendeesGatheringView = ({route}) => {
 
 
 
+    //navigate to members
+    const handleAttendees = (gathering) => {
+        console.log("THIS", gathering.id)
+        navigation.navigate('Guests', { gathering: gathering })
+    }
+
+
+
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -75,6 +84,13 @@ export const AttendeesGatheringView = ({route}) => {
                                 </View>
                             </View>
                         ))}
+                    </View>
+                    <View style={styles.bottomButtonContainer}>
+                    <TouchableOpacity style={styles.gatheringButton} onPress={() => handleAttendees(item)}>
+                        <Ionicons name="md-people-outline" size={24} color="#D6D5C9" >
+                            <Text style={styles.buttonText}> Members</Text>
+                        </Ionicons>
+                    </TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>

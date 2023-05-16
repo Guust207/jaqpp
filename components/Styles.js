@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
 
 
 
-//GatheringView styles
+//GatheringView and attendeesGatheringView styles
     headText: {
         fontSize: 16,
         fontWeight: 'bold',
@@ -222,6 +222,9 @@ const styles = StyleSheet.create({
         margin: '2%',
         marginRight: '4%',
         backgroundColor: 'white',
+    },
+    guests: {
+
     },
     modalButton: {
         margin: 5,

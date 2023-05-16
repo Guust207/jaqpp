@@ -419,11 +419,11 @@ const styles = StyleSheet.create({
     attendeesText: {
         fontSize: 16,
         marginTop: '3%',
-        marginBottom: '3%',
         borderBottomWidth: 1,
         borderBottomColor: 'black',
     },
     attendeesCont: {
+        paddingBottom: 5,
         borderBottomWidth: 1,
         borderBottom: 'black',
     },
@@ -436,7 +436,11 @@ const styles = StyleSheet.create({
     attendeesName: {
         fontSize: 20,
         fontWeight: "bold",
-
+    },
+    attendeesName2: {
+        fontSize: 20,
+        marginTop: '10%',
+        fontWeight: "bold",
     },
     attendeesIcons: {
         top: '2%',

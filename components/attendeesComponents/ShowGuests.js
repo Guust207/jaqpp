@@ -29,7 +29,6 @@ export const ShowGuests = ({route}) => {
     const [gat, setGat] = useState([]);
 
 
-
     useEffect((user) => {
         const getAllGat = async () => {
             const q = query(collection(db, "gathering", gatheringID, "attendees"));
@@ -77,8 +76,7 @@ export const ShowGuests = ({route}) => {
                                         <Image style={styles.profilePicture} source={{ uri: item.image }} />
                                     </View>
                                     <View style={styles.nameContainer}>
-                                        <Text style={styles.attendeesName}>{item.fullName}</Text>
-                                        <Text>{item.email}</Text>
+                                        <Text style={styles.attendeesName2}>{item.fullName}</Text>
                                     </View>
                                 </View>
                             </View>

@@ -184,7 +184,10 @@ export const ProfileView = () => {
                                         <View style={styles.gatContainer}>
 
                                             <View style={styles.invitesContainer}>
-                                                <Text> {item.gatheringName}</Text>
+                                                <Text style={{
+                                                    fonts: 15,
+                                                    fontWeight: 'bold',
+                                                }}> {item.gatheringName}</Text>
 
                                                 <TouchableOpacity onPress={() => acceptInvitations(item)}>
 

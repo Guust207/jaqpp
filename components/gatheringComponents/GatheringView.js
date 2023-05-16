@@ -157,9 +157,11 @@ export const GatheringView = ({route}) => {
                     <View style={styles.categoryInfoContainer}>
                         {categoryList.map((item) => (
                             <View key={item.id}>
-                                <MaterialCommunityIcons name="bookmark-outline" size={16} color="black" >
-                                    <Text style={styles.infoText}> {item.name}</Text>
-                                </MaterialCommunityIcons>
+                                <View style={styles.categoryInfo}>
+                                    <MaterialCommunityIcons name="bookmark-outline" size={16} color="black" >
+                                        <Text style={styles.infoText}> {item.name}</Text>
+                                    </MaterialCommunityIcons>
+                                </View>
                             </View>
                         ))}
                     </View>

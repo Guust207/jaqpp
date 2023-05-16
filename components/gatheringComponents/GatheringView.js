@@ -1,4 +1,4 @@
-import {Image, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {currentGathering, currentUser} from "../global_variables";
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +8,7 @@ import {db} from "../../firebaseConfig";
 
 import {Modal} from "../Modal";
 import {styles} from "../Styles";
-import {AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
+import {AntDesign, Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 
 
 export const GatheringView = ({route}) => {
@@ -18,7 +18,7 @@ export const GatheringView = ({route}) => {
     const { item } = route.params;
 
     const [CurrentGathering, setCurrentGathering] = currentGathering();
-    const [user] = currentUser();
+    const [user, setUser] = currentUser();
 
     useEffect(() => {
         setCurrentGathering(item)
@@ -157,9 +157,9 @@ export const GatheringView = ({route}) => {
                     <View style={styles.categoryInfoContainer}>
                         {categoryList.map((item) => (
                             <View key={item.id}>
-                                <View style={styles.categoryInfo}>
-                                    <Text style={styles.infoText}>{item.name} - {item.totalCost} kr</Text>
-                                </View>
+                                <MaterialCommunityIcons name="bookmark-outline" size={16} color="black" >
+                                    <Text style={styles.infoText}> {item.name}</Text>
+                                </MaterialCommunityIcons>
                             </View>
                         ))}
                     </View>

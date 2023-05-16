@@ -37,6 +37,9 @@ export const AddBudgetView = (route) => {
         setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)
     }
 
+
+
+
     const MissingCategory = () =>
         Alert.alert('Alert!', 'Please add valid category', [
             {text: 'OK'},

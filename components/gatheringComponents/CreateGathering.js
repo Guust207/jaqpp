@@ -38,12 +38,6 @@ const Create = () => {
             userID: user.id,
             image: image,
         });
-
-        const attendeesRef = collection(gatheringRef, 'attendees');
-
-        await addDoc(attendeesRef, {
-
-        });
     }
 
 

@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { styles } from "../Styles";
 import {collection, onSnapshot, query} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 export const AttendeesGatheringView = ({route}) => {
 
@@ -68,7 +69,9 @@ export const AttendeesGatheringView = ({route}) => {
                         {categoryList.map((item) => (
                             <View key={item.id}>
                                 <View style={styles.categoryInfo}>
-                                    <Text style={styles.infoText}>{item.name} - {item.totalCost} kr</Text>
+                                    <MaterialCommunityIcons name="bookmark-outline" size={16} color="black" >
+                                        <Text style={styles.infoText}> {item.name}</Text>
+                                    </MaterialCommunityIcons>
                                 </View>
                             </View>
                         ))}

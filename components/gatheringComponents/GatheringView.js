@@ -8,6 +8,7 @@ import {db} from "../../firebaseConfig";
 
 import {Modal} from "../Modal";
 import {styles} from "../Styles";
+import {AntDesign, FontAwesome5, Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 
 
 export const GatheringView = ({route}) => {
@@ -164,21 +165,29 @@ export const GatheringView = ({route}) => {
                     </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => handleBudgetButton(item)}>
-                            <Text style={styles.buttonText}>Administer Budget</Text>
+                            <MaterialCommunityIcons name="piggy-bank-outline" size={16} color="#D6D5C9" >
+                                <Text style={styles.buttonText}> Administer Budget</Text>
+                            </MaterialCommunityIcons>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => handleAttendees(item)}>
-                            <Text style={styles.buttonText}>Administer Attendees</Text>
+                            <Ionicons name="md-people-outline" size={24} color="#D6D5C9" >
+                                <Text style={styles.buttonText}> Administer Guests</Text>
+                            </Ionicons>
                         </TouchableOpacity>
                     </View>
 
                     <View style={styles.bottomButtonContainer}>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => EditBtnFunc(item)}>
-                            <Text style={styles.buttonText}>Edit Gathering</Text>
+                            <AntDesign name="edit" size={16} color="#D6D5C9" >
+                                <Text style={styles.buttonText}> Edit Gathering</Text>
+                            </AntDesign>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.bottomButtonContainer}>
                         <TouchableOpacity style={[styles.gatheringButton, styles.deleteButton]} onPress={() => deleteData(item)}>
-                            <Text style={styles.buttonText}>Delete </Text>
+                            <Ionicons name="trash-bin-outline" size={16} color="black" >
+                                <Text style={styles.deleteText} color="black"> Delete</Text>
+                            </Ionicons>
                         </TouchableOpacity>
                     </View>
 

@@ -1,9 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -15,7 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           cache: npm
       - name: Setup Expo and EAS
         uses: expo/expo-github-action@v8
@@ -25,4 +22,4 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build on EAS
-        run: eas build -p android --profile development --local
+        run: eas build -p android --local

@@ -1,15 +1,13 @@
-import {Alert, Button, StyleSheet, Text, TextInput, View} from "react-native";
+import {Alert, Text, TextInput, View} from "react-native";
 import React, {useState} from "react";
 import {db} from "../../firebaseConfig";
-import { doc, getDoc, setDoc} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, query, setDoc, where} from "firebase/firestore";
 import {Modal} from "../Modal";
 import {Buttons} from "../Button";
 
 import uuid from "react-native-uuid";
 import {currentField} from "../global_variables";
-
-
-//TODO: When creating an interface you need to find a way to get budgetCategory and gathering - Currently the function is using dummy value
+import {styles} from "../Styles";
 
 
 export const AddBudgetCategoryView = (route) => {
@@ -21,9 +19,9 @@ export const AddBudgetCategoryView = (route) => {
     const [categoryID, setCategory] = useState(category.id);
 
 
-    const [fieldName, set_fieldName] = useState("Name");
-    const [fieldCost, set_fieldCost] = useState("Price Pr Unit");
-    const [fieldAmount, set_fieldAmount] = useState("Amount");
+    const [fieldName, set_fieldName] = useState(null);
+    const [fieldCost, set_fieldCost] = useState(null);
+    const [fieldAmount, set_fieldAmount] = useState(null);
 
 
     async function increase_totalCost() {
@@ -41,17 +39,12 @@ export const AddBudgetCategoryView = (route) => {
     }
 
     const MissingField = () =>
-        Alert.alert('Alert!r', 'Please add valid fields', [
+        Alert.alert('Alert!', 'Please add valid fields', [
             {text: 'OK'},
         ]);
 
     const FieldExist = () =>
         Alert.alert(fieldName, 'already exists', [
-            {text: 'OK'},
-        ]);
-
-    const FieldAdded = () =>
-        Alert.alert(fieldName, 'has been added!', [
             {text: 'OK'},
         ]);
 
@@ -72,10 +65,14 @@ export const AddBudgetCategoryView = (route) => {
     async function add_CategoryField(id) {
         const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf", id);
         const docSnap = await getDoc(docRef).then();
+
+        const q = query(collection(db, "gathering", gatheringID, "budget", categoryID, "ListOf" + categoryID), where("name", "==", fieldName));
+        const querySnapshot = await getDocs(q);
+
         if (fieldCost == null || fieldAmount == null) {
             MissingField();
             return ;
-        } else if (docSnap.exists()) {
+        } else if (querySnapshot.size > 0) {
             FieldExist();
             return ;
         } else {
@@ -190,10 +187,6 @@ export const EditBudgetCategoryView = (route) => {
             {text: 'OK'},
         ]);
 
-    const FieldAdded = () =>
-        Alert.alert(fieldName, 'has been added!', [
-            {text: 'OK'},
-        ]);
 
     async function hasError() {
         const docRef = doc(db,"gathering", gatheringID, "budget", categoryID, "ListOf", fieldID);
@@ -285,26 +278,3 @@ export const EditBudgetCategoryView = (route) => {
     )
 }
 
-const styles = StyleSheet.create({
-
-    textModal: {
-        fontSize:16,
-        color: '#a19f9f',
-        fontWeight: 'bold',
-        marginBottom: '2%',
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        marginBottom: '8%',
-    },
-    modalInput: {
-        flex: 1,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: '#bababa',
-        fontSize: 16,
-        padding: '0.5%',
-        paddingLeft: 10,
-    },
-});

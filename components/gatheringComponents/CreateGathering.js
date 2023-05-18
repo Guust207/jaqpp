@@ -1,34 +1,32 @@
 import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, Text, TextInput, View} from "react-native";
+import {TouchableOpacity, Text, TextInput, View, Button, Image, ActivityIndicator} from "react-native";
 import {db} from "../../firebaseConfig";
 import {collection, doc, getDoc, setDoc, addDoc} from "firebase/firestore";
 import {currentUser} from "../global_variables";
 import {useNavigation} from "@react-navigation/native";
+import {styles} from "../Styles";
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/storage'
+import * as ImagePicker from "expo-image-picker";
+import uuid from "react-native-uuid";
+import {EvilIcons, Ionicons} from "@expo/vector-icons";
 
 const Create = () => {
     const navigation = useNavigation();
-
-
     const [user, setUser] = currentUser();
-
-
     function GenerateID() {
-        const number1 = Math.floor(Math.random() * 9) + 1;
-        const number2 = Math.floor(Math.random() * 9) + 1;
-        const number3 = Math.floor(Math.random() * 9) + 1;
-        const number4 = Math.floor(Math.random() * 9) + 1;
-        const number5 = Math.floor(Math.random() * 9) + 1;
+        return uuid.v4();
 
-        return 'gathering' + number1 + number2 + number3 + number4 + number5;
     }
 
     const [gathName, set_gathName] = useState("Name");
     const [gathTime, set_gathTime] = useState("time");
     const [gathDate, set_gathDate] = useState("mm.dd.yyyy");
     const [gathDescription, set_gathDescription] = useState("");
+    const [image, setImage] = useState(null)
+    const [uploading, setUploading] = useState(false)
 
-
-    async function add(id, gathName, gathTime, gathDate, gathDescription) {
+    async function add(id, gathName, gathTime, gathDate, gathDescription, image) {
         const gatheringRef = doc(db, "gathering", id);
 
         // Add gathering data to the main 'gathering' collection
@@ -38,13 +36,7 @@ const Create = () => {
             date: gathDate,
             description: gathDescription,
             userID: user.id,
-        });
-
-        const attendeesRef = collection(gatheringRef, 'attendees');
-
-        await addDoc(attendeesRef, {
-
-
+            image: image,
         });
     }
 
@@ -56,22 +48,74 @@ const Create = () => {
         if (docSnap.exists()) {
             check("gathering", GenerateID()).then();
         } else {
-            add(id, gathName, gathTime, gathDate, gathDescription).then();
+            add(id, gathName, gathTime, gathDate, gathDescription, image).then();
         }
         navigation.navigate('Your gatherings');
-
     }
 
 
-   const addData = () => {
+    const addData = () => {
         check("gathering", GenerateID()).then();
     }
 
 
 
+    const uploadImage = async () => {
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function() {
+                console.log("failed");
+            };
+            xhr.responseType = 'blob';
+            xhr.open('GET', ImagePicker, true);
+            xhr.send(null);
+        })
+        const ref = firebase.storage().ref().child(`Pictures/Image1`)
+        const snapshot = ref.put(blob)
+        snapshot.on(firebase.storage.TaskEvent.STATE_CHANGED,
+
+            ()=>{
+                setUploading(true)
+            },
+
+            (error) => {
+                setUploading(false)
+                blob.close()
+            },
+            () => {
+                snapshot.snapshot.ref.getDownloadURL().then((url) => {
+                    setUploading(false)
+                    setImage(url)
+                    blob.close()
+                    return url
+                })
+            }
+        )
+    }
+
+
+
+
+
+    const selectImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            aspect: [4,3],
+            quality: 1,
+        });
+        console.log(result);
+        if (!result.canceled && result.assets && result.assets.length > 0) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
+
     return (
-        <View style={styles.createContainer}>
-            <Text style={styles.title}>Add information to the new Gathering</Text>
+        <View style={styles.nonHeaderContainer}>
+            <Text style={styles.title}>Add Gathering</Text>
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
@@ -104,7 +148,14 @@ const Create = () => {
                     placeholderTextColor="#999"
                 />
             </View>
-
+                <View style={styles.bottomButtonContainer}>
+                    <TouchableOpacity style={styles.imageButton} onPress={() => selectImage()}>
+                        <Ionicons name="image-outline" size={16} color="#808080" >
+                            <Text style={styles.buttonText}> Add image</Text>
+                        </Ionicons>
+                    </TouchableOpacity>
+                </View>
+                {image && <Image source={{uri: image}} style={{width: 170 , height: 170}}/>}
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.createButton} onPress={() => addData()}>
                     <Text style={styles.buttonText}>Create</Text>
@@ -117,50 +168,3 @@ const Create = () => {
 
 
 export default Create;
-
-
-const styles = StyleSheet.create({
-    createContainer: {
-        flex: 1,
-        backgroundColor: '#D6D5C9',
-        paddingHorizontal: 20,
-        paddingVertical: 40,
-        paddingTop: 100,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        marginBottom:20,
-    },
-    input: {
-        flex: 1,
-        height: 40,
-        marginLeft: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#666',
-        color: '#333',
-        fontSize: 16,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    createButton: {
-        backgroundColor: '#0A100D',
-        borderRadius: 5,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        flex: 1,
-        marginHorizontal: 5,
-    },
-    buttonText: {
-        color: '#D6D5C9',
-        textAlign: 'center',
-        fontSize: 16,
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginBottom: 30,
-    },
-});

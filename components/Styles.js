@@ -7,19 +7,43 @@ const styles = StyleSheet.create({
         padding: 5,
         backgroundColor: '#D6D5C9',
     },
-
-
+    nonHeaderContainer: {
+        flex: 1,
+        padding: 5,
+        backgroundColor: '#D6D5C9',
+        paddingTop: 100,
+    },
     button: {
         backgroundColor: '#0A100D',
         borderRadius: 5,
         flex: 1,
-        marginHorizontal: 5,
+        marginHorizontal: '1%',
         padding: 20,
     },
+
+    profileButton: {
+        alignItems: 'center',
+        margin: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
 
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+
+    filterButton: {
+        borderWidth: 0.5,
+        padding: 10,
+        margin: '2%',
+        borderRadius: 25,
+    },
+
+    filterText: {
+        fontSize: 15,
+        fontWeight: "bold",
     },
 
     gatheringButton: {
@@ -29,14 +53,30 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         flex: 1,
         marginHorizontal: 2,
-        marginBottom: 10,
+        marginBottom: '2%',
         alignItems: 'center',
         justifyContent: 'center',
         textAlignVertical: 'center',
     },
-
+    imageButton: {
+        backgroundColor: '#0A100D',
+        color: '#B9BAA3',
+        borderRadius: 5,
+        paddingVertical: 10,
+        flex: 1,
+        marginHorizontal: 2,
+        marginBottom: '2%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlignVertical: 'center',
+    },
     buttonText: {
         color: '#D6D5C9',
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    deleteText: {
+        color: 'black',
         textAlign: 'center',
         fontSize: 16,
     },
@@ -49,7 +89,6 @@ const styles = StyleSheet.create({
     googleButtonContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
         color: '#333',
     },
     googleButton: {
@@ -57,6 +96,15 @@ const styles = StyleSheet.create({
     },
     googleButtonText: {
         color: '#D6D5C9',
+    },
+    logo: {
+        width: '100%',
+        height: undefined,
+        aspectRatio: 1,
+        marginTop: '-30%',
+        marginBottom: '-15%',
+        resizeMode: 'center',
+
     },
 
 
@@ -74,29 +122,29 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         height: 40,
-        marginLeft: 10,
+        marginLeft: '2%',
         borderBottomWidth: 1,
         borderBottomColor: '#666',
         color: '#333',
         fontSize: 16,
     },
-    createbutton: {
+    createButton: {
         backgroundColor: '#0A100D',
         color: '#B9BAA3',
         borderRadius: 5,
         paddingVertical: 10,
         flex: 1,
-        marginHorizontal: 2,
-        marginBottom: 10,
+        marginHorizontal: '1%',
         alignItems: 'center',
         justifyContent: 'center',
         textAlignVertical: 'center',
     },
-
     title: {
-        fontSize: 20,
+        textAlign: "center",
+        fontSize: 30,
         fontWeight: "bold",
-        marginBottom: 30,
+        marginBottom: '8%',
+        marginLeft: '2%'
     },
 
 
@@ -106,36 +154,40 @@ const styles = StyleSheet.create({
 //GatheringInterfaceView styles
     gatContainer: {
         backgroundColor: '#B9BAA3',
-        padding: 10,
-        margin:10,
+        padding: 6,
+        margin: '2%',
         borderRadius: 25,
+
+
+    },
+
+    inviteModalContainer:{
+
+        height: 300,
     },
     gat: {
         flexDirection: 'row',
         alignItems: 'flex-start',
+
     },
     gatImageContainer: {
-        width: 80,
+        width: '25%',
         borderRadius: 25,
-        marginRight: 10,
-        marginBottom: 10,
     },
     gatImage: {
         aspectRatio: 1,
-        width: 80,
+        width: '80%',
         height: undefined,
         borderRadius: 25,
     },
     nameContainer: {
         flexDirection: 'column',
         justifyContent: 'space-between',
-        marginBottom: 20,
     },
     infoContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        marginTop: 20,
-        flex: 1,
+        marginTop: '10%',
     },
     infoText: {
         fontSize: 16,
@@ -143,36 +195,77 @@ const styles = StyleSheet.create({
     gatName: {
         fontSize: 20,
         fontWeight: 'bold',
-        borderBottomWidth: 2,
+        borderBottomWidth: 1,
         borderBottomColor: 'black',
     },
 
+    filterContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        padding: 5,
+        borderRadius: 5,
+        borderWidth: 0.5,
+        width: '59%',
+    },
+    icon: {
+        marginRight: 5,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+    },
 
 
 
 
-//GatheringView styles
+
+//GatheringView and attendeesGatheringView styles
     headText: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'center',
+        textAlign: 'left',
         color: 'black',
-        paddingBottom: 5,
-        marginBottom: 15,
+        paddingBottom: '2%',
+        marginBottom: '5%',
         borderBottomWidth:0.5,
+    },
+    gatheringInformation: {
+        margin: '3%',
     },
     descriptionText: {
         fontSize: 16,
-            marginBottom: 30,
+            marginBottom: '6%',
+    },
+    descriptionText2: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: '10%',
     },
     bottomButtonContainer: {
         flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 10,
-            color: '#333',
+        alignItems: 'center',
+        marginBottom: '4%',
+        color: '#333',
     },
     deleteButton: {
         backgroundColor: '#DE1616'
+    },
+    categoryInfoContainer: {
+        flex: 1,
+        marginBottom: '10%',
+        flexDirection: "row",
+        width: '100%',
+        height: undefined,
+        flexWrap: 'wrap',
+    },
+    categoryInfo: {
+        borderRadius: 10,
+        padding: 5,
+        margin: '2%',
+        marginRight: '4%',
+        backgroundColor: 'white',
+    },
+    guests: {
+
     },
     modalButton: {
         margin: 5,
@@ -192,6 +285,8 @@ const styles = StyleSheet.create({
 
 
 
+
+
 // CategoryView and FieldsView styles
     budgetContainer: {
         backgroundColor: '#B9BAA3',
@@ -199,7 +294,7 @@ const styles = StyleSheet.create({
         marginBottom: '0.2%',
     },
     budgetInfo: {
-        width: '68%',
+        width: '65%',
     },
     budgetText: {
         fontSize: 16,
@@ -219,9 +314,20 @@ const styles = StyleSheet.create({
 
 
 // Profile styles
+    category: {
+        marginBottom: '2%',
+        height: 70,
+
+    },
+
+
+    invitationContainer: {
+        height: 60,
+        position: "absolute",
+    },
     bioContainer: {
         justifyContent: 'space-between',
-        marginBottom: 30,
+        marginBottom: '5%',
         alignItems: 'center',
         borderBottomWidth: 1,
         borderBottomColor: '#0A100D',
@@ -230,9 +336,9 @@ const styles = StyleSheet.create({
     imageContainer: {
         alignItems: 'center',
         height: 130,
-        width: 130,
+        width: '35%',
         borderRadius: 50,
-        marginBottom: 20,
+        marginBottom: '5%',
     },
     profilePicture: {
         aspectRatio: 1,
@@ -241,31 +347,43 @@ const styles = StyleSheet.create({
         borderRadius: 50,
     },
 
-    bottomContainer: {
+    invitesContainer: {
+        flexDirection: 'row',
+
         justifyContent: 'space-between',
-        marginBottom: 20,
+        padding: 15,
+    },
+    invitesText: {
+        fontWeight: 'bold',
     },
     bioEmail: {
         fontSize: 18,
-        marginBottom: 10,
-        marginLeft: 5,
+        marginBottom: '4%',
+        marginLeft: '2%',
     },
 
     signOutButtonContainer: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#0A100D',
-        paddingBottom: 10,
-        marginBottom: 20,
+        backgroundColor: '#DE1616',
+        borderRadius: 5,
+        flex: 1,
+        marginHorizontal: '1%',
+        padding: 20,
+    },
+
+    signOutButtonText: {
+        color: 'black',
+        textAlign: 'center',
+        fontSize: 16,
     },
 
     deleteButtonContainer: {
-        marginTop: 20,
+        marginTop: '5%',
         alignItems: 'center',
     },
     deleteButtonText: {
         color: '#808080',
         textAlign: 'center',
-        fontSize: 16
+        fontSize: 16,
     },
 
 
@@ -282,7 +400,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        marginBottom: '8%',
+        marginBottom: '5%',
     },
     modalInput: {
         flex: 1,
@@ -318,7 +436,6 @@ const styles = StyleSheet.create({
     modalBody: {
         justifyContent: "center",
         paddingHorizontal: '5%',
-        minHeight: 100,
         padding: '2%',
     },
     modalFooter: {
@@ -329,7 +446,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f0f0f0',
         borderBottomRightRadius: 25,
         borderBottomLeftRadius: 25,
-
     },
 
 
@@ -337,7 +453,6 @@ const styles = StyleSheet.create({
 
 //button.tsx styles
     buttons: {
-        margin: 5,
         padding: 8,
         borderRadius: 5,
         borderColor: "black",
@@ -351,6 +466,44 @@ const styles = StyleSheet.create({
     },
 
 
+
+//Invite attendees view
+    attendees:{
+        backgroundColor: '#B9BAA3',
+        padding: 10,
+        margin:'5%',
+        borderRadius: 5,
+    },
+    attendeesText: {
+        fontSize: 16,
+        marginTop: '3%',
+        borderBottomWidth: 1,
+        borderBottomColor: 'black',
+    },
+    attendeesCont: {
+        paddingBottom: 5,
+        borderBottomWidth: 1,
+        borderBottom: 'black',
+    },
+    attendeesImageContainer: {
+        width: '16%',
+        borderRadius: 25,
+        marginRight: '5%',
+        marginLeft: '-5%',
+    },
+    attendeesName: {
+        fontSize: 20,
+        fontWeight: "bold",
+    },
+    attendeesName2: {
+        fontSize: 20,
+        marginTop: '10%',
+        fontWeight: "bold",
+    },
+    attendeesIcons: {
+        top: '2%',
+        left: '80%',
+    },
 });
 
 

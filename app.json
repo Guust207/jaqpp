@@ -2,15 +2,15 @@
   "expo": {
     "owner": "athiene",
     "scheme": "jaqpp",
-    "name": "jaqpp",
+    "name": "JaqPP",
     "slug": "jaqpp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./images/logo_transparent.png",
     "userInterfaceStyle": "light",
     "jsEngine": "hermes",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./images/logo_transparent.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,13 +23,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./images/logo_transparent.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.athiene.jaqpp"
+      "package": "com.athiene.jaqpp",
+      "versionCode": 1
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./images/logo_transparent.png"
     },
     "extra": {
       "eas": {

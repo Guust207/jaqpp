@@ -1,31 +1,34 @@
 import React, {useState} from 'react';
-import {Alert, StyleSheet, Text, TextInput, View} from "react-native";
-import {doc, getDoc, setDoc} from "firebase/firestore";
+import {Alert, Text, TextInput, View} from "react-native";
+import {collection, doc, getDoc, getDocs, query, setDoc, where} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {Modal} from "../Modal";
 import {Buttons} from "../Button";
-import {currentCategory, currentGathering} from "../global_variables";
+import {currentCategory} from "../global_variables";
 import uuid from 'react-native-uuid';
+import {styles} from "../Styles";
 
 
 export const AddBudgetView = (route) => {
     const gathering = route.gathering
     const [gatheringID, set_gatheringID] = useState(gathering.id);
-    const [categoryID, set_categoryID] = useState(null);
     const [categoryName, set_categoryName] = useState(null);
 
 
     async function add_budgetCategory(categoryID) {
-        const docRef = doc(db, "gathering", gatheringID, "budget", categoryID);
-        const docSnap = await getDoc(docRef);
-        if (categoryName.toLowerCase() === null) {
+        if (categoryName === null) {
             MissingCategory();
             return;
         }
-        if (docSnap.exists()) {
+
+        const q = query(collection(db, "gathering", gatheringID, "budget"), where("name", "==", categoryName));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.size > 0) {
             CategoryExist();
             return;
         }
+
         await setDoc(doc(db, "gathering", gatheringID, "budget", categoryID), {
             name: categoryName,
             totalCost: 0
@@ -34,18 +37,16 @@ export const AddBudgetView = (route) => {
         setIsCategoryAddViewVisible(() => !isCategoryAddViewVisible)
     }
 
+
+
+
     const MissingCategory = () =>
-        Alert.alert('Alert!r', 'Please add valid category', [
+        Alert.alert('Alert!', 'Please add valid category', [
             {text: 'OK'},
         ]);
 
     const CategoryExist = () =>
         Alert.alert(categoryName, ' already exists', [
-            {text: 'OK'},
-        ]);
-
-    const CategoryAdded = () =>
-        Alert.alert(categoryName, ' has been added', [
             {text: 'OK'},
         ]);
 
@@ -121,10 +122,6 @@ export const EditBudgetView = (route) => {
             {text: 'OK'},
         ]);
 
-    const CategoryAdded = () =>
-        Alert.alert(tmp_categoryName, ' has been edited', [
-            {text: 'OK'},
-        ]);
 
 
     async function hasError() {
@@ -184,32 +181,3 @@ export const EditBudgetView = (route) => {
         </View>
     )
 }
-
-
-const styles = StyleSheet.create({
-    text: {
-        paddingTop: 10,
-        textAlign: "center",
-        fontSize: 24,
-    },
-    textModal: {
-        fontSize:16,
-        color: '#a19f9f',
-        fontWeight: 'bold',
-        marginBottom: '2%',
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        marginBottom: '8%',
-    },
-    modalInput: {
-        flex: 1,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: '#bababa',
-        fontSize: 16,
-        padding: '0.5%',
-        paddingLeft: 10,
-    },
-});

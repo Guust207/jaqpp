@@ -1,13 +1,14 @@
-import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {currentGathering, currentUser} from "../global_variables";
 import { useNavigation } from '@react-navigation/native';
-import {deleteDoc, doc, getDoc, setDoc} from "firebase/firestore";
+import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 
 
 import {Modal} from "../Modal";
 import {styles} from "../Styles";
+import {AntDesign, Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 
 
 export const GatheringView = ({route}) => {
@@ -30,6 +31,8 @@ export const GatheringView = ({route}) => {
     const [Date, set_Date] = useState(Date);
     const [Time, set_Time] = useState(Time);
     const [Description, set_Description] = useState(Description);
+    const [categoryList, set_categoryList] = useState([]);
+
 
 
 
@@ -116,29 +119,77 @@ export const GatheringView = ({route}) => {
     }
 
 
+    useEffect(() => {
+        const getCategories = async () => {
+
+            const q = query(collection(db, "gathering", CurrentGathering.id, "budget"));
+            onSnapshot(q, (querySnapshot) => {
+                const  list = [];
+
+                querySnapshot.forEach((doc) => {
+                    const { name, totalCost} = doc.data();
+
+                    //list for storing the data
+                    list.push({
+                        id: doc.id,
+                        name,
+                        totalCost,
+                    });
+                });
+                set_categoryList(list);
+            });
+        }
+        getCategories().then();
+
+    },[])
+
+
+
+
     return (
         <View style={styles.container}>
             <ScrollView>
-                <View>
-                    <Text style={styles.headText}>{item.name}</Text>
+                <View style={styles.gatheringInformation}>
+                    <Text style={styles.headText}>Gathering Information</Text>
                     <Text style={styles.descriptionText}>{item.description}</Text>
+                    <Text style={styles.descriptionText2}>Date - {item.date}, Time - {item.time}</Text>
+                    <Text style={styles.headText}>Categories</Text>
+                    <View style={styles.categoryInfoContainer}>
+                        {categoryList.map((item) => (
+                            <View key={item.id}>
+                                <View style={styles.categoryInfo}>
+                                    <MaterialCommunityIcons name="bookmark-outline" size={16} color="black" >
+                                        <Text style={styles.infoText}> {item.name}</Text>
+                                    </MaterialCommunityIcons>
+                                </View>
+                            </View>
+                        ))}
+                    </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => handleBudgetButton(item)}>
-                            <Text style={styles.buttonText}>Administer Budget</Text>
+                            <MaterialCommunityIcons name="piggy-bank-outline" size={16} color="#D6D5C9" >
+                                <Text style={styles.buttonText}> Administer Budget</Text>
+                            </MaterialCommunityIcons>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => handleAttendees(item)}>
-                            <Text style={styles.buttonText}>Administer Attendees</Text>
+                            <Ionicons name="md-people-outline" size={24} color="#D6D5C9" >
+                                <Text style={styles.buttonText}> Administer Guests</Text>
+                            </Ionicons>
                         </TouchableOpacity>
                     </View>
 
                     <View style={styles.bottomButtonContainer}>
                         <TouchableOpacity style={styles.gatheringButton} onPress={() => EditBtnFunc(item)}>
-                            <Text style={styles.buttonText}>Edit Gathering</Text>
+                            <AntDesign name="edit" size={16} color="#D6D5C9" >
+                                <Text style={styles.buttonText}> Edit Gathering</Text>
+                            </AntDesign>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.bottomButtonContainer}>
-                    <TouchableOpacity style={[styles.gatheringButton, styles.deleteButton]} onPress={() => deleteData(item)}>
-                            <Text style={styles.buttonText}>Delete </Text>
+                        <TouchableOpacity style={[styles.gatheringButton, styles.deleteButton]} onPress={() => deleteData(item)}>
+                            <Ionicons name="trash-bin-outline" size={16} color="black" >
+                                <Text style={styles.deleteText} color="black"> Delete</Text>
+                            </Ionicons>
                         </TouchableOpacity>
                     </View>
 
@@ -201,7 +252,6 @@ export const GatheringView = ({route}) => {
                 </View>
             </ScrollView>
         </View>
-
     )
 }
 

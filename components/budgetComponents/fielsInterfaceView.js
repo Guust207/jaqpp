@@ -2,9 +2,10 @@ import React, {useEffect, useState} from "react";
 import {collection, deleteDoc, doc, getDoc, onSnapshot, query, setDoc} from "firebase/firestore";
 import {db} from "../../firebaseConfig";
 import {currentField} from "../global_variables";
-import {Button, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Button, ScrollView, Text, View} from "react-native";
 import {AddBudgetCategoryView, EditBudgetCategoryView} from "./budget_categoryFieldView";
 import {Icon} from "react-native-elements";
+import {styles} from "../Styles";
 
 
 export const FieldView = ({route}) => {
@@ -141,7 +142,6 @@ export const FieldView = ({route}) => {
                             </View>
                         </View>
                     ))}
-
                 </View>
                 {isFieldAddViewVisible && <AddBudgetCategoryView gathering={gathering} category={item} />}
                 {isFieldEditViewVisible && <EditBudgetCategoryView gathering={gathering} category={item} field={currentfield}/>}
@@ -149,35 +149,3 @@ export const FieldView = ({route}) => {
         </View>
     )
 }
-
-
-//Style
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 5,
-        backgroundColor: '#D6D5C9',
-    },
-    budgetContainer: {
-        backgroundColor: '#B9BAA3',
-        padding: 10,
-        marginBottom: '0.2%',
-    },
-    budgetInfo: {
-        width: '68%',
-    },
-    budgetText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    budget: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    icons: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-
-})
-

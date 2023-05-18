@@ -2,7 +2,7 @@
   "expo": {
     "owner": "athiene",
     "scheme": "jaqpp",
-    "name": "jaqpp",
+    "name": "JaqPP",
     "slug": "jaqpp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -26,7 +26,8 @@
         "foregroundImage": "./images/logo_transparent.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.athiene.jaqpp"
+      "package": "com.athiene.jaqpp",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./images/logo_transparent.png"

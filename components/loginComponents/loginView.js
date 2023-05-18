@@ -25,28 +25,12 @@ export const Login = () => {
     });
 
     async function add() {
-        if (!user) {
-            return;
-        }
-        if (await check("users")) {
-            await setDoc(doc(db, "users", user.id), {
-                fullName: user.name,
-                email: user.email,
-                picture: user.picture,
-            });
-            console.log("User", user.name, "has been added to the database");
-        }
-    }
-    async function check(collection) {
-        if (user) {
-            const docRef = doc(db, collection, user.id);
-            const docSnap = await getDoc(docRef);
-
-            if (!docSnap.exists()) {
-                return false;
-            }
-        }
-        return true;
+        console.log(user.id)
+        await setDoc(doc(db, "users", user.id), {
+            fullName: user.name,
+            email: user.email,
+            picture: user.picture,
+        });
     }
     const [userNotLoggedIn, setUserNotLoggedIn] = useState(true);
     const [isInitialized, setIsInitialized] = useState(false);
@@ -59,6 +43,7 @@ export const Login = () => {
             setIsInitialized(true);
         }
     }, [user]);
+
     const fetchUserInfo = async () => {
         try {
             const response = await fetch(

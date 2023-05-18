@@ -8,6 +8,7 @@ import {useState} from "react";
 import {Modal} from "../Modal";
 import {Buttons} from "../Button";
 import {styles} from "../Styles";
+import {Login} from "../loginComponents/loginView";
 
 export const ProfileView = () => {
 
@@ -15,13 +16,6 @@ export const ProfileView = () => {
     const [user, setUser] = currentUser();
     const [Invitations, setInvitations] = useState([]);
     const [isInvitationView, set_isInvitationView] = useState(false)
-
-
-    const accountDeleted = () =>
-        Alert.alert('Account deleted from JaqPPP','', [
-            {text: 'OK'},
-        ]);
-
 
 
     const downloadData = async () => {
@@ -33,8 +27,7 @@ export const ProfileView = () => {
     }
 
     async function deleteAccount() {
-        const docRef = doc(db,"users", user.id.toString());
-        // Delete that document
+        const docRef = doc(db,"users", user.id);
         await deleteDoc(docRef);
         handleLogout();
     }
@@ -59,9 +52,7 @@ export const ProfileView = () => {
 
     //Function that handles deleteAccount button
     const handleDeleteAccount = async () => {
-        console.log(user.id)
         await deleteAccount().then();
-        accountDeleted();
     }
 
     const getInvitation = async () => {
@@ -112,7 +103,6 @@ export const ProfileView = () => {
         // Delete Invitation after accepting
         const gatheringRef2 = doc(db, "users", user.id, "invitations", item.id);
         await deleteDoc(gatheringRef2)
-
         set_isInvitationView(() => !isInvitationView)
 
         console.log("Accepted");
@@ -127,8 +117,6 @@ export const ProfileView = () => {
         set_isInvitationView(() => !isInvitationView)
         console.log("Decline");
     }
-
-
 
     //The view that you see at profile view
     return (

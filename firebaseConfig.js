@@ -5,7 +5,7 @@ import { getFirestore } from "firebase/firestore";
 
 // Our web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyB9l56-8ipkeUb5sSMwuzav0PFwwrT5rfQ",
+    apiKey: "AIzaSyB9l56-8ipkeUb5sSMwuzav0PFwwrT5rfQ", // This is outdated and no longer works :D
     authDomain: "jaqpp-d4c86.firebaseapp.com",
     projectId: "jaqpp-d4c86",
     storageBucket: "jaqpp-d4c86.appspot.com",
